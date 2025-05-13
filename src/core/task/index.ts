@@ -2876,7 +2876,10 @@ export class Task {
 								const toolResultImages =
 									toolResult?.content
 										.filter((item) => item.type === "image")
-										.map((item) => `data:${item.mimeType};base64,${item.data}`) || []
+										.map(
+											(item) =>
+												`data:${(item as { mimeType: string }).mimeType};base64,${(item as { data: string }).data}`,
+										) || []
 								let toolResultText =
 									(toolResult?.isError ? "Error:\n" : "") +
 										toolResult?.content

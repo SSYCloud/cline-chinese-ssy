@@ -472,7 +472,7 @@ export class AwsBedrockHandler implements ApiHandler {
 				} else {
 					// Extract text content from message parts
 					content = message.content
-						.filter((part) => part.type === "text")
+						.filter((part): part is { type: "text"; text: string } => part.type === "text")
 						.map((part) => part.text)
 						.join("\n")
 				}

@@ -5,10 +5,10 @@ description: "Context is key to getting the most out of Cline"
 
 > 💡 **Quick Reference**
 >
-> -   Context = The information Cline knows about your project
-> -   Context Window = How much information Cline can hold at once
-> -   Use context files to maintain project knowledge
-> -   Reset when the context window gets full
+> - Context = The information Cline knows about your project
+> - Context Window = How much information Cline can hold at once
+> - Use context files to maintain project knowledge
+> - Reset when the context window gets full
 
 ## Understanding Context & Context Windows
 
@@ -44,19 +44,19 @@ Cline actively builds context in two ways:
 
 Think of context like a whiteboard you and Cline share:
 
--   **Context** is all the information available:
-    -   What Cline has discovered
-    -   What you've shared
-    -   Your conversation history
-    -   Project requirements
-    -   Previous decisions
--   **Context Window** is the size of the whiteboard itself:
-    -   Measured in tokens (1 token ≈ 3/4 of an English word)
-    -   Each model has a fixed size:
-        -   Claude 3.5 Sonnet: 200,000 tokens
-        -   DeepSeek: 64,000 tokens
-    -   When the whiteboard is full, you need to erase (clear context) to write more
-        -   [How Cline manages context under the hood](https://cline.bot/blog/understanding-the-new-context-window-progress-bar-in-cline)
+- **Context** is all the information available:
+    - What Cline has discovered
+    - What you've shared
+    - Your conversation history
+    - Project requirements
+    - Previous decisions
+- **Context Window** is the size of the whiteboard itself:
+    - Measured in tokens (1 token ≈ 3/4 of an English word)
+    - Each model has a fixed size:
+        - Claude 3.5 Sonnet: 200,000 tokens
+        - DeepSeek: 64,000 tokens
+    - When the whiteboard is full, you need to erase (clear context) to write more
+        - [How Cline manages context under the hood](https://cline.bot/blog/understanding-the-new-context-window-progress-bar-in-cline)
 
 ⚠️ **Important**: Having a large context window (like Claude's 200k tokens) doesn't mean you should fill it completely. Just like a cluttered whiteboard, too much information can make it harder to focus on what's important.
 
@@ -73,17 +73,17 @@ Cline provides a visual way to monitor your context window usage through a progr
 
 ### Reading the Bar
 
--   ↑ shows input tokens (what you've sent to the LLM)
--   ↓ shows output tokens (what the LLM has generated)
--   The progress bar visualizes how much of your context window you've used
--   The total shows your model's maximum capacity (e.g., 200k for Claude 3.5-Sonnet)
+- ↑ shows input tokens (what you've sent to the LLM)
+- ↓ shows output tokens (what the LLM has generated)
+- The progress bar visualizes how much of your context window you've used
+- The total shows your model's maximum capacity (e.g., 200k for Claude 3.5-Sonnet)
 
 ### When to Watch the Bar
 
--   During long coding sessions
--   When working with multiple files
--   Before starting complex tasks
--   When Cline seems to lose context
+- During long coding sessions
+- When working with multiple files
+- Before starting complex tasks
+- When Cline seems to lose context
 
 💡 **Tip**: Consider starting a fresh session when usage reaches 70-80% to maintain optimal performance.
 
@@ -109,15 +109,15 @@ Context files help maintain understanding across sessions. They serve as documen
 
         ## Requirements
 
-        -   OAuth2 implementation
-        -   Support for Google and GitHub
-        -   Rate limiting on auth endpoints
+        - OAuth2 implementation
+        - Support for Google and GitHub
+        - Rate limiting on auth endpoints
 
         ## Technical Decisions
 
-        -   Using Passport.js for provider integration
-        -   JWT for session management
-        -   Redis for rate limiting
+        - Using Passport.js for provider integration
+        - JWT for session management
+        - Redis for rate limiting
         ```
 
 3. **Knowledge Transfer Docs**
