@@ -97,12 +97,9 @@ Cline 中文版胜算云 开发初衷<br>
 </td>
 </tbody>
 </table>
-Cline-中文版胜算云讨论群<br>
-  <img src="https://github.com/user-attachments/assets/1c08215e-9f99-4a13-98b9-85807bda3af9" alt="微信群二维码" width="250" />
 </div>
 
 Discord 频道：[SSYRouter API](https://discord.gg/frBHkRKB4x) <br>
-Telegram ：
 ## 赞赏支持
 
 如果您觉得这个项目对您有帮助，欢迎赞赏支持，您的支持是我持续开发的动力 ☕<br>
