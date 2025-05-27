@@ -37,14 +37,10 @@ export interface ExtensionMessage {
 		| "userCreditsBalance"
 		| "userCreditsUsage"
 		| "userCreditsPayments"
-		| "totalTasksSize"
 		| "addToInput"
 		| "browserConnectionResult"
-		| "scrollToSettings"
-		| "browserRelaunchResult"
 		| "fileSearchResults"
 		| "grpc_response" // New type for gRPC responses
-		| "setActiveQuote"
 	text?: string
 	action?:
 		| "chatButtonClicked"
@@ -85,7 +81,6 @@ export interface ExtensionMessage {
 	userCreditsBalance?: BalanceResponse
 	userCreditsUsage?: UsageTransaction[]
 	userCreditsPayments?: PaymentTransaction[]
-	totalTasksSize?: number | null
 	success?: boolean
 	endpoint?: string
 	isBundled?: boolean
@@ -115,6 +110,7 @@ export type Platform = "aix" | "darwin" | "freebsd" | "linux" | "openbsd" | "sun
 export const DEFAULT_PLATFORM = "unknown"
 
 export interface ExtensionState {
+	isNewUser: boolean
 	apiConfiguration?: ApiConfiguration
 	autoApprovalSettings: AutoApprovalSettings
 	browserSettings: BrowserSettings
@@ -126,6 +122,7 @@ export interface ExtensionState {
 	customInstructions?: string
 	mcpMarketplaceEnabled?: boolean
 	planActSeparateModelsSetting: boolean
+	enableCheckpointsSetting?: boolean
 	platform: Platform
 	shouldShowAnnouncement: boolean
 	taskHistory: HistoryItem[]
@@ -138,9 +135,11 @@ export interface ExtensionState {
 		photoURL: string | null
 	}
 	version: string
-	vscMachineId: string
+	distinctId: string
 	globalClineRulesToggles: ClineRulesToggles
 	localClineRulesToggles: ClineRulesToggles
+	localWorkflowToggles: ClineRulesToggles
+	globalWorkflowToggles: ClineRulesToggles
 	localCursorRulesToggles: ClineRulesToggles
 	localWindsurfRulesToggles: ClineRulesToggles
 }
@@ -205,6 +204,7 @@ export type ClineSay =
 	| "clineignore_error"
 	| "checkpoint_created"
 	| "load_mcp_documentation"
+	| "info" // Added for general informational messages like retry status
 
 export interface ClineSayTool {
 	tool:
@@ -273,8 +273,14 @@ export interface ClineApiReqInfo {
 	cost?: number
 	cancelReason?: ClineApiReqCancelReason
 	streamingFailedMessage?: string
+	retryStatus?: {
+		attempt: number
+		maxAttempts: number
+		delaySec: number
+		errorSnippet?: string
+	}
 }
 
-export type ClineApiReqCancelReason = "streaming_failed" | "user_cancelled"
+export type ClineApiReqCancelReason = "streaming_failed" | "user_cancelled" | "retries_exhausted"
 
 export const COMPLETION_RESULT_CHANGES_FLAG = "HAS_CHANGES"

@@ -1,5 +1,4 @@
 import { ApiConfiguration } from "./api"
-import { AutoApprovalSettings } from "./AutoApprovalSettings"
 import { BrowserSettings } from "./BrowserSettings"
 import { ChatSettings } from "./ChatSettings"
 import { UserInfo } from "./UserInfo"
@@ -14,66 +13,30 @@ export interface WebviewMessage {
 		| "newTask"
 		| "condense"
 		| "reportBug"
-		| "askResponse"
-		| "didShowAnnouncement"
-		| "selectImages"
-		| "resetState"
-		| "openInBrowser"
-		| "openMention"
 		| "showChatView"
-		| "refreshClineRules"
-		| "openMcpSettings"
-		| "restartMcpServer"
-		| "deleteMcpServer"
-		| "autoApprovalSettings"
-		| "browserRelaunchResult"
-		| "togglePlanActMode"
-		| "taskCompletionViewChanges"
-		| "openExtensionSettings"
 		| "requestVsCodeLmModels"
-		| "toggleToolAutoApprove"
-		| "accountLogoutClicked"
-		| "showAccountViewClicked"
 		| "authStateChanged"
 		| "authCallback"
 		| "fetchMcpMarketplace"
-		| "downloadMcp"
-		| "silentlyRefreshMcpMarketplace"
 		| "searchCommits"
 		| "fetchLatestMcpServersFromHub"
 		| "telemetrySetting"
-		| "openSettings"
-		| "fetchOpenGraphData"
 		| "invoke"
 		| "updateSettings"
 		| "clearAllTaskHistory"
 		| "fetchUserCreditsData"
 		| "optionsResponse"
-		| "requestTotalTasksSize"
-		| "relaunchChromeDebugMode"
-		| "taskFeedback"
-		| "scrollToSettings"
 		| "searchFiles"
-		| "toggleFavoriteModel"
 		| "grpc_request"
 		| "grpc_request_cancel"
-		| "toggleClineRule"
-		| "toggleCursorRule"
-		| "toggleWindsurfRule"
-		| "deleteClineRule"
-		| "copyToClipboard"
-		| "updateTerminalConnectionTimeout"
-		| "setActiveQuote"
+		| "toggleWorkflow"
 
-	// | "relaunchChromeDebugMode"
 	text?: string
 	disabled?: boolean
-	askResponse?: ClineAskResponse
 	apiConfiguration?: ApiConfiguration
 	images?: string[]
 	bool?: boolean
 	number?: number
-	autoApprovalSettings?: AutoApprovalSettings
 	browserSettings?: BrowserSettings
 	chatSettings?: ChatSettings
 	chatContent?: ChatContent
@@ -89,13 +52,11 @@ export interface WebviewMessage {
 	// For auth
 	user?: UserInfo | null
 	customToken?: string
-	// For openInBrowser
-	url?: string
 	planActSeparateModelsSetting?: boolean
+	enableCheckpointsSetting?: boolean
+	mcpMarketplaceEnabled?: boolean
 	telemetrySetting?: TelemetrySetting
 	customInstructionsSetting?: string
-	// For task feedback
-	feedbackType?: TaskFeedbackType
 	mentionsRequestId?: string
 	query?: string
 	// For toggleFavoriteModel
@@ -110,9 +71,10 @@ export interface WebviewMessage {
 	grpc_request_cancel?: {
 		request_id: string // ID of the request to cancel
 	}
-	// For cline rules
+	// For cline rules and workflows
 	isGlobal?: boolean
 	rulePath?: string
+	workflowPath?: string
 	enabled?: boolean
 	filename?: string
 

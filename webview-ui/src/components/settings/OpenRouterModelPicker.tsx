@@ -6,8 +6,7 @@ import { useMount } from "react-use"
 import styled from "styled-components"
 import { openRouterDefaultModelId } from "@shared/api"
 import { useExtensionState } from "@/context/ExtensionStateContext"
-import { ModelsServiceClient } from "@/services/grpc-client"
-import { vscode } from "@/utils/vscode"
+import { ModelsServiceClient, StateServiceClient } from "@/services/grpc-client"
 import { highlight } from "../history/HistoryView"
 import { ModelInfoView, normalizeApiConfiguration } from "./ApiOptions"
 import { CODE_BLOCK_BG_COLOR } from "@/components/common/CodeBlock"
@@ -42,8 +41,8 @@ export interface OpenRouterModelPickerProps {
 // Featured models for Cline provider
 const featuredModels = [
 	{
-		id: "anthropic/claude-3.7-sonnet",
-		description: "Leading model for agentic coding",
+		id: "anthropic/claude-sonnet-4",
+		description: "Best model for agentic coding",
 		label: "Best",
 	},
 	{
@@ -199,6 +198,8 @@ const OpenRouterModelPicker: React.FC<OpenRouterModelPickerProps> = ({ isPopup }
 
 	const showBudgetSlider = useMemo(() => {
 		return (
+			selectedModelId?.toLowerCase().includes("claude-sonnet-4") ||
+			selectedModelId?.toLowerCase().includes("claude-opus-4") ||
 			selectedModelId?.toLowerCase().includes("claude-3-7-sonnet") ||
 			selectedModelId?.toLowerCase().includes("claude-3.7-sonnet") ||
 			selectedModelId?.toLowerCase().includes("claude-3.7-sonnet:thinking")
@@ -292,10 +293,9 @@ const OpenRouterModelPicker: React.FC<OpenRouterModelPickerProps> = ({ isPopup }
 												isFavorite={isFavorite}
 												onClick={(e) => {
 													e.stopPropagation()
-													vscode.postMessage({
-														type: "toggleFavoriteModel",
-														modelId: item.id,
-													})
+													StateServiceClient.toggleFavoriteModel({ value: item.id }).catch((error) =>
+														console.error("Failed to toggle favorite model:", error),
+													)
 												}}
 											/>
 										</div>
@@ -336,8 +336,8 @@ const OpenRouterModelPicker: React.FC<OpenRouterModelPickerProps> = ({ isPopup }
 						If you're unsure which model to choose, Cline works best with{" "}
 						<VSCodeLink
 							style={{ display: "inline", fontSize: "inherit" }}
-							onClick={() => handleModelChange("anthropic/claude-3.7-sonnet")}>
-							anthropic/claude-3.7-sonnet.
+							onClick={() => handleModelChange("anthropic/claude-sonnet-4")}>
+							anthropic/claude-sonnet-4.
 						</VSCodeLink>
 						You can also try searching "free" for no-cost options currently available.
 					</>

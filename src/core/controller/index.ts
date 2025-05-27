@@ -14,7 +14,6 @@ import { cleanupLegacyCheckpoints } from "@integrations/checkpoints/CheckpointMi
 import { downloadTask } from "@integrations/misc/export-markdown"
 import { fetchOpenGraphData } from "@integrations/misc/link-preview"
 import { handleFileServiceRequest } from "./file"
-import { selectImages } from "@integrations/misc/process-images"
 import { getTheme } from "@integrations/theme/getTheme"
 import WorkspaceTracker from "@integrations/workspace/WorkspaceTracker"
 import { ClineAccountService } from "@services/account/ClineAccountService"
@@ -33,8 +32,12 @@ import { fileExistsAtPath } from "@utils/fs"
 import { getWorkingState } from "@utils/git"
 import { extractCommitMessage } from "@integrations/git/commit-message-generator"
 import { getTotalTasksSize } from "@utils/storage"
-import { openMention } from "../mentions"
-import { ensureMcpServersDirectoryExists, ensureSettingsDirectoryExists, GlobalFileNames } from "../storage/disk"
+import {
+	ensureMcpServersDirectoryExists,
+	ensureSettingsDirectoryExists,
+	GlobalFileNames,
+	ensureWorkflowsDirectoryExists,
+} from "../storage/disk"
 import {
 	getAllExtensionState,
 	getGlobalState,
@@ -51,6 +54,7 @@ import { ClineRulesToggles } from "@shared/cline-rules"
 import { sendStateUpdate } from "./state/subscribeToState"
 import { refreshClineRulesToggles } from "@core/context/instructions/user-instructions/cline-rules"
 import { refreshExternalRulesToggles } from "@core/context/instructions/user-instructions/external-rules"
+import { refreshWorkflowToggles } from "@core/context/instructions/user-instructions/workflows"
 
 /*
 https://github.com/microsoft/vscode-webview-ui-toolkit-samples/blob/main/default/weather-webview/src/providers/WeatherViewProvider.ts
@@ -66,7 +70,7 @@ export class Controller {
 	workspaceTracker: WorkspaceTracker
 	mcpHub: McpHub
 	accountService: ClineAccountService
-	private latestAnnouncementId = "may-09-2025_17:11:00" // update to some unique identifier when we add a new announcement
+	latestAnnouncementId = "may-22-2025_16:11:00" // update to some unique identifier when we add a new announcement
 
 	constructor(
 		readonly context: vscode.ExtensionContext,
@@ -145,7 +149,18 @@ export class Controller {
 			browserSettings,
 			chatSettings,
 			shellIntegrationTimeout,
+			enableCheckpointsSetting,
+			isNewUser,
+			taskHistory,
 		} = await getAllExtensionState(this.context)
+
+		const NEW_USER_TASK_COUNT_THRESHOLD = 10
+
+		// Check if the user has completed enough tasks to no longer be considered a "new user"
+		if (isNewUser && !historyItem && taskHistory && taskHistory.length >= NEW_USER_TASK_COUNT_THRESHOLD) {
+			await updateGlobalState(this.context, "isNewUser", false)
+			await this.postStateToWebview()
+		}
 
 		if (autoApprovalSettings) {
 			const updatedAutoApprovalSettings = {
@@ -168,6 +183,7 @@ export class Controller {
 			browserSettings,
 			chatSettings,
 			shellIntegrationTimeout,
+			enableCheckpointsSetting ?? true,
 			customInstructions,
 			task,
 			images,
@@ -245,13 +261,6 @@ export class Controller {
 						}
 					}
 				})
-
-				// If user already opted in to telemetry, enable telemetry service
-				this.getStateToPostToWebview().then((state) => {
-					const { telemetrySetting } = state
-					const isOptedIn = telemetrySetting !== "disabled"
-					telemetryService.updateTelemetryState(isOptedIn)
-				})
 				break
 			case "showChatView": {
 				this.postMessageToWebview({
@@ -280,25 +289,6 @@ export class Controller {
 				}
 				await this.postStateToWebview()
 				break
-			case "autoApprovalSettings":
-				if (message.autoApprovalSettings) {
-					const currentSettings = (await getAllExtensionState(this.context)).autoApprovalSettings
-					const incomingVersion = message.autoApprovalSettings.version ?? 1
-					const currentVersion = currentSettings?.version ?? 1
-					if (incomingVersion > currentVersion) {
-						await updateGlobalState(this.context, "autoApprovalSettings", message.autoApprovalSettings)
-						if (this.task) {
-							this.task.autoApprovalSettings = message.autoApprovalSettings
-						}
-						await this.postStateToWebview()
-					}
-				}
-				break
-			case "togglePlanActMode":
-				if (message.chatSettings) {
-					await this.togglePlanActModeWithChatSettings(message.chatSettings, message.chatContent)
-				}
-				break
 			case "optionsResponse":
 				await this.postMessageToWebview({
 					type: "invoke",
@@ -306,95 +296,14 @@ export class Controller {
 					text: message.text,
 				})
 				break
-			case "relaunchChromeDebugMode":
-				const { browserSettings } = await getAllExtensionState(this.context)
-				const browserSession = new BrowserSession(this.context, browserSettings)
-				await browserSession.relaunchChromeDebugMode(this)
-				break
-			case "askResponse":
-				this.task?.handleWebviewAskResponse(message.askResponse!, message.text, message.images)
-				break
-			case "didShowAnnouncement":
-				await updateGlobalState(this.context, "lastShownAnnouncementId", this.latestAnnouncementId)
-				await this.postStateToWebview()
-				break
-			case "selectImages":
-				const images = await selectImages()
-				await this.postMessageToWebview({
-					type: "selectedImages",
-					images,
-				})
-				break
-			case "resetState":
-				await this.resetState()
-				break
-			case "refreshClineRules":
-				await refreshClineRulesToggles(this.context, cwd)
-				await refreshExternalRulesToggles(this.context, cwd)
-				await this.postStateToWebview()
-				break
-			case "openInBrowser":
-				if (message.url) {
-					vscode.env.openExternal(vscode.Uri.parse(message.url))
-				}
-				break
-			case "fetchOpenGraphData":
-				this.fetchOpenGraphData(message.text!)
-				break
-			case "openMention":
-				openMention(message.text)
-				break
-			case "taskCompletionViewChanges": {
-				if (message.number) {
-					await this.task?.presentMultifileDiff(message.number, true)
-				}
-				break
-			}
-			case "accountLogoutClicked": {
-				await this.handleSignOut()
-				break
-			}
-			case "showAccountViewClicked": {
-				await this.postMessageToWebview({ type: "action", action: "accountButtonClicked" })
-				break
-			}
 			case "fetchUserCreditsData": {
 				await this.fetchUserCreditsData()
-				break
-			}
-			case "openMcpSettings": {
-				const mcpSettingsFilePath = await this.mcpHub?.getMcpSettingsFilePath()
-				if (mcpSettingsFilePath) {
-					await handleFileServiceRequest(this, "openFile", { value: mcpSettingsFilePath })
-				}
 				break
 			}
 			case "fetchMcpMarketplace": {
 				await this.fetchMcpMarketplace(message.bool)
 				break
 			}
-			case "downloadMcp": {
-				if (message.mcpId) {
-					// 1. Toggle to act mode if we are in plan mode
-					const { chatSettings } = await this.getStateToPostToWebview()
-					if (chatSettings.mode === "plan") {
-						await this.togglePlanActModeWithChatSettings({ mode: "act" })
-					}
-
-					// 2. download MCP
-					await this.downloadMcp(message.mcpId)
-				}
-				break
-			}
-			case "silentlyRefreshMcpMarketplace": {
-				await this.silentlyRefreshMcpMarketplace()
-				break
-			}
-			case "taskFeedback":
-				if (message.feedbackType && this.task?.taskId) {
-					telemetryService.captureTaskFeedback(this.task.taskId, message.feedbackType)
-				}
-				break
 			// case "openMcpMarketplaceServerDetails": {
 			// 	if (message.text) {
 			// 		const response = await fetch(`https://api.cline.bot/v1/mcp/marketplace/item?mcpId=${message.mcpId}`)
@@ -430,99 +339,26 @@ export class Controller {
 
 			// 	break
 			// }
-			case "toggleToolAutoApprove": {
-				try {
-					await this.mcpHub?.toggleToolAutoApprove(message.serverName!, message.toolNames!, message.autoApprove!)
-				} catch (error) {
-					if (message.toolNames?.length === 1) {
-						console.error(
-							`Failed to toggle auto-approve for server ${message.serverName} with tool ${message.toolNames[0]}:`,
-							error,
-						)
-					} else {
-						console.error(`Failed to toggle auto-approve tools for server ${message.serverName}:`, error)
-					}
-				}
-				break
-			}
-			case "toggleClineRule": {
-				const { isGlobal, rulePath, enabled } = message
-				if (rulePath && typeof enabled === "boolean" && typeof isGlobal === "boolean") {
+			case "toggleWorkflow": {
+				const { workflowPath, enabled, isGlobal } = message
+				if (workflowPath && typeof enabled === "boolean" && typeof isGlobal === "boolean") {
 					if (isGlobal) {
-						const toggles =
-							((await getGlobalState(this.context, "globalClineRulesToggles")) as ClineRulesToggles) || {}
-						toggles[rulePath] = enabled
-						await updateGlobalState(this.context, "globalClineRulesToggles", toggles)
+						const globalWorkflowToggles =
+							((await getGlobalState(this.context, "globalWorkflowToggles")) as ClineRulesToggles) || {}
+						globalWorkflowToggles[workflowPath] = enabled
+						await updateGlobalState(this.context, "globalWorkflowToggles", globalWorkflowToggles)
+						await this.postStateToWebview()
 					} else {
-						const toggles =
-							((await getWorkspaceState(this.context, "localClineRulesToggles")) as ClineRulesToggles) || {}
-						toggles[rulePath] = enabled
-						await updateWorkspaceState(this.context, "localClineRulesToggles", toggles)
+						const toggles = ((await getWorkspaceState(this.context, "workflowToggles")) as ClineRulesToggles) || {}
+						toggles[workflowPath] = enabled
+						await updateWorkspaceState(this.context, "workflowToggles", toggles)
+						await this.postStateToWebview()
 					}
-					await this.postStateToWebview()
-				} else {
-					console.error("toggleClineRule: Missing or invalid parameters", {
-						rulePath,
-						isGlobal: typeof isGlobal === "boolean" ? isGlobal : `Invalid: ${typeof isGlobal}`,
-						enabled: typeof enabled === "boolean" ? enabled : `Invalid: ${typeof enabled}`,
-					})
-				}
-				break
-			}
-			case "toggleWindsurfRule": {
-				const { rulePath, enabled } = message
-				if (rulePath && typeof enabled === "boolean") {
-					const toggles =
-						((await getWorkspaceState(this.context, "localWindsurfRulesToggles")) as ClineRulesToggles) || {}
-					toggles[rulePath] = enabled
-					await updateWorkspaceState(this.context, "localWindsurfRulesToggles", toggles)
-					await this.postStateToWebview()
-				} else {
-					console.error("toggleWindsurfRule: Missing or invalid parameters")
-				}
-				break
-			}
-			case "toggleCursorRule": {
-				const { rulePath, enabled } = message
-				if (rulePath && typeof enabled === "boolean") {
-					const toggles =
-						((await getWorkspaceState(this.context, "localCursorRulesToggles")) as ClineRulesToggles) || {}
-					toggles[rulePath] = enabled
-					await updateWorkspaceState(this.context, "localCursorRulesToggles", toggles)
-					await this.postStateToWebview()
-				} else {
-					console.error("toggleCursorRule: Missing or invalid parameters")
-				}
-				break
-			}
-			case "requestTotalTasksSize": {
-				this.refreshTotalTasksSize()
-				break
-			}
-			case "restartMcpServer": {
-				try {
-					await this.mcpHub?.restartConnection(message.text!)
-				} catch (error) {
-					console.error(`Failed to retry connection for ${message.text}:`, error)
-				}
-				break
-			}
-			case "deleteMcpServer": {
-				if (message.serverName) {
-					this.mcpHub?.deleteServer(message.serverName)
 				}
 				break
 			}
 			case "fetchLatestMcpServersFromHub": {
 				this.mcpHub?.sendLatestMcpServers()
-				break
-			}
-			case "openExtensionSettings": {
-				const settingsFilter = message.text || ""
-				await vscode.commands.executeCommand(
-					"workbench.action.openSettings",
-					`@ext:saoudrizwan.claude-dev ${settingsFilter}`.trim(), // trim whitespace if no settings filter
-				)
 				break
 			}
 			case "invoke": {
@@ -535,20 +371,6 @@ export class Controller {
 				break
 			}
 			// telemetry
-			case "openSettings": {
-				await this.postMessageToWebview({
-					type: "action",
-					action: "settingsButtonClicked",
-				})
-				break
-			}
-			case "scrollToSettings": {
-				await this.postMessageToWebview({
-					type: "scrollToSettings",
-					text: message.text,
-				})
-				break
-			}
 			case "telemetrySetting": {
 				if (message.telemetrySetting) {
 					await this.updateTelemetrySetting(message.telemetrySetting)
@@ -576,6 +398,22 @@ export class Controller {
 				// plan act setting
 				await updateGlobalState(this.context, "planActSeparateModelsSetting", message.planActSeparateModelsSetting)
 
+				if (typeof message.enableCheckpointsSetting === "boolean") {
+					await updateGlobalState(this.context, "enableCheckpointsSetting", message.enableCheckpointsSetting)
+				}
+
+				if (typeof message.mcpMarketplaceEnabled === "boolean") {
+					await updateGlobalState(this.context, "mcpMarketplaceEnabled", message.mcpMarketplaceEnabled)
+				}
+
+				// chat settings (including preferredLanguage and openAIReasoningEffort)
+				if (message.chatSettings) {
+					await updateGlobalState(this.context, "chatSettings", message.chatSettings)
+					if (this.task) {
+						this.task.chatSettings = message.chatSettings
+					}
+				}
+
 				// after settings are updated, post state to webview
 				await this.postStateToWebview()
 
@@ -594,34 +432,11 @@ export class Controller {
 				if (answer === "Delete All Except Favorites") {
 					await this.deleteNonFavoriteTaskHistory()
 					await this.postStateToWebview()
-					this.refreshTotalTasksSize()
 				} else if (answer === "Delete Everything") {
 					await this.deleteAllTaskHistory()
 					await this.postStateToWebview()
-					this.refreshTotalTasksSize()
 				}
 				this.postMessageToWebview({ type: "relinquishControl" })
-				break
-			}
-			case "toggleFavoriteModel": {
-				if (message.modelId) {
-					const { apiConfiguration } = await getAllExtensionState(this.context)
-					const favoritedModelIds = apiConfiguration.favoritedModelIds || []
-
-					// Toggle favorite status
-					const updatedFavorites = favoritedModelIds.includes(message.modelId)
-						? favoritedModelIds.filter((id) => id !== message.modelId)
-						: [...favoritedModelIds, message.modelId]
-
-					await updateGlobalState(this.context, "favoritedModelIds", updatedFavorites)
-
-					// Capture telemetry for model favorite toggle
-					const isFavorited = !favoritedModelIds.includes(message.modelId)
-					telemetryService.captureModelFavoritesUsage(message.modelId, isFavorited)
-
-					// Post state to webview without changing any other configuration
-					await this.postStateToWebview()
-				}
 				break
 			}
 			case "grpc_request": {
@@ -637,29 +452,6 @@ export class Controller {
 				break
 			}
 
-			case "copyToClipboard": {
-				try {
-					await vscode.env.clipboard.writeText(message.text || "")
-				} catch (error) {
-					console.error("Error copying to clipboard:", error)
-				}
-				break
-			}
-			case "updateTerminalConnectionTimeout": {
-				if (message.shellIntegrationTimeout !== undefined) {
-					const timeout = message.shellIntegrationTimeout
-
-					if (typeof timeout === "number" && !isNaN(timeout) && timeout > 0) {
-						await updateGlobalState(this.context, "shellIntegrationTimeout", timeout)
-						await this.postStateToWebview()
-					} else {
-						console.warn(
-							`Invalid shell integration timeout value received: ${timeout}. ` + `Expected a positive number.`,
-						)
-					}
-				}
-				break
-			}
 			// Add more switch case statements here as more webview message commands
 			// are created within the webview context (i.e. inside media/main.js)
 		}
@@ -975,6 +767,41 @@ export class Controller {
 		}
 	}
 
+	private async fetchMcpMarketplaceFromApiRPC(silent: boolean = false): Promise<McpMarketplaceCatalog | undefined> {
+		try {
+			const response = await axios.get("https://api.cline.bot/v1/mcp/marketplace", {
+				headers: {
+					"Content-Type": "application/json",
+					"User-Agent": "cline-vscode-extension",
+				},
+			})
+
+			if (!response.data) {
+				throw new Error("Invalid response from MCP marketplace API")
+			}
+
+			const catalog: McpMarketplaceCatalog = {
+				items: (response.data || []).map((item: any) => ({
+					...item,
+					githubStars: item.githubStars ?? 0,
+					downloadCount: item.downloadCount ?? 0,
+					tags: item.tags ?? [],
+				})),
+			}
+
+			// Store in global state
+			await updateGlobalState(this.context, "mcpMarketplaceCatalog", catalog)
+			return catalog
+		} catch (error) {
+			console.error("Failed to fetch MCP marketplace:", error)
+			if (!silent) {
+				const errorMessage = error instanceof Error ? error.message : "Failed to fetch MCP marketplace"
+				throw new Error(errorMessage)
+			}
+			return undefined
+		}
+	}
+
 	async silentlyRefreshMcpMarketplace() {
 		try {
 			const catalog = await this.fetchMcpMarketplaceFromApi(true)
@@ -986,6 +813,20 @@ export class Controller {
 			}
 		} catch (error) {
 			console.error("Failed to silently refresh MCP marketplace:", error)
+		}
+	}
+
+	/**
+	 * RPC variant that silently refreshes the MCP marketplace catalog and returns the result
+	 * Unlike silentlyRefreshMcpMarketplace, this doesn't post a message to the webview
+	 * @returns MCP marketplace catalog or undefined if refresh failed
+	 */
+	async silentlyRefreshMcpMarketplaceRPC() {
+		try {
+			return await this.fetchMcpMarketplaceFromApiRPC(true)
+		} catch (error) {
+			console.error("Failed to silently refresh MCP marketplace (RPC):", error)
+			return undefined
 		}
 	}
 
@@ -1018,92 +859,6 @@ export class Controller {
 				error: errorMessage,
 			})
 			vscode.window.showErrorMessage(errorMessage)
-		}
-	}
-
-	private async downloadMcp(mcpId: string) {
-		try {
-			// First check if we already have this MCP server installed
-			const servers = this.mcpHub?.getServers() || []
-			const isInstalled = servers.some((server: McpServer) => server.name === mcpId)
-
-			if (isInstalled) {
-				throw new Error("This MCP server is already installed")
-			}
-
-			// Fetch server details from marketplace
-			const response = await axios.post<McpDownloadResponse>(
-				"https://api.cline.bot/v1/mcp/download",
-				{ mcpId },
-				{
-					headers: { "Content-Type": "application/json" },
-					timeout: 10000,
-				},
-			)
-
-			if (!response.data) {
-				throw new Error("Invalid response from MCP marketplace API")
-			}
-
-			console.log("[downloadMcp] Response from download API", { response })
-
-			const mcpDetails = response.data
-
-			// Validate required fields
-			if (!mcpDetails.githubUrl) {
-				throw new Error("Missing GitHub URL in MCP download response")
-			}
-			if (!mcpDetails.readmeContent) {
-				throw new Error("Missing README content in MCP download response")
-			}
-
-			// Send details to webview
-			await this.postMessageToWebview({
-				type: "mcpDownloadDetails",
-				mcpDownloadDetails: mcpDetails,
-			})
-
-			// Create task with context from README and added guidelines for MCP server installation
-			const task = `Set up the MCP server from ${mcpDetails.githubUrl} while adhering to these MCP server installation rules:
-- Start by loading the MCP documentation.
-- Use "${mcpDetails.mcpId}" as the server name in cline_mcp_settings.json.
-- Create the directory for the new MCP server before starting installation.
-- Make sure you read the user's existing cline_mcp_settings.json file before editing it with this new mcp, to not overwrite any existing servers.
-- Use commands aligned with the user's shell and operating system best practices.
-- The following README may contain instructions that conflict with the user's OS, in which case proceed thoughtfully.
-- Once installed, demonstrate the server's capabilities by using one of its tools.
-Here is the project's README to help you get started:\n\n${mcpDetails.readmeContent}\n${mcpDetails.llmsInstallationContent}`
-
-			// Initialize task and show chat view
-			await this.initTask(task)
-			await this.postMessageToWebview({
-				type: "action",
-				action: "chatButtonClicked",
-			})
-		} catch (error) {
-			console.error("Failed to download MCP:", error)
-			let errorMessage = "Failed to download MCP"
-
-			if (axios.isAxiosError(error)) {
-				if (error.code === "ECONNABORTED") {
-					errorMessage = "Request timed out. Please try again."
-				} else if (error.response?.status === 404) {
-					errorMessage = "MCP server not found in marketplace."
-				} else if (error.response?.status === 500) {
-					errorMessage = "Internal server error. Please try again later."
-				} else if (!error.response && error.request) {
-					errorMessage = "Network error. Please check your internet connection."
-				}
-			} else if (error instanceof Error) {
-				errorMessage = error.message
-			}
-
-			// Show error in both notification and marketplace UI
-			vscode.window.showErrorMessage(errorMessage)
-			await this.postMessageToWebview({
-				type: "mcpDownloadDetails",
-				error: errorMessage,
-			})
 		}
 	}
 
@@ -1364,19 +1119,6 @@ Here is the project's README to help you get started:\n\n${mcpDetails.readmeCont
 		await this.postStateToWebview()
 	}
 
-	async refreshTotalTasksSize() {
-		getTotalTasksSize(this.context.globalStorageUri.fsPath)
-			.then((newTotalSize) => {
-				this.postMessageToWebview({
-					type: "totalTasksSize",
-					totalTasksSize: newTotalSize,
-				})
-			})
-			.catch((error) => {
-				console.error("Error calculating total tasks size:", error)
-			})
-	}
-
 	async deleteTaskWithId(id: string) {
 		console.info("deleteTaskWithId: ", id)
 
@@ -1419,7 +1161,7 @@ Here is the project's README to help you get started:\n\n${mcpDetails.readmeCont
 			console.debug(`Error deleting task:`, error)
 		}
 
-		this.refreshTotalTasksSize()
+		await this.postStateToWebview()
 	}
 
 	async deleteTaskFromState(id: string) {
@@ -1452,8 +1194,11 @@ Here is the project's README to help you get started:\n\n${mcpDetails.readmeCont
 			mcpMarketplaceEnabled,
 			telemetrySetting,
 			planActSeparateModelsSetting,
+			enableCheckpointsSetting,
 			globalClineRulesToggles,
+			globalWorkflowToggles,
 			shellIntegrationTimeout,
+			isNewUser,
 		} = await getAllExtensionState(this.context)
 
 		const localClineRulesToggles =
@@ -1464,6 +1209,8 @@ Here is the project's README to help you get started:\n\n${mcpDetails.readmeCont
 
 		const localCursorRulesToggles =
 			((await getWorkspaceState(this.context, "localCursorRulesToggles")) as ClineRulesToggles) || {}
+
+		const localWorkflowToggles = ((await getWorkspaceState(this.context, "workflowToggles")) as ClineRulesToggles) || {}
 
 		return {
 			version: this.context.extension?.packageJSON?.version ?? "",
@@ -1486,12 +1233,16 @@ Here is the project's README to help you get started:\n\n${mcpDetails.readmeCont
 			mcpMarketplaceEnabled,
 			telemetrySetting,
 			planActSeparateModelsSetting,
-			vscMachineId: vscode.env.machineId,
+			enableCheckpointsSetting: enableCheckpointsSetting ?? true,
+			distinctId: telemetryService.distinctId,
 			globalClineRulesToggles: globalClineRulesToggles || {},
 			localClineRulesToggles: localClineRulesToggles || {},
 			localWindsurfRulesToggles: localWindsurfRulesToggles || {},
 			localCursorRulesToggles: localCursorRulesToggles || {},
+			localWorkflowToggles: localWorkflowToggles || {},
+			globalWorkflowToggles: globalWorkflowToggles || {},
 			shellIntegrationTimeout,
+			isNewUser,
 		}
 	}
 
@@ -1566,30 +1317,6 @@ Here is the project's README to help you get started:\n\n${mcpDetails.readmeCont
 	// }
 
 	// secrets
-
-	// Open Graph Data
-
-	async fetchOpenGraphData(url: string) {
-		try {
-			// Use the fetchOpenGraphData function from link-preview.ts
-			const ogData = await fetchOpenGraphData(url)
-
-			// Send the data back to the webview
-			await this.postMessageToWebview({
-				type: "openGraphData",
-				openGraphData: ogData,
-				url: url,
-			})
-		} catch (error) {
-			console.error(`Error fetching Open Graph data for ${url}:`, error)
-			// Send an error response
-			await this.postMessageToWebview({
-				type: "openGraphData",
-				error: `Failed to fetch Open Graph data: ${error}`,
-				url: url,
-			})
-		}
-	}
 
 	// Git commit message generation
 
@@ -1695,19 +1422,4 @@ Commit message:`
 	}
 
 	// dev
-
-	async resetState() {
-		vscode.window.showInformationMessage("Resetting state...")
-		await resetExtensionState(this.context)
-		if (this.task) {
-			this.task.abortTask()
-			this.task = undefined
-		}
-		vscode.window.showInformationMessage("State reset")
-		await this.postStateToWebview()
-		await this.postMessageToWebview({
-			type: "action",
-			action: "chatButtonClicked",
-		})
-	}
 }

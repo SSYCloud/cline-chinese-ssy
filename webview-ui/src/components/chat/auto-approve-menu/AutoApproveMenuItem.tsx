@@ -1,17 +1,17 @@
-import React, { type ChangeEvent, type ChangeEventHandler } from "react"
+import React from "react"
 import styled from "styled-components"
 import HeroTooltip from "@/components/common/HeroTooltip"
-import { ActionMetadata } from "./AutoApproveMenu"
-import { useState } from "react"
+import { ActionMetadata } from "./types"
 import { VSCodeCheckbox } from "@vscode/webview-ui-toolkit/react"
 
 interface AutoApproveMenuItemProps {
 	action: ActionMetadata
 	isChecked: (action: ActionMetadata) => boolean
 	isFavorited?: (action: ActionMetadata) => boolean
-	onToggle: (action: ActionMetadata, checked: boolean) => void
-	onToggleFavorite?: (actionId: string) => void
+	onToggle: (action: ActionMetadata, checked: boolean) => Promise<void>
+	onToggleFavorite?: (actionId: string) => Promise<void>
 	condensed?: boolean
+	showIcon?: boolean
 }
 
 const CheckboxContainer = styled.div<{
@@ -22,7 +22,8 @@ const CheckboxContainer = styled.div<{
 	display: flex;
 	align-items: center;
 	justify-content: space-between; /* Push content to edges */
-	padding: 0 4px;
+	padding-left: 4px;
+	padding-right: 1px;
 	border-radius: 4px;
 	cursor: pointer;
 	transition: all 0.2s ease;
@@ -51,7 +52,7 @@ const CheckboxContainer = styled.div<{
 	.star {
 		color: ${(props) => (props.isFavorited ? "var(--vscode-terminal-ansiYellow)" : "var(--vscode-descriptionForeground)")};
 		opacity: ${(props) => (props.isFavorited ? 1 : 0.6)};
-		font-size: 12px;
+		font-size: 14px;
 	}
 `
 
@@ -77,13 +78,14 @@ const AutoApproveMenuItem = ({
 	onToggle,
 	onToggleFavorite,
 	condensed = false,
+	showIcon = true,
 }: AutoApproveMenuItemProps) => {
 	const checked = isChecked(action)
 	const favorited = isFavorited?.(action)
 
-	const onChange = (e: Event) => {
+	const onChange = async (e: Event) => {
 		e.stopPropagation()
-		onToggle(action, !checked)
+		await onToggle(action, !checked)
 	}
 
 	const content = (
@@ -93,28 +95,22 @@ const AutoApproveMenuItem = ({
 					<CheckboxContainer isFavorited={favorited} onClick={onChange}>
 						<div className="left-content">
 							<VSCodeCheckbox checked={checked} />
-							<span className={`codicon ${action.icon} icon`}></span>
+							{showIcon && <span className={`codicon ${action.icon} icon`}></span>}
 							<span className="label">{condensed ? action.shortName : action.label}</span>
 						</div>
 						{onToggleFavorite && !condensed && (
 							<HeroTooltip
 								delay={500}
-								content={
-									action.id === "enableAll"
-										? "Required"
-										: favorited
-											? "Remove from quick-access menu"
-											: "Add to quick-access menu"
-								}>
+								content={favorited ? "Remove from quick-access menu" : "Add to quick-access menu"}>
 								<span
-									className={`codicon codicon-${favorited ? "star-full" : "star-empty"} star`}
+									className={`p-0.5 codicon codicon-${favorited ? "star-full" : "star-empty"} star`}
 									style={{
-										cursor: action.id === "enableAll" ? "not-allowed" : "pointer",
+										cursor: "pointer",
 									}}
-									onClick={(e) => {
+									onClick={async (e) => {
 										e.stopPropagation()
 										if (action.id === "enableAll") return
-										onToggleFavorite?.(action.id)
+										await onToggleFavorite?.(action.id)
 									}}
 								/>
 							</HeroTooltip>
