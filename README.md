@@ -1,190 +1,169 @@
-<div align="center"><sub>
-English | <a href="https://github.com/cline/cline/blob/main/locales/es/README.md" target="_blank">Español</a> | <a href="https://github.com/cline/cline/blob/main/locales/de/README.md" target="_blank">Deutsch</a> | <a href="https://github.com/cline/cline/blob/main/locales/ja/README.md" target="_blank">日本語</a> | <a href="https://github.com/cline/cline/blob/main/locales/zh-cn/README.md" target="_blank">简体中文</a> | <a href="https://github.com/cline/cline/blob/main/locales/zh-tw/README.md" target="_blank">繁體中文</a> | <a href="https://github.com/cline/cline/blob/main/locales/ko/README.md" target="_blank">한국어</a>
-</sub></div>
+# 🎯 Cline 中文版
 
-# Cline – \#1 on OpenRouter
+## 目录
+- [为什么选择 Cline 中文版](#-为什么选择-cline-中文版)
+- [功能展示](#功能展示)
+- [快速开始](#-快速开始)
+- [常见问题](#-常见问题)
+- [项目说明](#-项目说明)
 
-<p align="center">
-  <img src="https://media.githubusercontent.com/media/cline/cline/main/assets/docs/demo.gif" width="100%" />
-</p>
+本项目是基于 Cline 打造的中文增强版本，由[胜算云](https://www.shengsuanyun.com/?from=CH_SBXIG36D)持续维护，致力于为中文开发者提供更友好、低门槛的 VS Code AI 编码辅助体验。
 
-<div align="center">
-<table>
-<tbody>
-<td align="center">
-<a href="https://marketplace.visualstudio.com/items?itemName=saoudrizwan.claude-dev" target="_blank"><strong>Download on VS Marketplace</strong></a>
-</td>
-<td align="center">
-<a href="https://discord.gg/cline" target="_blank"><strong>Discord</strong></a>
-</td>
-<td align="center">
-<a href="https://www.reddit.com/r/cline/" target="_blank"><strong>r/cline</strong></a>
-</td>
-<td align="center">
-<a href="https://github.com/cline/cline/discussions/categories/feature-requests?discussions_q=is%3Aopen+category%3A%22Feature+Requests%22+sort%3Atop" target="_blank"><strong>Feature Requests</strong></a>
-</td>
-<td align="center">
-<a href="https://docs.cline.bot/getting-started/for-new-coders" target="_blank"><strong>Getting Started</strong></a>
-</td>
-</tbody>
-</table>
-</div>
 
-Meet Cline, an AI assistant that can use your **CLI** a**N**d **E**ditor.
+![Cline 中文版演示图](https://media.githubusercontent.com/media/cline/cline/main/assets/docs/demo.gif)
 
-Thanks to [Claude 3.7 Sonnet's agentic coding capabilities](https://www.anthropic.com/claude/sonnet), Cline can handle complex software development tasks step-by-step. With tools that let him create & edit files, explore large projects, use the browser, and execute terminal commands (after you grant permission), he can assist you in ways that go beyond code completion or tech support. Cline can even use the Model Context Protocol (MCP) to create new tools and extend his own capabilities. While autonomous AI scripts traditionally run in sandboxed environments, this extension provides a human-in-the-loop GUI to approve every file change and terminal command, providing a safe and accessible way to explore the potential of agentic AI.
 
-1. Enter your task and add images to convert mockups into functional apps or fix bugs with screenshots.
-2. Cline starts by analyzing your file structure & source code ASTs, running regex searches, and reading relevant files to get up to speed in existing projects. By carefully managing what information is added to context, Cline can provide valuable assistance even for large, complex projects without overwhelming the context window.
-3. Once Cline has the information he needs, he can:
-    - Create and edit files + monitor linter/compiler errors along the way, letting him proactively fix issues like missing imports and syntax errors on his own.
-    - Execute commands directly in your terminal and monitor their output as he works, letting him e.g., react to dev server issues after editing a file.
-    - For web development tasks, Cline can launch the site in a headless browser, click, type, scroll, and capture screenshots + console logs, allowing him to fix runtime errors and visual bugs.
-4. When a task is completed, Cline will present the result to you with a terminal command like `open -a "Google Chrome" index.html`, which you run with a click of a button.
+Cline 中文版 能够逐步处理复杂的软件开发任务，不只是补全代码，而是作为 VS Code 中的 AI 编码助手参与到真实开发流程中。它会先分析项目结构、搜索相关代码、读取必要文件，并结合上下文理解你的目标，再继续执行后续操作。
 
-> [!TIP]
-> Use the `CMD/CTRL + Shift + P` shortcut to open the command palette and type "Cline: Open In New Tab" to open the extension as a tab in your editor. This lets you use Cline side-by-side with your file explorer, and see how he changes your workspace more clearly.
+在获得用户确认后，Cline 中文版可以帮助创建和修改文件、执行终端命令、观察输出结果、辅助定位问题，并在需要时调用浏览器能力处理前端页面调试、截图分析和交互检查等任务。对于已有项目，它能够逐步理解代码结构和上下文信息，在不打乱现有工作流的情况下参与编码、调试、重构和文档整理。
 
----
+除了基础编码能力外，Cline 中文版还支持通过模型上下文协议（MCP）扩展更多工具能力。你可以根据团队工作流接入内部系统、知识库或自动化工具，让 AI 助手在更多真实业务场景中发挥作用。
 
-<img align="right" width="340" src="https://github.com/user-attachments/assets/3cf21e04-7ce9-4d22-a7b9-ba2c595e88a4">
+相比传统只能回答问题或生成局部代码的助手，Cline 中文版更强调“结合上下文、分步骤执行、人工确认”的协作体验，让开发者在可控前提下更高效地完成任务。
 
-### Use any API and Model
+典型使用场景包括：
 
-Cline supports API providers like OpenRouter, Anthropic, OpenAI, Google Gemini, AWS Bedrock, Azure, GCP Vertex, and Cerebras. You can also configure any OpenAI compatible API, or use a local model through LM Studio/Ollama. If you're using OpenRouter, the extension fetches their latest model list, allowing you to use the newest models as soon as they're available.
+- 阅读项目上下文并理解代码结构
+- 创建、修改和整理代码文件
+- 执行终端命令并观察输出结果
+- 辅助排查报错、修复问题和更新文档
+- 通过 MCP 扩展更多工具能力
 
-The extension also keeps track of total tokens and API usage cost for the entire task loop and individual requests, keeping you informed of spend every step of the way.
+## 🌟 为什么选择 Cline 中文版
 
-<!-- Transparent pixel to create line break after floating image -->
+### 1. 更完整的中文界面与使用体验
 
-<img width="2000" height="0" src="https://github.com/user-attachments/assets/ee14e6f7-20b8-4391-9091-8e8e25561929"><br>
+- Cline 中文版提供更适合中文用户的界面和说明
+- 降低国内开发者上手成本，适配团队协作场景
+- 持续维护与功能优化
 
-<img align="left" width="370" src="https://github.com/user-attachments/assets/81be79a8-1fdb-4028-9129-5fe055e01e76">
+![模型与服务接入示意](https://github.com/SSYCloud/cline-chinese-ssy/blob/main/assets/docs/Cline中文版配置.png?raw=true)
 
-### Run Commands in Terminal
+### 2. 人工确认机制
 
-Thanks to the new [shell integration updates in VSCode v1.93](https://code.visualstudio.com/updates/v1_93#_terminal-shell-integration-api), Cline can execute commands directly in your terminal and receive the output. This allows him to perform a wide range of tasks, from installing packages and running build scripts to deploying applications, managing databases, and executing tests, all while adapting to your dev environment & toolchain to get the job done right.
+- 文件修改前可查看变更内容
+- 终端命令执行前由用户确认
+- 更适合需要人工把关的开发环境
 
-For long running processes like dev servers, use the "Proceed While Running" button to let Cline continue in the task while the command runs in the background. As Cline works he’ll be notified of any new terminal output along the way, letting him react to issues that may come up, such as compile-time errors when editing files.
+![模型与服务接入示意](https://github.com/SSYCloud/cline-chinese-ssy/blob/main/assets/docs/人工确认.png?raw=true)
 
-<!-- Transparent pixel to create line break after floating image -->
+### 3. 模型接入灵活
 
-<img width="2000" height="0" src="https://github.com/user-attachments/assets/ee14e6f7-20b8-4391-9091-8e8e25561929"><br>
+Cline 中文版支持接入多种模型服务，包括 OpenRouter、Anthropic、OpenAI、Google Gemini、AWS Bedrock、Azure、GCP Vertex、Cerebras、Groq 等，也支持配置兼容 OpenAI API 的服务，或通过 LM Studio、Ollama 使用本地模型。
 
-<img align="right" width="400" src="https://github.com/user-attachments/assets/c5977833-d9b8-491e-90f9-05f9cd38c588">
+在使用过程中，扩展可以帮助展示任务过程中的 Token 消耗与相关调用成本，方便你随时了解整体使用情况。
 
-### Create and Edit Files
+- 支持多种主流模型服务与兼容 OpenAI API 的接口
+- 支持本地模型或团队内部模型服务接入
+- 如需更便捷地完成模型接入，也可通过[胜算云](https://www.shengsuanyun.com/?from=CH_SBXIG36D)获取相关服务支持
 
-Cline can create and edit files directly in your editor, presenting you a diff view of the changes. You can edit or revert Cline's changes directly in the diff view editor, or provide feedback in chat until you're satisfied with the result. Cline also monitors linter/compiler errors (missing imports, syntax errors, etc.) so he can fix issues that come up along the way on his own.
+![模型与服务接入示意](https://github.com/SSYCloud/cline-chinese-ssy/blob/main/assets/docs/model.png?raw=true)
 
-All changes made by Cline are recorded in your file's Timeline, providing an easy way to track and revert modifications if needed.
+## 🤖 功能展示
 
-<!-- Transparent pixel to create line break after floating image -->
+### 1. 终端与任务执行
 
-<img width="2000" height="0" src="https://github.com/user-attachments/assets/ee14e6f7-20b8-4391-9091-8e8e25561929"><br>
+Cline 中文版可以在用户确认后执行终端命令，并结合输出结果继续完成后续任务。更自然地参与真实开发流程，协助完成依赖安装、构建执行、服务启动、测试运行等常见操作。
 
-<img align="left" width="370" src="https://github.com/user-attachments/assets/bc2e85ba-dfeb-4fe6-9942-7cfc4703cbe5">
+![终端执行与任务推进](https://github.com/SSYCloud/cline-chinese-ssy/blob/main/assets/docs/执行命令.png?raw=true)
 
-### Use the Browser
 
-With Claude 3.5 Sonnet's new [Computer Use](https://www.anthropic.com/news/3-5-models-and-computer-use) capability, Cline can launch a browser, click elements, type text, and scroll, capturing screenshots and console logs at each step. This allows for interactive debugging, end-to-end testing, and even general web use! This gives him autonomy to fixing visual bugs and runtime issues without you needing to handhold and copy-pasting error logs yourself.
+对于开发服务器等长时间运行的任务，还可以通过“运行时继续”功能，让命令在后台保持运行的同时，继续推进当前工作流程，从而提升整体使用效率。
 
-Try asking Cline to "test the app", and watch as he runs a command like `npm run dev`, launches your locally running dev server in a browser, and performs a series of tests to confirm that everything works. [See a demo here.](https://x.com/sdrzn/status/1850880547825823989)
 
-<!-- Transparent pixel to create line break after floating image -->
+### 2. 代码与文件处理
 
-<img width="2000" height="0" src="https://github.com/user-attachments/assets/ee14e6f7-20b8-4391-9091-8e8e25561929"><br>
+Cline 中文版可以结合项目上下文协助阅读代码，并直接在编辑器中创建、修改和整理文件，适用于日常开发、代码调整和问题排查。
 
-<img align="right" width="350" src="https://github.com/user-attachments/assets/ac0efa14-5c1f-4c26-a42d-9d7c56f5fadd">
+在文件修改过程中，你可以通过差异视图查看变更内容，并根据需要继续编辑、恢复修改，或在聊天中补充反馈，直到结果符合预期。
 
-### "add a tool that..."
+同时，它还可以结合 linter 或编译器返回的错误信息，辅助处理导入缺失、语法错误等常见问题，并在开发过程中持续优化修改结果。
 
-Thanks to the [Model Context Protocol](https://github.com/modelcontextprotocol), Cline can extend his capabilities through custom tools. While you can use [community-made servers](https://github.com/modelcontextprotocol/servers), Cline can instead create and install tools tailored to your specific workflow. Just ask Cline to "add a tool" and he will handle everything, from creating a new MCP server to installing it into the extension. These custom tools then become part of Cline's toolkit, ready to use in future tasks.
+![文件修改与差异查看](https://github.com/user-attachments/assets/c5977833-d9b8-491e-90f9-05f9cd38c588)
 
--   "add a tool that fetches Jira tickets": Retrieve ticket ACs and put Cline to work
--   "add a tool that manages AWS EC2s": Check server metrics and scale instances up or down
--   "add a tool that pulls the latest PagerDuty incidents": Fetch details and ask Cline to fix bugs
+### 3. 浏览器与页面调试
 
-<!-- Transparent pixel to create line break after floating image -->
 
-<img width="2000" height="0" src="https://github.com/user-attachments/assets/ee14e6f7-20b8-4391-9091-8e8e25561929"><br>
+在合适的工作流中，Cline 中文版还可以辅助进行页面检查、交互验证和多步骤调试任务。它能够结合浏览器操作能力执行点击、输入、滚动等常见操作，并在过程中获取页面截图和相关日志信息，帮助你更高效地定位前端页面中的运行时问题和视觉问题。
 
-<img align="left" width="360" src="https://github.com/user-attachments/assets/7fdf41e6-281a-4b4b-ac19-020b838b6970">
+对于前端开发场景，你可以让它协助测试本地应用，例如在启动开发服务器后，对页面进行基础检查、流程验证和问题排查，从而减少手动来回切换、复制日志和重复操作的成本。
 
-### Add Context
+![浏览器辅助调试示意](https://github.com/user-attachments/assets/bc2e85ba-dfeb-4fe6-9942-7cfc4703cbe5)
 
-**`@url`:** Paste in a URL for the extension to fetch and convert to markdown, useful when you want to give Cline the latest docs
+### 4. MCP 与能力扩展
 
-**`@problems`:** Add workspace errors and warnings ('Problems' panel) for Cline to fix
+如果团队有特定工作流，Cline 中文版还可以通过 MCP 扩展更多工具能力。它不仅可以使用已有工具，也能够配合团队需求接入自定义工具，从而更好地适配内部系统、业务流程和协作场景。
 
-**`@file`:** Adds a file's contents so you don't have to waste API requests approving read file (+ type to search files)
+例如，你可以让它接入工单系统、云资源管理能力或告警平台等外部工具，让 Cline 中文版在编码之外，进一步参与需求理解、信息获取、问题排查和自动化处理等任务。
 
-**`@folder`:** Adds folder's files all at once to speed up your workflow even more
+常见场景包括：
 
-<!-- Transparent pixel to create line break after floating image -->
+- 获取 Jira 工单信息，帮助理解需求并推进开发任务
+- 管理云服务资源，如查看实例状态或辅助执行运维相关操作
+- 拉取最新告警或事件信息，结合上下文协助排查和修复问题
 
-<img width="2000" height="0" src="https://github.com/user-attachments/assets/ee14e6f7-20b8-4391-9091-8e8e25561929"><br>
 
-<img align="right" width="350" src="https://github.com/user-attachments/assets/140c8606-d3bf-41b9-9a1f-4dbf0d4c90cb">
+### 5. 上下文补充
 
-### Checkpoints: Compare and Restore
+为了更准确地理解任务目标，Cline 中文版支持补充多种上下文信息，例如文件、文件夹、问题列表或外部参考资料。通过提供更完整的上下文，它可以更快进入任务状态，并在现有项目中给出更贴合实际的协助。
 
-As Cline works through a task, the extension takes a snapshot of your workspace at each step. You can use the 'Compare' button to see a diff between the snapshot and your current workspace, and the 'Restore' button to roll back to that point.
+常见的上下文补充方式包括：
 
-For example, when working with a local web server, you can use 'Restore Workspace Only' to quickly test different versions of your app, then use 'Restore Task and Workspace' when you find the version you want to continue building from. This lets you safely explore different approaches without losing progress.
+- `@url`：粘贴 URL，让扩展获取并整理页面内容，适合补充最新文档或在线参考资料
+- `@problems`：添加当前工作区中的错误和警告信息，帮助更快定位和处理问题
+- `@file`：直接补充单个文件内容，减少重复读取文件的操作
+- `@folder`：一次性补充整个文件夹中的相关内容，帮助更全面地理解项目上下文
 
-<!-- Transparent pixel to create line break after floating image -->
+![上下文补充示意](https://github.com/SSYCloud/cline-chinese-ssy/blob/main/assets/docs/上下文.png?raw=true)
 
-<img width="2000" height="0" src="https://github.com/user-attachments/assets/ee14e6f7-20b8-4391-9091-8e8e25561929"><br>
+### 6. Checkpoint 与恢复
 
-## Contributing
+在多步骤任务中，Cline 中文版支持快照、比较和恢复等能力，让你能够更安心地尝试不同方案。随着任务推进，扩展会记录关键步骤的工作区状态，方便你回看每一步的变化过程。
 
-To contribute to the project, start with our [Contributing Guide](CONTRIBUTING.md) to learn the basics. You can also join our [Discord](https://discord.gg/cline) to chat with other contributors in the `#contributors` channel. If you're looking for full-time work, check out our open positions on our [careers page](https://cline.bot/join-us)!
+你可以通过“比较”功能查看快照与当前工作区之间的差异，也可以通过“恢复”功能回退到之前的状态，用于重新验证方案或继续后续开发。
 
-<details>
-<summary>Local Development Instructions</summary>
+例如，在本地 Web 服务调试场景中，你可以先恢复工作区来快速测试不同版本的效果；当找到更合适的实现方式后，再从对应状态继续推进任务，从而更安全地探索不同思路，而不必担心丢失当前进展。
 
-1. Clone the repository _(Requires [git-lfs](https://git-lfs.com/))_:
-    ```bash
-    git clone https://github.com/cline/cline.git
-    ```
-2. Open the project in VSCode:
-    ```bash
-    code cline
-    ```
-3. Install the necessary dependencies for the extension and webview-gui:
-    ```bash
-    npm run install:all
-    ```
-4. Launch by pressing `F5` (or `Run`->`Start Debugging`) to open a new VSCode window with the extension loaded. (You may need to install the [esbuild problem matchers extension](https://marketplace.visualstudio.com/items?itemName=connor4312.esbuild-problem-matchers) if you run into issues building the project.)
+![Checkpoint 与恢复示意](https://github.com/user-attachments/assets/140c8606-d3bf-41b9-9a1f-4dbf0d4c90cb)
 
-</details>
 
-<details>
-<summary>Creating a Pull Request</summary>
+## 🚀 快速开始
+- 如果你还没有可用的模型服务或 API Key，可先前往 [胜算云](https://www.shengsuanyun.com/?from=CH_SBXIG36D) 注册获取相关服务，再回到扩展中完成配置。
+![Checkpoint 与恢复示意](https://github.com/SSYCloud/cline-chinese-ssy/blob/main/assets/docs/授权.png?raw=true)
 
-1. Before creating a PR, generate a changeset entry:
-    ```bash
-    npm run changeset
-    ```
-   This will prompt you for:
-   - Type of change (major, minor, patch)
-     - `major` → breaking changes (1.0.0 → 2.0.0)
-     - `minor` → new features (1.0.0 → 1.1.0)
-     - `patch` → bug fixes (1.0.0 → 1.0.1)
-   - Description of your changes
+1. 在 VS Code 中搜索并安装 `Cline 中文版`
+2. 打开扩展完成模型或 API 配置
+3. 用自然语言描述你的任务目标
+4. 在执行文件修改或终端操作时进行确认
+5. 根据结果继续补充上下文或迭代需求
 
-2. Commit your changes and the generated `.changeset` file
 
-3. Push your branch and create a PR on GitHub. Our CI will:
-   - Run tests and checks
-   - Changesetbot will create a comment showing the version impact
-   - When merged to main, changesetbot will create a Version Packages PR
-   - When the Version Packages PR is merged, a new release will be published
+## 📖 常见问题
 
-</details>
+### 1. 安装后无法开始使用
 
+通常是因为还没有完成模型服务配置或者 API Key 填写不完整。可先前往 [胜算云](https://www.shengsuanyun.com/?from=CH_SBXIG36D) 获取相关服务，再回到扩展中完成配置。
 
-## License
+### 2. 已经配置了但没有返回结果
 
-[Apache 2.0 © 2025 Cline Bot Inc.](./LICENSE)
+可以优先检查：
+
+- API Key 是否有效
+- 服务地址是否可访问
+- 模型名称是否填写正确
+- 当前网络环境是否允许访问对应服务
+
+## 📝 项目说明
+
+- 胜算云是面向技术开发者的 AI 基础设施服务商，聚焦大模型调用、开发工具适配等场景。聚合全球优质算力资源，通过秒级弹性调度技术，打破传统算力成本高、效率低的瓶颈。本项目由胜算云团队维护，持续进行中文本地化与使用体验优化
+- 本扩展为基于开源项目的维护版本，不代表原始项目官方发行版
+- 如需查看源码或反馈问题，可访问项目仓库
+
+
+项目仓库：[SSYCloud/cline-chinese-ssy](https://github.com/SSYCloud/cline-chinese-ssy)
+
+问题反馈：[GitHub Issues](https://github.com/SSYCloud/cline-chinese-ssy/issues)
+
+## 📄 License
+
+许可证信息以仓库中的 `LICENSE` 文件为准。
