@@ -2,16 +2,16 @@
 
 ## 目录
 - [为什么选择 Cline 中文版](#-为什么选择-cline-中文版)
-- [功能展示](#功能展示)
+- [功能展示](#-功能展示)
 - [快速开始](#-快速开始)
 - [常见问题](#-常见问题)
 - [项目说明](#-项目说明)
 
 本项目是基于 Cline 打造的中文增强版本，由[胜算云](https://www.shengsuanyun.com/?from=CH_SBXIG36D)持续维护，致力于为中文开发者提供更友好、低门槛的 VS Code AI 编码辅助体验。
 
-
-![Cline 中文版演示图](https://media.githubusercontent.com/media/cline/cline/main/assets/docs/demo.gif)
-
+<p align="center">
+  <img src="https://media.githubusercontent.com/media/cline/cline/main/assets/docs/demo.gif" width="800" alt="Cline 中文版演示图">
+</p>
 
 Cline 中文版 能够逐步处理复杂的软件开发任务，不只是补全代码，而是作为 VS Code 中的 AI 编码助手参与到真实开发流程中。它会先分析项目结构、搜索相关代码、读取必要文件，并结合上下文理解你的目标，再继续执行后续操作。
 
@@ -37,7 +37,9 @@ Cline 中文版 能够逐步处理复杂的软件开发任务，不只是补全�
 - 降低国内开发者上手成本，适配团队协作场景
 - 持续维护与功能优化
 
-![模型与服务接入示意](https://github.com/SSYCloud/cline-chinese-ssy/blob/main/assets/docs/Cline中文版配置.png?raw=true)
+<p align="center">
+  <img src="https://github.com/SSYCloud/cline-chinese-ssy/blob/main/assets/docs/Cline中文版配置.png?raw=true" width="500" alt="Cline中文版配置">
+</p>
 
 ### 2. 人工确认机制
 
@@ -45,7 +47,9 @@ Cline 中文版 能够逐步处理复杂的软件开发任务，不只是补全�
 - 终端命令执行前由用户确认
 - 更适合需要人工把关的开发环境
 
-![模型与服务接入示意](https://github.com/SSYCloud/cline-chinese-ssy/blob/main/assets/docs/人工确认.png?raw=true)
+<p align="center">
+  <img src="https://github.com/SSYCloud/cline-chinese-ssy/blob/main/assets/docs/人工确认.png?raw=true" width="500" alt="人工确认">
+</p>
 
 ### 3. 模型接入灵活
 
@@ -57,7 +61,9 @@ Cline 中文版支持接入多种模型服务，包括 OpenRouter、Anthropic、
 - 支持本地模型或团队内部模型服务接入
 - 如需更便捷地完成模型接入，也可通过[胜算云](https://www.shengsuanyun.com/?from=CH_SBXIG36D)获取相关服务支持
 
-![模型与服务接入示意](https://github.com/SSYCloud/cline-chinese-ssy/blob/main/assets/docs/model.png?raw=true)
+<p align="center">
+  <img src="https://github.com/SSYCloud/cline-chinese-ssy/blob/main/assets/docs/model.png?raw=true" width="500" alt="模型与服务接入示意">
+</p>
 
 ## 🤖 功能展示
 
@@ -65,7 +71,9 @@ Cline 中文版支持接入多种模型服务，包括 OpenRouter、Anthropic、
 
 Cline 中文版可以在用户确认后执行终端命令，并结合输出结果继续完成后续任务。更自然地参与真实开发流程，协助完成依赖安装、构建执行、服务启动、测试运行等常见操作。
 
-![终端执行与任务推进](https://github.com/SSYCloud/cline-chinese-ssy/blob/main/assets/docs/执行命令.png?raw=true)
+<p align="center">
+  <img src="https://github.com/SSYCloud/cline-chinese-ssy/blob/main/assets/docs/执行命令.png?raw=true" width="500" alt="终端执行与任务推进">
+</p>
 
 
 对于开发服务器等长时间运行的任务，还可以通过“运行时继续”功能，让命令在后台保持运行的同时，继续推进当前工作流程，从而提升整体使用效率。
@@ -79,7 +87,9 @@ Cline 中文版可以结合项目上下文协助阅读代码，并直接在编�
 
 同时，它还可以结合 linter 或编译器返回的错误信息，辅助处理导入缺失、语法错误等常见问题，并在开发过程中持续优化修改结果。
 
-![文件修改与差异查看](https://github.com/user-attachments/assets/c5977833-d9b8-491e-90f9-05f9cd38c588)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/c5977833-d9b8-491e-90f9-05f9cd38c588" width="500" alt="文件修改与差异查看">
+</p>
 
 ### 3. 浏览器与页面调试
 
@@ -88,7 +98,9 @@ Cline 中文版可以结合项目上下文协助阅读代码，并直接在编�
 
 对于前端开发场景，你可以让它协助测试本地应用，例如在启动开发服务器后，对页面进行基础检查、流程验证和问题排查，从而减少手动来回切换、复制日志和重复操作的成本。
 
-![浏览器辅助调试示意](https://github.com/user-attachments/assets/bc2e85ba-dfeb-4fe6-9942-7cfc4703cbe5)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/bc2e85ba-dfeb-4fe6-9942-7cfc4703cbe5" width="500" alt="浏览器辅助调试示意">
+</p>
 
 ### 4. MCP 与能力扩展
 
@@ -114,7 +126,9 @@ Cline 中文版可以结合项目上下文协助阅读代码，并直接在编�
 - `@file`：直接补充单个文件内容，减少重复读取文件的操作
 - `@folder`：一次性补充整个文件夹中的相关内容，帮助更全面地理解项目上下文
 
-![上下文补充示意](https://github.com/SSYCloud/cline-chinese-ssy/blob/main/assets/docs/上下文.png?raw=true)
+<p align="center">
+  <img src="https://github.com/SSYCloud/cline-chinese-ssy/blob/main/assets/docs/上下文.png?raw=true" width="500" alt="上下文补充示意">
+</p>
 
 ### 6. Checkpoint 与恢复
 
@@ -124,18 +138,33 @@ Cline 中文版可以结合项目上下文协助阅读代码，并直接在编�
 
 例如，在本地 Web 服务调试场景中，你可以先恢复工作区来快速测试不同版本的效果；当找到更合适的实现方式后，再从对应状态继续推进任务，从而更安全地探索不同思路，而不必担心丢失当前进展。
 
-![Checkpoint 与恢复示意](https://github.com/user-attachments/assets/140c8606-d3bf-41b9-9a1f-4dbf0d4c90cb)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/140c8606-d3bf-41b9-9a1f-4dbf0d4c90cb" width="500" alt="Checkpoint 与恢复示意">
+</p>
 
 
 ## 🚀 快速开始
 - 如果你还没有可用的模型服务或 API Key，可先前往 [胜算云](https://www.shengsuanyun.com/?from=CH_SBXIG36D) 注册获取相关服务，再回到扩展中完成配置。
-![Checkpoint 与恢复示意](https://github.com/SSYCloud/cline-chinese-ssy/blob/main/assets/docs/授权.png?raw=true)
+
+<p align="center">
+  <img src="https://github.com/SSYCloud/cline-chinese-ssy/blob/main/assets/docs/授权.png?raw=true" width="800" alt="胜算云授权">
+</p>
 
 1. 在 VS Code 中搜索并安装 `Cline 中文版`
 2. 打开扩展完成模型或 API 配置
 3. 用自然语言描述你的任务目标
 4. 在执行文件修改或终端操作时进行确认
 5. 根据结果继续补充上下文或迭代需求
+
+## 💡 加入Cline 中文版开发者社区
+- 第一时间获取版本更新
+- 获取使用教程和最佳实践
+- 与开发团队直接交流
+- 反馈 Bug 和提出功能建议
+- 了解胜算云最新 AI 产品
+<p align="center">
+  <img src="https://github.com/SSYCloud/cline-chinese-ssy/blob/main/assets/docs/Cline%E5%BC%80%E5%8F%91%E8%80%85%E4%BA%A4%E6%B5%81%E7%BE%A4.png?raw=true" width="320" alt="Cline开发者社区">
+</p>
 
 
 ## 📖 常见问题
