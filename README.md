@@ -1,5 +1,7 @@
 # 🎯 Cline 中文版
 
+![License](https://img.shields.io/github/license/SSYCloud/cline-chinese-ssy)  ![Stars](https://img.shields.io/github/stars/SSYCloud/cline-chinese-ssy?style=social)  ![VS Code](https://img.shields.io/badge/VS%20Code-Extension-007ACC?logo=visualstudiocode) [![VS Code Marketplace](https://img.shields.io/badge/Marketplace-安装插件-007ACC?logo=visualstudiocode)](https://marketplace.visualstudio.com/items?itemName=shengsuan-cloud.cline-shengsuan)  ![Last Commit](https://img.shields.io/github/last-commit/SSYCloud/cline-chinese-ssy)
+
 ## 目录
 - [为什么选择 Cline 中文版](#-为什么选择-cline-中文版)
 - [功能展示](#-功能展示)
@@ -7,7 +9,7 @@
 - [常见问题](#-常见问题)
 - [项目说明](#-项目说明)
 
-本项目是基于 Cline 打造的中文增强版本，由[胜算云](https://www.shengsuanyun.com/?from=CH_SBXIG36D)持续维护，致力于为中文开发者提供更友好、低门槛的 VS Code AI 编码辅助体验。
+本项目是基于 [Cline Chinese](https://github.com/SSYCloud/cline-chinese)灰度测试版本，这里您可以到体验Cline Chinese的一些最新功能，由[胜算云](https://www.shengsuanyun.com/?from=CH_SBXIG36D)持续维护，致力于为中文开发者提供更友好、低门槛的 VS Code AI 编码辅助体验。
 
 <p align="center">
   <img src="https://media.githubusercontent.com/media/cline/cline/main/assets/docs/demo.gif" width="800" alt="Cline 中文版演示图">
