@@ -30,27 +30,20 @@ const ConfirmationDialog = memo<{
 	onCancel: (e: React.MouseEvent) => void
 }>(({ onConfirm, onCancel }) => (
 	<div className="mt-2 flex flex-col gap-2 rounded-sm border border-border-panel bg-code p-2 text-sm">
-		<span className="font-semibold">Compact the current task?</span>
-		<span className="text-xs text-description">
-			Replaces the conversation history with a summary to free up context window space.
-		</span>
+		<span className="font-semibold">压缩当前任务？</span>
+		<span className="text-xs text-description">用摘要替换对话历史，以释放上下文窗口空间。</span>
 		<span className="flex justify-end gap-1.5">
-			<VSCodeButton
-				appearance="secondary"
-				className="text-sm"
-				onClick={onCancel}
-				title="No, keep the task as is"
-				type="button">
-				Cancel
+			<VSCodeButton appearance="secondary" className="text-sm" onClick={onCancel} title="否，保持任务原样" type="button">
+				取消
 			</VSCodeButton>
 			<VSCodeButton
 				appearance="primary"
 				autoFocus={true}
 				className="text-sm"
 				onClick={onConfirm}
-				title="Yes, compact the task"
+				title="是，压缩任务"
 				type="button">
-				Compact
+				压缩
 			</VSCodeButton>
 		</span>
 	</div>
@@ -150,7 +143,7 @@ const ContextWindow: React.FC<ContextWindowProgressProps> = ({
 		<div className="flex flex-col mt-1.5" onMouseLeave={debounceCloseHover}>
 			<div className="flex gap-1 flex-row @max-xs:flex-col @max-xs:items-start items-center text-sm">
 				<div className="flex items-center gap-1.5 flex-1 whitespace-nowrap">
-					<span className="cursor-pointer text-sm" title="Current tokens used in this request">
+					<span className="cursor-pointer text-sm" title="当前请求已使用的 token 数">
 						{formatTokenNumber(tokenData.used)}
 					</span>
 					<div className="flex relative items-center gap-1 flex-1 w-full h-full" onMouseEnter={() => setIsOpened(true)}>
@@ -173,17 +166,13 @@ const ContextWindow: React.FC<ContextWindowProgressProps> = ({
 									className="relative w-full text-foreground context-window-progress brightness-100"
 									onFocus={handleFocus}
 									ref={progressBarRef}>
-									<Progress
-										aria-label="Context window usage progress"
-										color="success"
-										value={tokenData.percentage}
-									/>
+									<Progress aria-label="上下文窗口使用进度" color="success" value={tokenData.percentage} />
 									{isOpened}
 								</div>
 							</HoverCardTrigger>
 						</HoverCard>
 					</div>
-					<span className="cursor-pointer text-sm" title="Maximum context window size for this model">
+					<span className="cursor-pointer text-sm" title="此模型的最大上下文窗口大小">
 						{formatTokenNumber(tokenData.max)}
 					</span>
 				</div>

@@ -47,7 +47,7 @@ const AutoApproveBar = ({ style }: AutoApproveBarProps) => {
 		})
 
 		if (actionsToShow.length === 0) {
-			return <span className={baseClasses}>None</span>
+			return <span className={baseClasses}>无</span>
 		}
 
 		return (
@@ -100,13 +100,13 @@ const AutoApproveBar = ({ style }: AutoApproveBarProps) => {
 				/>
 
 				<div className="pt-4 pb-3.5 px-3.5">
-					<div className="text-sm mb-1">Auto-approve: YOLO</div>
+					<div className="text-sm mb-1">自动批准：YOLO</div>
 					<div className="text-muted-foreground text-xs">
-						YOLO mode is enabled.{" "}
+						YOLO 模式已启用。{" "}
 						<span className="underline cursor-pointer hover:text-foreground" onClick={handleNavigateToFeatures}>
-							Disable it in Settings
+							在设置中禁用
 						</span>
-						.
+						。
 					</div>
 				</div>
 			</div>
@@ -144,7 +144,7 @@ const AutoApproveBar = ({ style }: AutoApproveBarProps) => {
 			/>
 
 			<div
-				aria-label={isModalVisible ? "Close auto-approve settings" : "Open auto-approve settings"}
+				aria-label={isModalVisible ? "关闭自动批准设置" : "打开自动批准设置"}
 				className="group cursor-pointer pt-3 pb-3.5 pr-2 px-3.5 flex items-center justify-between gap-0"
 				onClick={() => {
 					setIsModalVisible((prev) => !prev)
@@ -159,7 +159,7 @@ const AutoApproveBar = ({ style }: AutoApproveBarProps) => {
 				ref={buttonRef}
 				tabIndex={0}>
 				<div className="flex flex-nowrap items-center gap-1 min-w-0 flex-1">
-					<span className="whitespace-nowrap">Auto-approve:</span>
+					<span className="whitespace-nowrap">自动批准：</span>
 					{getEnabledActionsText()}
 				</div>
 				{isModalVisible ? <ChevronDownIcon size={16} /> : <ChevronRightIcon size={16} />}

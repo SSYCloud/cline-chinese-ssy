@@ -12,19 +12,19 @@ function attachmentLabel(count: number): string | undefined {
 	if (count <= 0) {
 		return undefined
 	}
-	return count === 1 ? "1 attachment" : `${count} attachments`
+	return count === 1 ? "1 个附件" : `${count} 个附件`
 }
 
 function queueSummary(items: QueuedPrompt[]): string {
 	const steerCount = items.filter((item) => item.delivery === "steer").length
 	const queueCount = items.length - steerCount
 	if (steerCount === 0) {
-		return items.length === 1 ? "Queued message" : `${items.length} queued messages`
+		return items.length === 1 ? "排队中的消息" : `${items.length} 条排队消息`
 	}
 	if (queueCount === 0) {
-		return items.length === 1 ? "Steering message" : `${items.length} steering messages`
+		return items.length === 1 ? "引导消息" : `${items.length} 条引导消息`
 	}
-	return `${queueCount} queued, ${steerCount} steering`
+	return `${queueCount} 条排队，${steerCount} 条引导`
 }
 
 interface QueuedPromptsProps {
@@ -77,7 +77,7 @@ export function QueuedPrompts({ items = [] }: QueuedPromptsProps) {
 							<span className="min-w-0 flex-1 break-words text-foreground">{truncatePrompt(item.prompt)}</span>
 							{isSteer && (
 								<span className="flex h-5 shrink-0 items-center rounded-[3px] border border-editor-group-border px-1.5 text-[10px] leading-none text-description">
-									Steer
+									引导
 								</span>
 							)}
 							{attachments && (
@@ -86,11 +86,11 @@ export function QueuedPrompts({ items = [] }: QueuedPromptsProps) {
 								</span>
 							)}
 							<button
-								aria-label="Cancel queued message"
+								aria-label="取消排队消息"
 								className="-my-1.5 flex size-5 shrink-0 items-center justify-center rounded-[3px] text-description hover:bg-toolbar-hover-background hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
 								disabled={isCancelling}
 								onClick={() => cancelQueuedPrompt(item.id)}
-								title="Cancel queued message"
+								title="取消排队消息"
 								type="button">
 								<span aria-hidden="true" className="codicon codicon-close text-[12px]" />
 							</button>

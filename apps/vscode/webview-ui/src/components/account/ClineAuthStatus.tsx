@@ -14,7 +14,7 @@ export const ClineAuthStatus = ({ message }: ClineAuthStatusProps) => {
 
 	const codeMatch = message.match(/(?:code(?:\s+in\s+your\s+browser)?\s*:?\s*)([A-Z0-9-]{4,})/i)
 	const authCode = codeMatch?.[1]
-	const displayMessage = authCode ? "Enter this code in your browser:" : message
+	const displayMessage = authCode ? "请在浏览器中输入此代码：" : message
 
 	const handleCopy = async () => {
 		if (!authCode) {
@@ -45,8 +45,8 @@ export const ClineAuthStatus = ({ message }: ClineAuthStatusProps) => {
 			{authCode ? (
 				<div className="mt-2 flex items-center justify-center gap-2">
 					<div className="font-mono text-2xl font-semibold tracking-wider">{authCode}</div>
-					<Button aria-label="Copy Cline sign-in code" onClick={handleCopy} size="sm" variant="secondary">
-						{didCopy ? "Copied" : "Copy"}
+					<Button aria-label="复制 Cline 登录代码" onClick={handleCopy} size="sm" variant="secondary">
+						{didCopy ? "已复制" : "复制"}
 					</Button>
 				</div>
 			) : null}
