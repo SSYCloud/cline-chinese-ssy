@@ -17,7 +17,7 @@ const HistoryPreview = ({ showHistoryView }: HistoryPreviewProps) => {
 
 	const formatDate = (timestamp: number) => {
 		const date = new Date(timestamp)
-		return date?.toLocaleString("en-US", {
+		return date?.toLocaleString("zh-CN", {
 			month: "short",
 			day: "numeric",
 		})
@@ -126,16 +126,16 @@ const HistoryPreview = ({ showHistoryView }: HistoryPreviewProps) => {
 							fontSize: "0.85em",
 							textTransform: "uppercase",
 						}}>
-						Recent
+						最近
 					</span>
 				</div>
 				{taskHistory.filter((item) => item.ts && item.task).length > 0 && (
 					<button
-						aria-label="View all history"
+						aria-label="查看全部历史记录"
 						className="history-view-all-btn"
 						onClick={() => showHistoryView()}
 						type="button">
-						View All
+						查看全部
 						<span className="codicon codicon-chevron-right" />
 					</button>
 				)}
@@ -152,7 +152,7 @@ const HistoryPreview = ({ showHistoryView }: HistoryPreviewProps) => {
 									<div className="history-task-content">
 										{item.isFavorited && (
 											<span
-												aria-label="Favorited"
+												aria-label="已收藏"
 												className="codicon codicon-star-full"
 												style={{
 													color: "var(--vscode-button-background)",
@@ -161,7 +161,7 @@ const HistoryPreview = ({ showHistoryView }: HistoryPreviewProps) => {
 											/>
 										)}
 										<div className="history-task-description ph-no-capture">{item.task}</div>
-										{item.isLegacy && <span className="history-cost-chip">Legacy</span>}
+										{item.isLegacy && <span className="history-cost-chip">旧版</span>}
 									</div>
 									<div className="history-meta-stack">
 										<span className="history-date">{formatDate(item.ts)}</span>
@@ -179,7 +179,7 @@ const HistoryPreview = ({ showHistoryView }: HistoryPreviewProps) => {
 								fontSize: "var(--vscode-font-size)",
 								padding: "10px 0",
 							}}>
-							No recent tasks
+							暂无最近任务
 						</div>
 					)}
 				</div>

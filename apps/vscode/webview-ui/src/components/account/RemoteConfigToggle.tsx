@@ -30,7 +30,7 @@ export function RemoteConfigToggle({ activeOrganization }: { activeOrganization:
 
 				onUpdateToggle(isChecked)
 			}}>
-			Opt out of remote config
+			退出远程配置
 		</VSCodeCheckbox>
 	)
 }

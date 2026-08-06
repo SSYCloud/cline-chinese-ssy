@@ -363,7 +363,7 @@ const ClineAccountView = ({ clineUser, userOrganizations, activeOrganization, cl
 									</TooltipContent>
 								</Tooltip>
 								{activeOrganization && (
-									<VSCodeTag className="text-xs p-2" title="Role">
+									<VSCodeTag className="text-xs p-2" title="角色">
 										{getMainRole(activeOrganization.roles)}
 									</VSCodeTag>
 								)}

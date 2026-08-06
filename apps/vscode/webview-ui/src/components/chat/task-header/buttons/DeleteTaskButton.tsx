@@ -12,10 +12,10 @@ const DeleteTaskButton: React.FC<{
 	className?: string
 }> = ({ taskId, className, taskSize }) => (
 	<Tooltip>
-		<TooltipContent>{`Delete Task (size: ${formatDeleteTaskSizeLabel(taskSize)})`}</TooltipContent>
+		<TooltipContent>{`删除任务（大小：${formatDeleteTaskSizeLabel(taskSize)}）`}</TooltipContent>
 		<TooltipTrigger className={cn("flex items-center", className)}>
 			<Button
-				aria-label="Delete Task"
+				aria-label="删除任务"
 				disabled={!taskId}
 				onClick={(e) => {
 					e.preventDefault()

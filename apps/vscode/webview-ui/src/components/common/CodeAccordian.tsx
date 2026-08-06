@@ -52,7 +52,7 @@ const CodeAccordian = ({
 		<div className="bg-code overflow-hidden rounded-xs border border-editor-group-border">
 			{(path || isFeedback || isConsoleLogs) && (
 				<Button
-					aria-label={isExpanded ? "Collapse code block" : "Expand code block"}
+					aria-label={isExpanded ? "折叠代码块" : "展开代码块"}
 					className={cn("text-description flex items-center cursor-pointer select-none w-full py-[9px] px-2.5", {
 						"cursor-wait opacity-70": isLoading,
 					})}
@@ -72,7 +72,7 @@ const CodeAccordian = ({
 						<div className="flex items-center">
 							<span className={`mr-1.5 codicon codicon-${isFeedback ? "feedback" : "output"}`} />
 							<span className="whitespace-nowrap overflow-hidden text-ellipsis mr-2">
-								{isFeedback ? "User Edits" : "Console Logs"}
+								{isFeedback ? "用户编辑" : "控制台日志"}
 							</span>
 						</div>
 					) : (

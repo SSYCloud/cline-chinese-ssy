@@ -9,10 +9,10 @@ const CompactTaskButton: React.FC<{
 }> = ({ onClick, className }) => {
 	return (
 		<Tooltip>
-			<TooltipContent side="left">Compact Task</TooltipContent>
+			<TooltipContent side="left">压缩任务</TooltipContent>
 			<TooltipTrigger className={cn("flex items-center", className)}>
 				<Button
-					aria-label="Compact Task"
+					aria-label="压缩任务"
 					className="[&_svg]:size-3"
 					onClick={(e) => {
 						e.preventDefault()

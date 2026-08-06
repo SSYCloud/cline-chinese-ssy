@@ -57,7 +57,7 @@ function RefreshButton() {
 			className={`w-full rounded-xs ${isLoading ? "animate-pulse" : ""}`}
 			disabled={isLoading || (retryIn !== null && retryIn > 0)}
 			onClick={() => onRefresh()}>
-			Refresh {retryIn && retryIn > 0 && <>(Retry in: {retryIn} seconds)</>}
+			刷新 {retryIn && retryIn > 0 && <>(重试倒计时：{retryIn} 秒)</>}
 		</VSCodeButton>
 	)
 }
@@ -71,10 +71,10 @@ interface SettingRowProps {
 function SettingRow({ label, value, isSecret }: SettingRowProps) {
 	const displayValue = (() => {
 		if (value === undefined || value === null) {
-			return <span className="text-description italic">Not configured</span>
+			return <span className="text-description italic">未配置</span>
 		}
 		if (typeof value === "boolean") {
-			return value ? <span className="text-green-500">Enabled</span> : <span className="text-description">Disabled</span>
+			return value ? <span className="text-green-500">已启用</span> : <span className="text-description">已禁用</span>
 		}
 		if (isSecret && typeof value === "string" && value.length > 0) {
 			return <span className="font-mono text-xs">{"•".repeat(Math.min(value.length, 20))}</span>
@@ -125,9 +125,9 @@ function TestButton({ label, onClick, disabled, successMessage }: TestButtonProp
 		setResult(null)
 		try {
 			await onClick()
-			setResult({ success: true, message: successMessage || "Success!" })
+			setResult({ success: true, message: successMessage || "成功！" })
 		} catch (error) {
-			setResult({ success: false, message: error instanceof Error ? error.message : "Failed" })
+			setResult({ success: false, message: error instanceof Error ? error.message : "失败" })
 		} finally {
 			setIsLoading(false)
 			timeoutRef.current = setTimeout(() => setResult(null), 5000)
@@ -141,7 +141,7 @@ function TestButton({ label, onClick, disabled, successMessage }: TestButtonProp
 				className={isLoading ? "animate-pulse" : ""}
 				disabled={disabled || isLoading}
 				onClick={handleClick}>
-				{isLoading ? "Testing..." : label}
+				{isLoading ? "测试中..." : label}
 			</VSCodeButton>
 			{result && <span className={`text-xs ${result.success ? "text-green-500" : "text-red-500"}`}>{result.message}</span>}
 		</div>
@@ -165,7 +165,7 @@ function OtelSettingsSection() {
 	const handleTestOtel = async () => {
 		const response = await StateServiceClient.testOtelConnection(EmptyRequest.create({}))
 		if (!response.success) {
-			throw new Error(response.error || "Test failed")
+			throw new Error(response.error || "测试失败")
 		}
 	}
 
@@ -173,43 +173,40 @@ function OtelSettingsSection() {
 		<div className="mb-4">
 			<h4 className="text-sm font-medium mb-2 flex items-center gap-2">
 				<i className="codicon codicon-pulse" />
-				OpenTelemetry Configuration
+				OpenTelemetry 配置
 			</h4>
 			<div className="bg-vscode-textBlockQuote-background rounded p-3 mb-2">
-				<SettingRow label="Enabled" value={otelEnabled} />
-				<SettingRow label="Metrics Exporter" value={remoteConfigSettings?.openTelemetryMetricsExporter} />
-				<SettingRow label="Logs Exporter" value={remoteConfigSettings?.openTelemetryLogsExporter} />
-				<SettingRow label="OTLP Protocol" value={remoteConfigSettings?.openTelemetryOtlpProtocol} />
-				<SettingRow label="OTLP Endpoint" value={remoteConfigSettings?.openTelemetryOtlpEndpoint} />
+				<SettingRow label="已启用" value={otelEnabled} />
+				<SettingRow label="指标导出器" value={remoteConfigSettings?.openTelemetryMetricsExporter} />
+				<SettingRow label="日志导出器" value={remoteConfigSettings?.openTelemetryLogsExporter} />
+				<SettingRow label="OTLP 协议" value={remoteConfigSettings?.openTelemetryOtlpProtocol} />
+				<SettingRow label="OTLP 端点" value={remoteConfigSettings?.openTelemetryOtlpEndpoint} />
 				{remoteConfigSettings?.openTelemetryOtlpMetricsEndpoint && (
-					<SettingRow label="Metrics Endpoint" value={remoteConfigSettings?.openTelemetryOtlpMetricsEndpoint} />
+					<SettingRow label="指标端点" value={remoteConfigSettings?.openTelemetryOtlpMetricsEndpoint} />
 				)}
 				{remoteConfigSettings?.openTelemetryOtlpLogsEndpoint && (
-					<SettingRow label="Logs Endpoint" value={remoteConfigSettings?.openTelemetryOtlpLogsEndpoint} />
+					<SettingRow label="日志端点" value={remoteConfigSettings?.openTelemetryOtlpLogsEndpoint} />
 				)}
 				{remoteConfigSettings?.openTelemetryOtlpHeaders && (
 					<SettingRow
 						label="OTLP Headers"
-						value={`${Object.keys(remoteConfigSettings.openTelemetryOtlpHeaders).length} header(s)`}
+						value={`${Object.keys(remoteConfigSettings.openTelemetryOtlpHeaders).length} 个 header`}
 					/>
 				)}
 				{remoteConfigSettings?.openTelemetryMetricExportInterval && (
-					<SettingRow
-						label="Metric Export Interval"
-						value={`${remoteConfigSettings.openTelemetryMetricExportInterval}ms`}
-					/>
+					<SettingRow label="指标导出间隔" value={`${remoteConfigSettings.openTelemetryMetricExportInterval}ms`} />
 				)}
 				{remoteConfigSettings?.openTelemetryOtlpInsecure !== undefined && (
 					<SettingRow label="OTLP Insecure" value={remoteConfigSettings?.openTelemetryOtlpInsecure} />
 				)}
 				{remoteConfigSettings?.openTelemetryLogBatchSize && (
-					<SettingRow label="Log Batch Size" value={remoteConfigSettings?.openTelemetryLogBatchSize} />
+					<SettingRow label="日志批大小" value={remoteConfigSettings?.openTelemetryLogBatchSize} />
 				)}
 				{remoteConfigSettings?.openTelemetryLogBatchTimeout && (
-					<SettingRow label="Log Batch Timeout" value={`${remoteConfigSettings.openTelemetryLogBatchTimeout}ms`} />
+					<SettingRow label="日志批超时" value={`${remoteConfigSettings.openTelemetryLogBatchTimeout}ms`} />
 				)}
 				{remoteConfigSettings?.openTelemetryLogMaxQueueSize && (
-					<SettingRow label="Log Max Queue Size" value={remoteConfigSettings?.openTelemetryLogMaxQueueSize} />
+					<SettingRow label="日志最大队列大小" value={remoteConfigSettings?.openTelemetryLogMaxQueueSize} />
 				)}
 			</div>
 
@@ -217,9 +214,9 @@ function OtelSettingsSection() {
 				<div className="flex gap-2 flex-wrap">
 					<TestButton
 						disabled={!remoteConfigSettings?.openTelemetryMetricsExporter}
-						label="Test"
+						label="测试"
 						onClick={handleTestOtel}
-						successMessage="Flushed buffers! Please check the output channel for more detailed information"
+						successMessage="已刷新缓冲区！请查看输出通道以获取更详细信息"
 					/>
 				</div>
 			)}
@@ -238,7 +235,7 @@ function PromptUploadingSection() {
 	const handleTestPromptUploading = async () => {
 		const response = await StateServiceClient.testPromptUploading(EmptyRequest.create({}))
 		if (!response.success) {
-			throw new Error(response.error || "Test failed")
+			throw new Error(response.error || "测试失败")
 		}
 	}
 
@@ -246,24 +243,24 @@ function PromptUploadingSection() {
 		<div className="mb-4">
 			<h4 className="text-sm font-medium mb-2 flex items-center gap-2">
 				<i className="codicon codicon-cloud-upload" />
-				Prompt Uploading Configuration
+				提示词上传配置
 			</h4>
 			<div className="bg-vscode-textBlockQuote-background rounded p-3 mb-2">
-				<SettingRow label="Storage Type" value={blobStoreConfig.adapterType?.toUpperCase()} />
+				<SettingRow label="存储类型" value={blobStoreConfig.adapterType?.toUpperCase()} />
 				<SettingRow label="Bucket" value={blobStoreConfig.bucket} />
-				<SettingRow label="Region" value={blobStoreConfig.region} />
-				{blobStoreConfig.endpoint && <SettingRow label="Endpoint" value={blobStoreConfig.endpoint} />}
+				<SettingRow label="区域" value={blobStoreConfig.region} />
+				{blobStoreConfig.endpoint && <SettingRow label="端点" value={blobStoreConfig.endpoint} />}
 				{blobStoreConfig.accountId && <SettingRow label="Account ID" value={blobStoreConfig.accountId} />}
 				<SettingRow isSecret label="Access Key ID" value={blobStoreConfig.accessKeyId} />
 				<SettingRow isSecret label="Secret Access Key" value={blobStoreConfig.secretAccessKey} />
-				{blobStoreConfig.intervalMs && <SettingRow label="Sync Interval" value={`${blobStoreConfig.intervalMs}ms`} />}
-				{blobStoreConfig.batchSize && <SettingRow label="Batch Size" value={blobStoreConfig.batchSize} />}
-				{blobStoreConfig.maxRetries && <SettingRow label="Max Retries" value={blobStoreConfig.maxRetries} />}
-				{blobStoreConfig.maxQueueSize && <SettingRow label="Max Queue Size" value={blobStoreConfig.maxQueueSize} />}
-				<SettingRow label="Backfill Enabled" value={blobStoreConfig.backfillEnabled} />
+				{blobStoreConfig.intervalMs && <SettingRow label="同步间隔" value={`${blobStoreConfig.intervalMs}ms`} />}
+				{blobStoreConfig.batchSize && <SettingRow label="批大小" value={blobStoreConfig.batchSize} />}
+				{blobStoreConfig.maxRetries && <SettingRow label="最大重试次数" value={blobStoreConfig.maxRetries} />}
+				{blobStoreConfig.maxQueueSize && <SettingRow label="最大队列大小" value={blobStoreConfig.maxQueueSize} />}
+				<SettingRow label="启用回填" value={blobStoreConfig.backfillEnabled} />
 			</div>
 
-			<TestButton label="Test Upload" onClick={handleTestPromptUploading} />
+			<TestButton label="测试上传" onClick={handleTestPromptUploading} />
 		</div>
 	)
 }
@@ -276,7 +273,7 @@ export function RemoteConfigSection({ renderSectionHeader }: RemoteConfigSection
 		return (
 			<BaseRemoteConfigSection renderSectionHeader={renderSectionHeader}>
 				<div className="flex flex-col justify-center gap-4">
-					<h3>You have opted out of remote config. Opt back in to apply it and see it here.</h3>
+					<h3>你已选择退出远程配置。重新加入后即可应用并在此处查看。</h3>
 
 					<RemoteConfigToggle activeOrganization={activeOrganization} />
 				</div>
@@ -289,8 +286,9 @@ export function RemoteConfigSection({ renderSectionHeader }: RemoteConfigSection
 			<BaseRemoteConfigSection renderSectionHeader={renderSectionHeader}>
 				<div className="flex flex-col justify-center gap-4">
 					<h3>
-						You haven't configured remote config yet. Do so through our{" "}
-						<VSCodeLink href="https://app.cline.bot/dashboard/organization?tab=settings">dashboard</VSCodeLink>.
+						你尚未配置远程配置。请通过我们的{" "}
+						<VSCodeLink href="https://app.cline.bot/dashboard/organization?tab=settings">控制台</VSCodeLink>{" "}
+						进行设置。
 					</h3>
 
 					<RefreshButton />
@@ -302,9 +300,7 @@ export function RemoteConfigSection({ renderSectionHeader }: RemoteConfigSection
 	return (
 		<BaseRemoteConfigSection renderSectionHeader={renderSectionHeader}>
 			<div className="flex flex-col gap-2">
-				<p className="text-description text-xs mb-2">
-					These settings are managed by your organization's remote configuration.
-				</p>
+				<p className="text-description text-xs mb-2">这些设置由你所在组织的远程配置管理。</p>
 
 				<OtelSettingsSection />
 				<PromptUploadingSection />

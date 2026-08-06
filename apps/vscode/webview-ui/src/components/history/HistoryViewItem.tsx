@@ -100,12 +100,12 @@ const HistoryViewItem = ({
 					</div>
 					{item.isLegacy && (
 						<span className="text-xs uppercase rounded px-1.5 py-0.5 bg-accent/20 text-description flex-shrink-0">
-							Legacy
+							旧版
 						</span>
 					)}
 					<div className="flex gap-2 flex-shrink-0">
 						<Button
-							aria-label="Delete"
+							aria-label="删除"
 							className="p-0 opacity-0 group-hover:opacity-100 transition-opacity"
 							disabled={isFavoritedItem}
 							onClick={(e) => {
@@ -118,7 +118,7 @@ const HistoryViewItem = ({
 							</span>
 						</Button>
 						<Button
-							aria-label={isFavoritedItem ? "Remove from favorites" : "Add to favorites"}
+							aria-label={isFavoritedItem ? "取消收藏" : "添加收藏"}
 							className="p-0"
 							disabled={pendingFavoriteToggles[item.id] !== undefined}
 							onClick={(e) => {
@@ -166,7 +166,7 @@ const HistoryViewItem = ({
 							<div className="flex items-center justify-between w-full">
 								<div className="flex items-center gap-1 flex-wrap w-full">
 									<div className="flex justify-between items-center w-full gap-1 text-xs">
-										<span className="font-medium text-description">Tokens:</span>
+										<span className="font-medium text-description">Token：</span>
 										<div className="flex items-center gap-1 text-description text-xs">
 											<span className="flex items-center gap-1 text-description">
 												<ArrowUpIcon className="text-description !size-1" />
@@ -197,17 +197,17 @@ const HistoryViewItem = ({
 
 									{item.modelId && (
 										<div className="flex justify-between items-center w-full gap-1 text-xs">
-											<span className="font-medium text-description">Model:</span>
+											<span className="font-medium text-description">模型：</span>
 											<span className="text-description">{item.modelId}</span>
 										</div>
 									)}
 
 									<div className="flex justify-between items-center w-full gap-1 text-xs">
-										<span className="font-medium text-description">Size:</span>
+										<span className="font-medium text-description">大小：</span>
 										<span className="items-center gap-2 flex text-description">
 											{formatSize(item.size)}
 											<Button
-												aria-label="Export"
+												aria-label="导出"
 												className="m-0 p-0"
 												onClick={(e) => {
 													e.stopPropagation()

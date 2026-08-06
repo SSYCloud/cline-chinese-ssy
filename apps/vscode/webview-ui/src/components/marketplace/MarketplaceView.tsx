@@ -55,8 +55,8 @@ const PRIMITIVES: PrimitiveConfig[] = [
 		title: "Skills",
 		description: (
 			<>
-				Reusable instruction sets that Cline loads on demand for specific tasks, without staying in context for unrelated
-				work. Browse more at <VSCodeLink href="https://agentskills.io/">Agent Skills</VSCodeLink>.
+				可按需加载的可复用指令集，供 Cline 在特定任务中使用，而不会一直占用无关工作的上下文。浏览更多：{" "}
+				<VSCodeLink href="https://agentskills.io/">Agent Skills</VSCodeLink>。
 			</>
 		),
 		icon: SparklesIcon,
@@ -64,28 +64,27 @@ const PRIMITIVES: PrimitiveConfig[] = [
 	{
 		type: "mcp",
 		label: "MCP",
-		singular: "MCP server",
-		plural: "MCP servers",
-		title: "MCP Servers",
+		singular: "MCP 服务器",
+		plural: "MCP 服务器",
+		title: "MCP 服务器",
 		description: (
 			<>
-				Connect Cline to external APIs, local tools, and hosted services through{" "}
-				<VSCodeLink href="https://modelcontextprotocol.io/">MCP</VSCodeLink> servers.
+				通过 <VSCodeLink href="https://modelcontextprotocol.io/">MCP</VSCodeLink> 服务器将 Cline 连接到外部
+				API、本地工具和托管服务。
 			</>
 		),
 		icon: PlugIcon,
 	},
 	{
 		type: "plugin",
-		label: "Plugins",
-		singular: "plugin",
-		plural: "plugins",
-		title: "Plugins",
+		label: "插件",
+		singular: "插件",
+		plural: "插件",
+		title: "插件",
 		description: (
 			<>
-				<VSCodeLink href="https://docs.cline.bot/sdk/plugins">Plugins</VSCodeLink> are extensions for capabilities more
-				complex than a single MCP server or skill, including custom tools, hooks, rules, slash commands, or bundled
-				skills.
+				<VSCodeLink href="https://docs.cline.bot/sdk/plugins">插件</VSCodeLink>
+				是比单个 MCP 服务器或 skill 更复杂的能力扩展，可包含自定义工具、hooks、规则、斜杠命令或捆绑的 skills。
 			</>
 		),
 		icon: PuzzleIcon,
@@ -99,8 +98,8 @@ const HIDDEN_PRIMITIVE_TYPES: ReadonlySet<PrimitiveType> = new Set(["plugin"])
 const VISIBLE_PRIMITIVES = PRIMITIVES.filter((primitive) => !HIDDEN_PRIMITIVE_TYPES.has(primitive.type))
 
 const MARKETPLACE_SECTIONS: Array<{ type: MarketplaceSectionType; label: string }> = [
-	{ type: "installed", label: "Installed" },
-	{ type: "marketplace", label: "Marketplace" },
+	{ type: "installed", label: "已安装" },
+	{ type: "marketplace", label: "市场" },
 ]
 
 function isVisiblePrimitiveType(value: string): value is PrimitiveType {
@@ -120,9 +119,9 @@ function getPrimitive(type: PrimitiveType): PrimitiveConfig {
 }
 
 function sourceLabel(entry: MarketplaceLocalInstalledEntry): string | undefined {
-	if (entry.source === "global") return "Global"
-	if (entry.source === "workspace") return "Workspace"
-	if (entry.source === "remote") return "Remote"
+	if (entry.source === "global") return "全局"
+	if (entry.source === "workspace") return "工作区"
+	if (entry.source === "remote") return "远程"
 	return undefined
 }
 
@@ -130,8 +129,8 @@ function setupSummary(entry: MarketplaceEntry): string | undefined {
 	const env = entry.install?.env ?? []
 	if (env.length === 0 && !entry.install?.notes) return undefined
 	const required = env.filter((item) => item.required).map((item) => item.name)
-	if (required.length > 0) return `Requires ${required.join(", ")}`
-	if (env.length > 0) return `Uses ${env.map((item) => item.name).join(", ")}`
+	if (required.length > 0) return `需要 ${required.join(", ")}`
+	if (env.length > 0) return `使用 ${env.map((item) => item.name).join(", ")}`
 	return entry.install?.notes
 }
 
@@ -710,7 +709,7 @@ const MarketplaceCatalogSection = ({
 	<section className="marketplace-section">
 		{showHeader && (
 			<div className="marketplace-section-header">
-				<h3 className="marketplace-section-title">Marketplace</h3>
+				<h3 className="marketplace-section-title">市场</h3>
 			</div>
 		)}
 		{search}
@@ -770,7 +769,7 @@ const McpManagementPanel = ({
 		<section className="marketplace-section">
 			{showHeader && (
 				<div className="marketplace-section-header">
-					<h3 className="marketplace-section-title">Installed MCP Servers</h3>
+					<h3 className="marketplace-section-title">已安装的 MCP 服务器</h3>
 				</div>
 			)}
 			{(showServerList || hasRemoteMCPServers) && (
@@ -778,7 +777,7 @@ const McpManagementPanel = ({
 					{hasRemoteMCPServers && (
 						<div className="marketplace-mcp-managed">
 							<span className="codicon codicon-lock" />
-							<span>Your organization manages some MCP servers</span>
+							<span>你的组织管理着部分 MCP 服务器</span>
 						</div>
 					)}
 					{showServerList && (
@@ -796,7 +795,7 @@ const McpManagementPanel = ({
 				{showRemoteServers && !showAddRemote && (
 					<VSCodeButton appearance="primary" onClick={() => setShowAddRemote(true)}>
 						<span className="codicon codicon-add" style={{ marginRight: "6px" }} />
-						Add Remote Server
+						添加远程服务器
 					</VSCodeButton>
 				)}
 				{showRemoteServers && showAddRemote && (
@@ -816,10 +815,10 @@ const McpManagementPanel = ({
 						})
 					}}>
 					<span className="codicon codicon-server" style={{ marginRight: "6px" }} />
-					Edit Configuration
+					编辑配置
 				</VSCodeButton>
 				<div className="marketplace-mcp-advanced">
-					<VSCodeLink onClick={() => navigateToSettings("features")}>Advanced MCP Settings</VSCodeLink>
+					<VSCodeLink onClick={() => navigateToSettings("features")}>高级 MCP 设置</VSCodeLink>
 				</div>
 			</div>
 		</section>
@@ -855,20 +854,18 @@ const LocalInstalledRow = ({
 			</div>
 			<div className="marketplace-action">
 				<Switch
-					aria-label={`${entry.enabled ? "Disable" : "Enable"} ${entry.name || entry.id}`}
+					aria-label={`${entry.enabled ? "禁用" : "启用"} ${entry.name || entry.id}`}
 					checked={entry.enabled}
 					disabled={toggling}
 					onClick={() => onToggle(entry, !entry.enabled)}
-					title={`${entry.enabled ? "Disable" : "Enable"} ${entry.name || entry.id}`}
+					title={`${entry.enabled ? "禁用" : "启用"} ${entry.name || entry.id}`}
 				/>
 				<button
-					aria-label={`Uninstall ${entry.name || entry.id}`}
+					aria-label={`卸载 ${entry.name || entry.id}`}
 					className="marketplace-icon-button marketplace-icon-button-danger"
 					disabled={uninstalling || !canUninstall}
 					onClick={() => onUninstall(entry)}
-					title={
-						canUninstall ? `Uninstall ${entry.name || entry.id}` : "Remote-managed skills cannot be uninstalled here"
-					}
+					title={canUninstall ? `卸载 ${entry.name || entry.id}` : "远程管理的 skills 无法在此卸载"}
 					type="button">
 					{uninstalling ? (
 						<LoaderCircleIcon aria-hidden className="marketplace-icon-spin" />
@@ -897,7 +894,7 @@ const InstalledMarketplaceRow = ({
 	uninstalling: boolean
 }) => {
 	const primaryLocalEntry = matchedLocalEntries[0]
-	const label = `Uninstall ${entry.name || entry.id}`
+	const label = `卸载 ${entry.name || entry.id}`
 	return (
 		<div className="marketplace-row">
 			<div className="marketplace-row-main">
@@ -909,7 +906,7 @@ const InstalledMarketplaceRow = ({
 					<div className="marketplace-row-description">{entry.description || entry.tagline}</div>
 				)}
 				<div className="marketplace-row-meta">
-					<span className="marketplace-pill">Marketplace</span>
+					<span className="marketplace-pill">市场</span>
 					{matchedLocalEntries.map((localEntry) => {
 						const origin = sourceLabel(localEntry)
 						return (
@@ -924,11 +921,11 @@ const InstalledMarketplaceRow = ({
 			<div className="marketplace-action">
 				{primaryLocalEntry && (
 					<Switch
-						aria-label={`${primaryLocalEntry.enabled ? "Disable" : "Enable"} ${entry.name || entry.id}`}
+						aria-label={`${primaryLocalEntry.enabled ? "禁用" : "启用"} ${entry.name || entry.id}`}
 						checked={primaryLocalEntry.enabled}
 						disabled={togglingLocalId === localEntryKey(primaryLocalEntry)}
 						onClick={() => onToggle(primaryLocalEntry, !primaryLocalEntry.enabled)}
-						title={`${primaryLocalEntry.enabled ? "Disable" : "Enable"} ${entry.name || entry.id}`}
+						title={`${primaryLocalEntry.enabled ? "禁用" : "启用"} ${entry.name || entry.id}`}
 					/>
 				)}
 				<button
@@ -960,7 +957,7 @@ const CatalogEntryRow = ({
 }) => {
 	const summary = setupSummary(entry)
 	const canInstall = installArgs(entry).length > 0 && !installing
-	const label = `Install ${entry.name || entry.id}`
+	const label = `安装 ${entry.name || entry.id}`
 	return (
 		<div className="marketplace-row">
 			<div className="marketplace-row-main">
@@ -1224,7 +1221,7 @@ const MarketplaceView = ({ initialType = "skill", onDone }: MarketplaceViewProps
 	return (
 		<Tab className="marketplace-view">
 			<MarketplaceStyles />
-			<ViewHeader environment={environment} onDone={onDone} title="Customize" />
+			<ViewHeader environment={environment} onDone={onDone} title="自定义" />
 
 			<div className="marketplace-shell">
 				<TabList className="marketplace-nav" onValueChange={handleTabChange} value={activeType}>
@@ -1239,7 +1236,7 @@ const MarketplaceView = ({ initialType = "skill", onDone }: MarketplaceViewProps
 				<TabContent className="marketplace-content">
 					<div className="marketplace-inner">
 						<TabList
-							aria-label={`${primitive.title} sections`}
+							aria-label={`${primitive.title} 分区`}
 							className="marketplace-subnav"
 							onValueChange={handleSectionTabChange}
 							value={currentSection}>
@@ -1260,7 +1257,7 @@ const MarketplaceView = ({ initialType = "skill", onDone }: MarketplaceViewProps
 						{loading ? (
 							<div className="marketplace-loading">
 								<VSCodeProgressRing />
-								<span>Loading {primitive.plural}</span>
+								<span>正在加载 {primitive.plural}</span>
 							</div>
 						) : (
 							<>
@@ -1274,9 +1271,9 @@ const MarketplaceView = ({ initialType = "skill", onDone }: MarketplaceViewProps
 									) : (
 										<Section
 											count={installedCatalogEntries.length + localOnlyInstalledEntries.length}
-											empty={`No installed ${primitive.plural}.`}
+											empty={`暂无已安装的 ${primitive.plural}。`}
 											showHeader={false}
-											title={`Installed ${primitive.title}`}>
+											title={`已安装的 ${primitive.title}`}>
 											{installedCatalogEntries.map((entry) => (
 												<InstalledMarketplaceRow
 													entry={entry}
@@ -1308,8 +1305,8 @@ const MarketplaceView = ({ initialType = "skill", onDone }: MarketplaceViewProps
 										count={visibleCatalogEntries.length}
 										empty={
 											query || selectedTag
-												? `No ${primitive.plural} match your search.`
-												: `No marketplace ${primitive.plural}.`
+												? `没有匹配搜索的 ${primitive.plural}。`
+												: `市场中暂无 ${primitive.plural}。`
 										}
 										filters={
 											<TagFilters
@@ -1322,14 +1319,14 @@ const MarketplaceView = ({ initialType = "skill", onDone }: MarketplaceViewProps
 										search={
 											<div className="marketplace-search">
 												<VSCodeTextField
-													aria-label={`Search ${primitive.title}`}
+													aria-label={`搜索 ${primitive.title}`}
 													onInput={(event) => setQuery((event.target as HTMLInputElement).value)}
-													placeholder={`Search ${primitive.plural}`}
+													placeholder={`搜索 ${primitive.plural}`}
 													value={query}>
 													<span className="codicon codicon-search" slot="start" />
 													{query && (
 														<button
-															aria-label="Clear search"
+															aria-label="清除搜索"
 															className="codicon codicon-close marketplace-clear-search"
 															onClick={() => setQuery("")}
 															slot="end"

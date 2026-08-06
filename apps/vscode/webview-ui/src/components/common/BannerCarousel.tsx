@@ -149,7 +149,7 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({ banners }) => {
 
 	return (
 		<div
-			aria-label="Announcements"
+			aria-label="公告"
 			aria-live="polite"
 			aria-roledescription="carousel"
 			className="mx-3 mb-3"
@@ -161,7 +161,7 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({ banners }) => {
 				{/* Dismiss button - shows on each card that has onDismiss defined */}
 				{showDismissButton && (
 					<Button
-						aria-label="Dismiss banner"
+						aria-label="关闭横幅"
 						className="absolute top-2.5 right-2 z-10"
 						data-testid="banner-dismiss-button"
 						onClick={(e) => {
@@ -203,10 +203,10 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({ banners }) => {
 
 						{/* Navigation arrows */}
 						<div className="flex gap-0.5">
-							<Button aria-label="Previous banner" onClick={handlePrevious} size="icon" variant="icon">
+							<Button aria-label="上一个横幅" onClick={handlePrevious} size="icon" variant="icon">
 								<ChevronLeft className="size-4" />
 							</Button>
-							<Button aria-label="Next banner" onClick={handleNext} size="icon" variant="icon">
+							<Button aria-label="下一个横幅" onClick={handleNext} size="icon" variant="icon">
 								<ChevronRight className="size-4" />
 							</Button>
 						</div>

@@ -52,7 +52,7 @@ export const CopyButton: React.FC<CopyButtonProps> = ({ textToCopy, onCopy, clas
 
 	return (
 		<Button
-			aria-label={copied ? "Copied" : ariaLabel || "Copy"}
+			aria-label={copied ? "已复制" : ariaLabel || "复制"}
 			className={cn("scale-90", className)}
 			onClick={handleCopy}
 			size="icon"

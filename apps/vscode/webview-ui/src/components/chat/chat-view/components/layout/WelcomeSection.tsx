@@ -295,8 +295,8 @@ export const WelcomeSection: React.FC<WelcomeSectionProps> = ({
 												<div className="flex items-center gap-1.5 text-xs">
 													<GitBranch className="w-3 h-3 stroke-[2.5] flex-shrink-0" />
 													<span className="break-all text-center">
-														<span className="font-semibold">Current:</span>{" "}
-														{currentWorktree.branch || "detached HEAD"}
+														<span className="font-semibold">当前：</span>{" "}
+														{currentWorktree.branch || "分离 HEAD"}
 													</span>
 												</div>
 												<span className="break-all text-center max-w-[300px]">
@@ -305,7 +305,7 @@ export const WelcomeSection: React.FC<WelcomeSectionProps> = ({
 											</button>
 										</TooltipTrigger>
 										<TooltipContent side="bottom">
-											View and manage git worktrees. Great for running parallel Cline tasks.
+											查看和管理 git worktree。适合并行运行 Cline 任务。
 										</TooltipContent>
 									</Tooltip>
 								)}
