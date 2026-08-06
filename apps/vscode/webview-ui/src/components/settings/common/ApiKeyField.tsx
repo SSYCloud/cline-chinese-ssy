@@ -1,5 +1,5 @@
 import { VSCodeLink, VSCodeTextField } from "@vscode/webview-ui-toolkit/react"
-import { useEffect, useRef, useState } from "react"
+import { ReactNode, useEffect, useRef, useState } from "react"
 import { useDebounceEffect } from "@/utils/useDebounceEffect"
 
 /**
@@ -13,6 +13,7 @@ interface ApiKeyFieldProps {
 	placeholder?: string
 	helpText?: string
 	label?: string
+	loginBtn?: ReactNode
 }
 
 /**

@@ -33,6 +33,8 @@ export const GlobalFileNames = {
 	windsurfRules: ".windsurfrules",
 	agentsRulesFile: "AGENTS.md",
 	taskMetadata: "task_metadata.json",
+	shengSuanYunModels: "shengSuanYun_models.json",
+	shengSuanYunEModels: "shengSuanYun_e_models.json",
 	remoteConfig: (orgId: string) => `remote_config_${orgId}.json`,
 }
 

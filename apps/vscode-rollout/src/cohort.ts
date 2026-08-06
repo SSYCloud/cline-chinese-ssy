@@ -2,7 +2,7 @@ export type Bundle = "next" | "legacy";
 
 /**
  * The combined VSIX ships under two identities: the stable extension
- * (manifest name "claude-dev", contribution IDs under "cline.*") and the
+ * (manifest name "cline-chinese", contribution IDs under "cline.*") and the
  * nightly (name "cline-nightly", IDs under "cline-nightly.*" — the nightly
  * packaging rewrites every `"cline.` prefix in the manifest, see
  * scripts/nightlify.mjs and apps/vscode/scripts/publish-nightly.mjs). Anything

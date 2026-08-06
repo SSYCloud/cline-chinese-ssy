@@ -95,6 +95,7 @@ import {
 	isSyntheticSdkUserMessage,
 	type SdkUserMessage,
 } from "./sdk-user-message-mapping"
+import { ShengSuanYunAccountService } from "./shengsuanyun-account-service"
 import { buildDisabledWorkflowNames, expandSlashCommands } from "./slash-command-expansion"
 import { StatePostDebouncer } from "./state-post-debouncer"
 import { createTaskProxy, type TaskProxy } from "./task-proxy"
@@ -201,6 +202,7 @@ export class Controller {
 
 	mcpHub: McpHub
 	accountService: ClineAccountService
+	accountServiceSSY: ShengSuanYunAccountService
 	authService: AuthService
 	ocaAuthService: OcaAuthService
 	readonly stateManager: StateManager
@@ -285,6 +287,7 @@ export class Controller {
 		this.authService = AuthService.getInstance(this, this.sdkTelemetry.telemetry)
 		this.ocaAuthService = OcaAuthService.initialize(this)
 		this.accountService = ClineAccountService.getInstance()
+		this.accountServiceSSY = ShengSuanYunAccountService.getInstance()
 
 		// Initialize message translator state. The mode getter styles the inferred turn-final
 		// completion row (plan → yellow plan box, act → green completion box).
@@ -1634,6 +1637,12 @@ export class Controller {
 		await this.postStateToWebview()
 	}
 
+	async handleShengSuanYunSignOut(): Promise<void> {
+		this.stateManager.setSecret("shengSuanYunToken", undefined)
+		this.stateManager.setGlobalState("userInfo", undefined)
+		await this.postStateToWebview()
+	}
+
 	async handleAuthCallback(customToken: string, provider: string | null = null): Promise<void> {
 		await this.authService.handleAuthCallback(customToken, provider ?? "cline")
 		// Fetch remote config immediately after login so enterprise policies
@@ -1664,6 +1673,20 @@ export class Controller {
 	async handleOpenRouterCallback(code: string): Promise<void> {
 		await this.authService.handleOpenRouterCallback(code)
 		this.persistProviderApiKeyFromState("openrouter")
+		await this.postStateToWebview()
+	}
+
+	async handleShengSuanYunCallback(code: string): Promise<void> {
+		await this.authService.handleShengSuanYunCallback(code)
+		this.persistProviderApiKeyFromState("shengsuanyun")
+		try {
+			const userData = await this.accountServiceSSY.fetchUserDataRPC()
+			if (userData.user) {
+				this.stateManager.setGlobalState("userInfo", userData.user)
+			}
+		} catch (error) {
+			Logger.error("[SdkController] Failed to fetch ShengSuanYun user data after login:", error)
+		}
 		await this.postStateToWebview()
 	}
 

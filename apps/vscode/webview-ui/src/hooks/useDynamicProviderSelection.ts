@@ -63,6 +63,8 @@ export function useDynamicProviderSelection(
 				return resolve(fields.clineModelId, fields.clineModelInfo)
 			case "vercel-ai-gateway":
 				return resolve(fields.vercelAiGatewayModelId, fields.vercelAiGatewayModelInfo)
+			case "shengsuanyun":
+				return resolve(fields.shengSuanYunModelId, fields.shengSuanYunModelInfo)
 			case "openai":
 				return resolve(fields.openAiModelId, fields.openAiModelInfo)
 			case "requesty":

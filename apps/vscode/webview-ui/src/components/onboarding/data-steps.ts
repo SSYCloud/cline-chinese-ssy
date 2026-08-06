@@ -14,11 +14,11 @@ type UserTypeSelection = {
 
 export const STEP_CONFIG = {
 	0: {
-		title: "How will you use Cline?",
-		description: "Select an option below to get started.",
+		title: "你想怎么使用 Cline?",
+		description: "选择一个下面的选项来开始.",
 		buttons: [
-			{ text: "Continue", action: "next", variant: "default" },
-			{ text: "Login to Cline", action: "signin", variant: "secondary" },
+			{ text: "继续", action: "next", variant: "default" },
+			{ text: "登录 Cline 账户", action: "signin", variant: "secondary" },
 		],
 	},
 	[NEW_USER_TYPE.CLINE_PASS]: {
@@ -29,30 +29,30 @@ export const STEP_CONFIG = {
 		],
 	},
 	[NEW_USER_TYPE.FREE]: {
-		title: "Select a free model",
+		title: "绝对免费",
 		buttons: [
-			{ text: "Create my Account", action: "signup", variant: "default" },
-			{ text: "Back", action: "back", variant: "secondary" },
+			{ text: "使用 Cline 账号登录并使用此模型", action: "signup", variant: "default" },
+			{ text: "返回", action: "back", variant: "secondary" },
 		],
 	},
 	[NEW_USER_TYPE.POWER]: {
-		title: "Select your model",
+		title: "选择你的模型",
 		buttons: [
-			{ text: "Create my Account", action: "signup", variant: "default" },
-			{ text: "Back", action: "back", variant: "secondary" },
+			{ text: "使用胜算云登录并使用此模型", action: "signin_ssy", variant: "default" },
+			{ text: "返回", action: "back", variant: "secondary" },
 		],
 	},
 	[NEW_USER_TYPE.BYOK]: {
-		title: "Configure your provider",
+		title: "配置你的提供商 API 密钥",
 		buttons: [
-			{ text: "Continue", action: "done", variant: "default" },
-			{ text: "Back", action: "back", variant: "secondary" },
+			{ text: "继续", action: "done", variant: "default" },
+			{ text: "返回", action: "back", variant: "secondary" },
 		],
 	},
 	2: {
-		title: "Almost there!",
-		description: "Complete account creation in your browser. Then come back here to finish up.",
-		buttons: [{ text: "Back", action: "back", variant: "secondary" }],
+		title: "几乎完成了！",
+		description: "在浏览器中完成账户创建。然后回到这里完成最后的设置。",
+		buttons: [{ text: "返回", action: "back", variant: "secondary" }],
 	},
 } as const
 
@@ -69,11 +69,7 @@ const BASE_USER_TYPE_SELECTIONS: UserTypeSelection[] = [
 	{ title: "Bring my own API key", description: "Use Cline with your provider of choice", type: NEW_USER_TYPE.BYOK },
 ]
 
-/** Free leads (and is the default); ClinePass is inserted second when its models are available. */
-export function getUserTypeSelections(hasClinePassModels: boolean): UserTypeSelection[] {
-	if (!hasClinePassModels) {
-		return BASE_USER_TYPE_SELECTIONS
-	}
-	const [free, ...rest] = BASE_USER_TYPE_SELECTIONS
-	return [free, CLINE_PASS_USER_TYPE_SELECTION, ...rest]
+/** The initial onboarding keeps the three primary paths in a stable order. */
+export function getUserTypeSelections(_hasClinePassModels: boolean): UserTypeSelection[] {
+	return BASE_USER_TYPE_SELECTIONS
 }

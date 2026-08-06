@@ -2,24 +2,24 @@ import { describe, expect, it } from "bun:test";
 import { nightlifyPackageJson } from "./nightlify.mjs";
 
 const fixture = {
-	name: "claude-dev",
+	name: "cline-chinese",
 	displayName: "Cline",
-	publisher: "saoudrizwan",
+	publisher: "HybridTalentComputing",
 	version: "4.0.0",
 	main: "./dist/extension.js",
 	contributes: {
 		viewsContainers: {
 			activitybar: [
 				{
-					id: "claude-dev-ActivityBar",
+					id: "cline-chinese-ActivityBar",
 					title: "Cline",
 					icon: "assets/icon.svg",
 				},
 			],
 		},
 		views: {
-			"claude-dev-ActivityBar": [
-				{ type: "webview", id: "claude-dev.SidebarProvider" },
+			"cline-chinese-ActivityBar": [
+				{ type: "webview", id: "cline-chinese.SidebarProvider" },
 			],
 		},
 		commands: [{ command: "cline.plusButtonClicked", title: "New Task" }],
@@ -28,7 +28,7 @@ const fixture = {
 			"view/title": [
 				{
 					command: "cline.plusButtonClicked",
-					when: "view == claude-dev.SidebarProvider",
+					when: "view == cline-chinese.SidebarProvider",
 				},
 				// Mid-string references are NOT rewritten — a known limitation
 				// shared with the standalone nightly's publish-nightly.mjs.
@@ -51,10 +51,10 @@ describe("nightlifyPackageJson", () => {
 		expect(pkg.name).toBe("cline-nightly");
 		expect(pkg.displayName).toBe("Cline (Nightly)");
 		expect(pkg.version).toBe("4.0.1752600000");
-		expect(pkg.publisher).toBe("saoudrizwan");
+		expect(pkg.publisher).toBe("HybridTalentComputing");
 	});
 
-	it("rewrites claude-dev IDs and the cline.* namespace", () => {
+	it("rewrites cline-chinese IDs and the cline.* namespace", () => {
 		expect(pkg.contributes.viewsContainers.activitybar[0].id).toBe(
 			"cline-nightly-ActivityBar",
 		);

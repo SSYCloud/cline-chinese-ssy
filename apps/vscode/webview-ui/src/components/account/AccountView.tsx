@@ -12,12 +12,15 @@ import { useExtensionState } from "@/context/ExtensionStateContext"
 import { AccountServiceClient } from "@/services/grpc-client"
 import ViewHeader from "../common/ViewHeader"
 import VSCodeButtonLink from "../common/VSCodeButtonLink"
+import { TabButton } from "../mcp/configuration/McpConfigurationView"
 import { updateSetting } from "../settings/utils/settingsHandlers"
+import { Button } from "../ui/button"
 import { AccountWelcomeView } from "./AccountWelcomeView"
 import { CreditBalance } from "./CreditBalance"
 import CreditsHistoryTable from "./CreditsHistoryTable"
 import { convertProtoUsageTransactions, getClineUris, getMainRole } from "./helpers"
 import { RemoteConfigToggle } from "./RemoteConfigToggle"
+import { SSYAccountView } from "./SSYAccountView"
 
 type AccountViewProps = {
 	clineUser: ClineUser | null
@@ -43,11 +46,27 @@ type CachedData = {
 const ClineEnvOptions = ["Production", "Staging", "Local"] as const
 
 const AccountView = ({ onDone, clineUser, organizations, activeOrganization }: AccountViewProps) => {
-	const { environment } = useExtensionState()
+	const { environment, userInfo } = useExtensionState()
+	const [accountTab, setAccountTab] = useState<"personal" | "enterprise">("personal")
+
+	const isShengSuanYunUser = Boolean(userInfo)
 
 	return (
 		<div className="fixed inset-0 flex flex-col overflow-hidden">
-			<ViewHeader environment={environment} onDone={onDone} showEnvironmentSuffix title="Account" />
+			{clineUser?.uid ? (
+				<ViewHeader environment={environment} onDone={onDone} showEnvironmentSuffix title="Account" />
+			) : (
+				<div className="flex items-center justify-between px-5 py-2.5 mb-[17px]">
+					<div className="flex border-b border-(--vscode-panel-border) px-5">
+						<TabButton isActive={accountTab === "personal"} onClick={() => setAccountTab("personal")}>
+							个人账户
+						</TabButton>
+					</div>
+					<Button onClick={onDone} size="header">
+						确定
+					</Button>
+				</div>
+			)}
 			<div className="grow flex flex-col px-5 overflow-y-auto">
 				{clineUser?.uid ? (
 					<ClineAccountView
@@ -57,6 +76,8 @@ const AccountView = ({ onDone, clineUser, organizations, activeOrganization }: A
 						key={clineUser.uid}
 						userOrganizations={organizations}
 					/>
+				) : isShengSuanYunUser ? (
+					<SSYAccountView mode={accountTab} />
 				) : (
 					<AccountWelcomeView />
 				)}
@@ -328,7 +349,7 @@ const ClineAccountView = ({ clineUser, userOrganizations, activeOrganization, cl
 											disabled={isLoading || isLockedByRemoteConfig}
 											onChange={handleOrganizationChange}>
 											<VSCodeOption key="personal" value={uid}>
-												Personal
+												个人账户
 											</VSCodeOption>
 											{userOrganizations?.map((org: UserOrganization) => (
 												<VSCodeOption key={org.organizationId} value={org.organizationId}>
@@ -338,7 +359,7 @@ const ClineAccountView = ({ clineUser, userOrganizations, activeOrganization, cl
 										</VSCodeDropdown>
 									</TooltipTrigger>
 									<TooltipContent hidden={!isLockedByRemoteConfig}>
-										This cannot be changed while your organization has remote configuration enabled.
+										当您的组织启用了远程配置时，无法更改此设置。
 									</TooltipContent>
 								</Tooltip>
 								{activeOrganization && (
@@ -357,11 +378,11 @@ const ClineAccountView = ({ clineUser, userOrganizations, activeOrganization, cl
 				<div className="w-full flex gap-2 flex-col min-[225px]:flex-row">
 					<div className="w-full min-[225px]:w-1/2">
 						<VSCodeButtonLink appearance="primary" className="w-full" href={getClineUris(clineUrl, "dashboard").href}>
-							Dashboard
+							控制台
 						</VSCodeButtonLink>
 					</div>
 					<VSCodeButton appearance="secondary" className="w-full min-[225px]:w-1/2" onClick={() => handleSignOut()}>
-						Log out
+						退出登录
 					</VSCodeButton>
 				</div>
 
@@ -390,7 +411,7 @@ const ClineAccountView = ({ clineUser, userOrganizations, activeOrganization, cl
 				{isClineTester && environment !== "selfHosted" && (
 					<div className="w-full gap-1 items-end">
 						<VSCodeDivider className="w-full my-3" />
-						<div className="text-sm font-semibold">Cline Environment</div>
+						<div className="text-sm font-semibold">Cline 环境</div>
 						<VSCodeDropdown
 							className="w-full mt-1"
 							currentValue={clineEnv}

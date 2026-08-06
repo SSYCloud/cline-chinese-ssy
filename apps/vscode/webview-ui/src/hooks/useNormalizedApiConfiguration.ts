@@ -62,6 +62,7 @@ function getActiveProviderAndModelId(apiConfiguration: ReturnType<typeof useExte
 		together: modeFields.togetherModelId,
 		fireworks: modeFields.fireworksModelId,
 		sapaicore: modeFields.apiModelId,
+		shengsuanyun: modeFields.shengSuanYunModelId,
 		"vscode-lm": modeFields.vsCodeLmModelSelector
 			? `${modeFields.vsCodeLmModelSelector.vendor}/${modeFields.vsCodeLmModelSelector.family}`
 			: undefined,

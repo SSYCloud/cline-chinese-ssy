@@ -6,7 +6,7 @@ export function validateApiConfiguration(currentMode: Mode, apiConfiguration?: A
 	if (apiConfiguration) {
 		const { apiProvider, openAiModelId, togetherModelId, ollamaModelId, lmStudioModelId, vsCodeLmModelSelector } =
 			getModeSpecificFields(apiConfiguration, currentMode)
-
+		const tips = "您必须提供有效的API密钥或选择其他提供者。"
 		switch (apiProvider) {
 			case "anthropic":
 				if (!apiConfiguration.apiKey) {
@@ -168,6 +168,11 @@ export function validateApiConfiguration(currentMode: Mode, apiConfiguration?: A
 			case "wandb":
 				if (!apiConfiguration.wandbApiKey) {
 					return "You must provide a valid API key or choose a different provider."
+				}
+				break
+			case "shengsuanyun":
+				if (!apiConfiguration.shengSuanYunApiKey) {
+					return tips
 				}
 				break
 		}

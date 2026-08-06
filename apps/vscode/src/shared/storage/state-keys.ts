@@ -189,6 +189,8 @@ const API_HANDLER_SETTINGS_FIELDS = {
 	planModeNousResearchModelId: { default: undefined as string | undefined },
 	planModeVercelAiGatewayModelId: { default: undefined as string | undefined },
 	planModeVercelAiGatewayModelInfo: { default: undefined as ModelInfo | undefined },
+	planModeShengSuanYunModelId: { default: undefined as string | undefined },
+	planModeShengSuanYunModelInfo: { default: undefined as ModelInfo | undefined },
 
 	// Act mode configurations
 	actModeApiModelId: { default: undefined as string | undefined },
@@ -235,6 +237,8 @@ const API_HANDLER_SETTINGS_FIELDS = {
 	actModeNousResearchModelId: { default: undefined as string | undefined },
 	actModeVercelAiGatewayModelId: { default: undefined as string | undefined },
 	actModeVercelAiGatewayModelInfo: { default: undefined as ModelInfo | undefined },
+	actModeShengSuanYunModelId: { default: undefined as string | undefined },
+	actModeShengSuanYunModelInfo: { default: undefined as ModelInfo | undefined },
 
 	// Model-specific settings
 	// The transform folds SDK provider-id spellings (e.g. `openai-compatible`)
@@ -357,6 +361,8 @@ const SECRETS_KEYS = [
 	"mcpOAuthSecrets",
 	"openai-codex-oauth-credentials", // JSON blob containing OAuth tokens for OpenAI Codex (ChatGPT subscription)
 	"wandbApiKey",
+	"shengSuanYunApiKey",
+	"shengSuanYunToken",
 ] as const
 
 // WARNING, these are not ALL of the local state keys in practice. For example, FileContextTracker

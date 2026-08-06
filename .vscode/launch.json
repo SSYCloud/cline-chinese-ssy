@@ -13,9 +13,9 @@
 				"--extensionDevelopmentPath=${workspaceFolder}/apps/vscode",
 				"--disable-workspace-trust",
 				"--disable-extension",
-				"saoudrizwan.claude-dev", // Avoid conflicts with installed Cline
+				"HybridTalentComputing:cline-chinese", // Avoid conflicts with installed Cline
 				"--disable-extension",
-				"saoudrizwan.cline-nightly", // Avoid conflicts with installed Cline Nightly
+				"HybridTalentComputing.cline-nightly", // Avoid conflicts with installed Cline Nightly
 				"${workspaceFolder}/apps/vscode",
 				"--disable-extensions"
 			],
@@ -38,9 +38,9 @@
 				"--extensionDevelopmentPath=${workspaceFolder}/apps/vscode",
 				"--disable-workspace-trust",
 				"--disable-extension",
-				"saoudrizwan.claude-dev", // Avoid conflicts with installed Cline
+				"HybridTalentComputing:cline-chinese", // Avoid conflicts with installed Cline
 				"--disable-extension",
-				"saoudrizwan.cline-nightly", // Avoid conflicts with installed Cline Nightly
+				"HybridTalentComputing.cline-nightly", // Avoid conflicts with installed Cline Nightly
 				"${workspaceFolder}/apps/vscode"
 			],
 			"outFiles": [
@@ -63,9 +63,9 @@
 				"--extensionDevelopmentPath=${workspaceFolder}/apps/vscode",
 				"--disable-workspace-trust",
 				"--disable-extension",
-				"saoudrizwan.claude-dev", // Avoid conflicts with installed Cline
+				"HybridTalentComputing:cline-chinese", // Avoid conflicts with installed Cline
 				"--disable-extension",
-				"saoudrizwan.cline-nightly", // Avoid conflicts with installed Cline Nightly
+				"HybridTalentComputing.cline-nightly", // Avoid conflicts with installed Cline Nightly
 				"${workspaceFolder}/apps/vscode"
 			],
 			"outFiles": [
@@ -90,9 +90,9 @@
 				"--profile-temp",
 				"--sync=off",
 				"--disable-extension",
-				"saoudrizwan.claude-dev", // Avoid conflicts with installed Cline
+				"HybridTalentComputing:cline-chinese", // Avoid conflicts with installed Cline
 				"--disable-extension",
-				"saoudrizwan.cline-nightly", // Avoid conflicts with installed Cline Nightly
+				"HybridTalentComputing.cline-nightly", // Avoid conflicts with installed Cline Nightly
 				"--extensionDevelopmentPath=${workspaceFolder}/apps/vscode",
 				"${workspaceFolder}/apps/vscode"
 			],

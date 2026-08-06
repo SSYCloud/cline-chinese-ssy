@@ -41,6 +41,7 @@ import { QwenCodeProvider } from "./providers/QwenCodeProvider"
 import { QwenProvider } from "./providers/QwenProvider"
 import { RequestyProvider } from "./providers/RequestyProvider"
 import { SapAiCoreProvider } from "./providers/SapAiCoreProvider"
+import { ShengSuanYunProvider } from "./providers/ShengSuanYunProvider"
 import { VercelAIGatewayProvider } from "./providers/VercelAIGatewayProvider"
 import { VertexProvider } from "./providers/VertexProvider"
 import { VSCodeLmProvider } from "./providers/VSCodeLmProvider"
@@ -347,6 +348,10 @@ const ApiOptions = ({
 					)}
 				</ProviderDropdownWrapper>
 			</DropdownContainer>
+
+			{apiConfiguration && selectedProvider === "shengsuanyun" && (
+				<ShengSuanYunProvider currentMode={currentMode} isPopup={isPopup} showModelOptions={showModelOptions} />
+			)}
 
 			{apiConfiguration && selectedProvider === "hicap" && (
 				<HicapProvider currentMode={currentMode} isPopup={isPopup} showModelOptions={showModelOptions} />

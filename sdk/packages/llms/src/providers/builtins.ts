@@ -1115,6 +1115,21 @@ const BUILTIN_SPEC_OVERRIDES: BuiltinSpecOverride[] = [
 		modelsProviderId: "sapaicore",
 		metadata: ANTHROPIC_ROUTING_METADATA,
 	},
+	{
+		id: "shengsuanyun",
+		name: "胜算云",
+		description: "胜算云 API 接口",
+		family: "anthropic",
+		popular: 1,
+		capabilities: ["tools", "reasoning", "prompt-cache"],
+		modelsSourceUrl: "https://router.shengsuanyun.com/api/v1/models",
+		defaultModelId: "anthropic/claude-sonnet-4.6",
+		apiKeyEnv: ["SHENGSUANYUN_API_KEY"],
+		defaults: {
+			baseUrl: "https://router.shengsuanyun.com/api/v1",
+		},
+		metadata: ANTHROPIC_AND_QWEN_CACHE_ROUTING_METADATA,
+	},
 	...OPENAI_COMPATIBLE_SPEC_OVERRIDES,
 ];
 

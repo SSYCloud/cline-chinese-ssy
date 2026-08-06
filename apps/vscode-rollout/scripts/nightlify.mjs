@@ -4,7 +4,7 @@
  * Reproduces updatePackageJson() from apps/vscode/scripts/publish-nightly.mjs
  * (the same script exists on BOTH main and legacy-extension — those copies are
  * the source of truth for the mutation; if they change, change this too):
- *   - textual rewrites: "claude-dev" -> "cline-nightly" everywhere, and every
+ *   - textual rewrites: "cline-chinese" -> "cline-nightly" everywhere, and every
  *     `"cline.` ID prefix -> `"cline-nightly.` (commands, settings, view IDs,
  *     when-clauses that START with the key — mid-string references like
  *     `config.cline.x` are NOT rewritten, same as the standalone nightly)
@@ -35,7 +35,7 @@ export function nightlifyPackageJson(rawContent, version) {
 		throw new Error("version is required");
 	}
 	const content = rawContent
-		.replaceAll("claude-dev", NIGHTLY_NAME)
+		.replaceAll("cline-chinese", NIGHTLY_NAME)
 		.replaceAll('"cline.', `"${NIGHTLY_NAME}.`);
 	const pkg = JSON.parse(content);
 

@@ -352,6 +352,7 @@ const PROVIDER_API_KEY_MAP: Record<string, keyof ApiConfiguration> = {
 	wandb: "wandbApiKey",
 	"qwen-code": "qwenApiKey",
 	oca: "ocaApiKey",
+	shengsuanyun: "shengSuanYunApiKey",
 }
 
 /**
@@ -385,6 +386,7 @@ const PROVIDER_MODEL_ID_MAP: Record<string, { plan: keyof ApiConfiguration; act:
 	hicap: { plan: "planModeHicapModelId", act: "actModeHicapModelId" },
 	nousResearch: { plan: "planModeNousResearchModelId", act: "actModeNousResearchModelId" },
 	"vercel-ai-gateway": { plan: "planModeVercelAiGatewayModelId", act: "actModeVercelAiGatewayModelId" },
+	shengsuanyun: { plan: "planModeShengSuanYunModelId", act: "actModeShengSuanYunModelId" },
 }
 
 // ---------------------------------------------------------------------------

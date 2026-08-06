@@ -95,6 +95,15 @@ export class SharedUriHandler {
 					Logger.warn("SharedUriHandler: Missing prompt parameter for task creation")
 					return false
 				}
+				case "/ssy":
+				case "shengsuanyun": {
+					const code = query.get("code")
+					if (code) {
+						await visibleWebview?.controller.handleShengSuanYunCallback(code)
+						return true
+					}
+					return false
+				}
 				case LG_TASK_URI_PATH: {
 					const promptFile = query.get("prompt-file")
 					const webhookUrl = query.get("webhook-url")

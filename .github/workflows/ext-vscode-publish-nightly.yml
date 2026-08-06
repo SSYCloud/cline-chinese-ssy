@@ -1,13 +1,13 @@
 name: ext-vscode-publish-nightly
 
-# Publishes saoudrizwan.cline-nightly as the COMBINED A/B VSIX: the rollout
+# Publishes HybridTalentComputing.cline-nightly as the COMBINED A/B VSIX: the rollout
 # loader plus two complete extension bundles — `next/` from this ref's
 # apps/vscode (SDK-based) and `legacy/` from the legacy-extension branch.
 # Cohort selection happens at runtime via PostHog flags; see
 # apps/vscode-rollout/README.md for the design and rollout runbook.
 #
 # The stable-identity equivalent of this pipeline is ext-vscode-ab-package.yml
-# (manual dispatch, publishes claude-dev). Shared logic lives in
+# (manual dispatch, publishes cline-chinese). Shared logic lives in
 # apps/vscode-rollout/scripts (nightlify/gen-manifest/stitch/smoke) so both
 # workflows stay thin. The single-bundle nightly path this replaced
 # (apps/vscode/scripts/publish-nightly.mjs) remains for manual feature-branch
@@ -227,7 +227,7 @@ jobs:
             const expected = process.env.EXPECTED_VERSION;
             const pkg = require("./package.json");
             assert.equal(pkg.name, "cline-nightly", `unexpected name ${pkg.name}`);
-            assert.equal(pkg.publisher, "saoudrizwan", `unexpected publisher ${pkg.publisher}`);
+            assert.equal(pkg.publisher, "HybridTalentComputing", `unexpected publisher ${pkg.publisher}`);
             assert.equal(pkg.version, expected, `unexpected union version ${pkg.version}`);
             for (const bundle of ["next", "legacy"]) {
               const sub = require(`./${bundle}/package.json`);

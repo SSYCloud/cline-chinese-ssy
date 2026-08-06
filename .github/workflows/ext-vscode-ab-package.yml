@@ -78,7 +78,7 @@ jobs:
 
             # Marketplace versions are monotonic and cannot be unpublished:
             # every publish must exceed the highest version ever published to
-            # the claude-dev listing FROM ANY BRANCH (combined stable or legacy
+            # the cline-chinese listing FROM ANY BRANCH (combined stable or legacy
             # hotfix). The publish job re-checks right before publishing — the
             # environment-approval wait can last days and a legacy hotfix can
             # land in between. Keep both copies of this check in sync.
@@ -89,10 +89,10 @@ jobs:
               run: |
                   LIVE=$(curl -sf --retry 3 -X POST "https://marketplace.visualstudio.com/_apis/public/gallery/extensionquery" \
                     -H "Content-Type: application/json" -H "Accept: application/json;api-version=3.0-preview.1" \
-                    --data '{"filters":[{"criteria":[{"filterType":7,"value":"saoudrizwan.claude-dev"}]}],"flags":16}' \
+                    --data '{"filters":[{"criteria":[{"filterType":7,"value":"HybridTalentComputing:cline-chinese"}]}],"flags":16}' \
                     | node -e 'let d="";process.stdin.on("data",c=>d+=c);process.stdin.on("end",()=>{process.stdout.write(JSON.parse(d).results[0].extensions[0].versions[0].version)})')
                   if [[ -z "$LIVE" ]]; then
-                    echo "Error: could not resolve the live Marketplace version for saoudrizwan.claude-dev."
+                    echo "Error: could not resolve the live Marketplace version for HybridTalentComputing:cline-chinese."
                     exit 1
                   fi
                   node -e '
@@ -350,8 +350,8 @@ jobs:
                     const assert = require("node:assert");
                     const expected = process.env.EXPECTED_VERSION;
                     const pkg = require("./package.json");
-                    assert.equal(pkg.name, "claude-dev", `unexpected name ${pkg.name}`);
-                    assert.equal(pkg.publisher, "saoudrizwan", `unexpected publisher ${pkg.publisher}`);
+                    assert.equal(pkg.name, "cline-chinese", `unexpected name ${pkg.name}`);
+                    assert.equal(pkg.publisher, "HybridTalentComputing", `unexpected publisher ${pkg.publisher}`);
                     assert.equal(pkg.version, expected, `unexpected union version ${pkg.version}`);
                     for (const bundle of ["next", "legacy"]) {
                       const sub = require(`./${bundle}/package.json`);
@@ -367,13 +367,13 @@ jobs:
                   # Preserve the narrowly scoped VSCE `sendgrid` scanner exemption used by
                   # both standalone bundle workflows. No SendGrid credential is intentionally
                   # supplied here; inspect the reported artifact before widening the exemption.
-                  vsce package --no-dependencies --allow-package-secrets sendgrid --out "claude-dev-${{ github.event.inputs.version }}.vsix"
+                  vsce package --no-dependencies --allow-package-secrets sendgrid --out "cline-chinese-${{ github.event.inputs.version }}.vsix"
 
             - name: Upload VSIX artifact
               uses: actions/upload-artifact@v4
               with:
-                  name: claude-dev-${{ github.event.inputs.version }}
-                  path: staging/claude-dev-${{ github.event.inputs.version }}.vsix
+                  name: cline-chinese-${{ github.event.inputs.version }}
+                  path: staging/cline-chinese-${{ github.event.inputs.version }}.vsix
                   if-no-files-found: error
 
     publish:
@@ -403,7 +403,7 @@ jobs:
             - name: Download VSIX artifact
               uses: actions/download-artifact@v4
               with:
-                  name: claude-dev-${{ github.event.inputs.version }}
+                  name: cline-chinese-${{ github.event.inputs.version }}
                   path: staging
 
             - name: Install Publishing Tools
@@ -419,10 +419,10 @@ jobs:
               run: |
                   LIVE=$(curl -sf --retry 3 -X POST "https://marketplace.visualstudio.com/_apis/public/gallery/extensionquery" \
                     -H "Content-Type: application/json" -H "Accept: application/json;api-version=3.0-preview.1" \
-                    --data '{"filters":[{"criteria":[{"filterType":7,"value":"saoudrizwan.claude-dev"}]}],"flags":16}' \
+                    --data '{"filters":[{"criteria":[{"filterType":7,"value":"HybridTalentComputing:cline-chinese"}]}],"flags":16}' \
                     | node -e 'let d="";process.stdin.on("data",c=>d+=c);process.stdin.on("end",()=>{process.stdout.write(JSON.parse(d).results[0].extensions[0].versions[0].version)})')
                   if [[ -z "$LIVE" ]]; then
-                    echo "Error: could not resolve the live Marketplace version for saoudrizwan.claude-dev."
+                    echo "Error: could not resolve the live Marketplace version for HybridTalentComputing:cline-chinese."
                     exit 1
                   fi
                   node -e '
@@ -458,13 +458,13 @@ jobs:
                     echo "Error: OVSX_PAT is required to publish to Open VSX."
                     exit 1
                   fi
-                  vsce publish --no-dependencies --packagePath "claude-dev-${{ github.event.inputs.version }}.vsix"
+                  vsce publish --no-dependencies --packagePath "cline-chinese-${{ github.event.inputs.version }}.vsix"
 
             - name: Publish to Open VSX
               working-directory: staging
               env:
                   OVSX_PAT: ${{ secrets.OVSX_PAT }}
-              run: npx ovsx publish --packagePath "claude-dev-${{ github.event.inputs.version }}.vsix" --pat "$OVSX_PAT"
+              run: npx ovsx publish --packagePath "cline-chinese-${{ github.event.inputs.version }}.vsix" --pat "$OVSX_PAT"
 
             # ---- Post-publish bookkeeping (tag / GitHub Release / Slack) ----
             # Mirrors the standalone publish workflows. Every step here is
@@ -518,7 +518,7 @@ jobs:
               uses: softprops/action-gh-release@v1
               with:
                   tag_name: v${{ github.event.inputs.version }}
-                  files: staging/claude-dev-${{ github.event.inputs.version }}.vsix
+                  files: staging/cline-chinese-${{ github.event.inputs.version }}.vsix
                   body: |
                       ${{ steps.changelog.outputs.content }}
 

@@ -2,8 +2,8 @@ import { describe, expect, it } from "bun:test";
 import { generateManifest } from "./gen-manifest.mjs";
 
 const shared = {
-	name: "claude-dev",
-	publisher: "saoudrizwan",
+	name: "cline-chinese",
+	publisher: "HybridTalentComputing",
 	main: "./dist/extension.js",
 	engines: { vscode: "^1.84.0" },
 	displayName: "Cline",
@@ -17,7 +17,7 @@ function pkg(overrides) {
 			viewsContainers: {
 				activitybar: [{ id: "c", title: "Cline", icon: "assets/icon.svg" }],
 			},
-			views: { c: [{ type: "webview", id: "claude-dev.SidebarProvider" }] },
+			views: { c: [{ type: "webview", id: "cline-chinese.SidebarProvider" }] },
 			commands: [],
 			keybindings: [],
 			menus: {},

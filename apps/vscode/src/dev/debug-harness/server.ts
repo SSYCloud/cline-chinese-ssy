@@ -1246,7 +1246,7 @@ class DebugHarness {
 		if (!this.app) throw new Error("VSCode not running")
 
 		// Build the URI
-		const extensionId = "saoudrizwan.claude-dev"
+		const extensionId = "HybridTalentComputing:cline-chinese"
 		const scheme = "vscode"
 		const searchParams = new URLSearchParams()
 		if (params.code) searchParams.set("code", params.code)

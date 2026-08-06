@@ -41,6 +41,12 @@ service AccountService {
   rpc openrouterAuthClicked(EmptyRequest) returns (Empty);
 
   rpc requestyAuthClicked(StringRequest) returns (Empty);
+  rpc shengSuanYunLoginClicked(EmptyRequest) returns (String);
+  rpc shengSuanYunLogoutClicked(EmptyRequest) returns (Empty);
+  rpc shengSuanYunUserData(EmptyRequest) returns (UserCreditsData);
+  rpc subscribeSsyAuthCallback(EmptyRequest) returns (stream String);
+  rpc getEnterpriseProjectList(EmptyRequest) returns (EProjectList);
+  rpc getEnterpriseBill(EnterpriseBillRequest) returns (EnterpriseBillResponse);
 
   rpc hicapAuthClicked(EmptyRequest) returns (Empty);
 
@@ -75,8 +81,8 @@ message UserInfo {
   optional string email = 3;
   optional string photo_url = 4;
   optional string app_base_url = 5; // Cline app base URL
+  optional double balance = 6;
 }
-
 message UserOrganization {
   bool active = 1;
   string member_id = 2;
@@ -97,6 +103,8 @@ message UserCreditsData {
   UserCreditsBalance balance = 1;
   repeated UsageTransaction usage_transactions = 2;
   repeated PaymentTransaction payment_transactions = 3;
+  optional UserInfo user = 4;
+  optional float rate = 5;
 }
 
 message GetOrganizationCreditsRequest {
@@ -155,4 +163,111 @@ message OrganizationUsageTransaction {
   int32 total_tokens = 11;
   string user_id = 12;
   string operation = 13;
+}
+
+// ShengSuanYun Enterprise Project structures
+
+message EPModel {
+  int32 id = 1;
+  string name = 2;
+  string type = 3;
+  double input_price = 4;
+  double output_price = 5;
+  string input_price_unit = 6;
+  string output_price_unit = 7;
+  string other_price = 8;
+  string provider = 9;
+  int32 support_model_id = 10;
+  string currency = 11;
+  int32 context_length = 12;
+  bool is_byok = 13;
+}
+
+message EPRouterModel {
+  int32 id = 1;
+  string model = 2;
+  int32 model_info_id = 3;
+  int32 weight = 4;
+}
+
+message EPRouter {
+  int32 id = 1;
+  string name = 2;
+  string mode = 3;
+  repeated EPRouterModel models = 4;
+  bool is_confirmed = 5;
+  string route_id = 6;
+  string scope = 7;
+  int32 created_by_ram_user_id = 8;
+  string creator_name = 9;
+  string creator_type = 10;
+  string created_at = 11;
+  string updated_at = 12;
+  int32 updated_by_ram_user_id = 13;
+  string updater_name = 14;
+  string updater_type = 15;
+  bool can_edit = 16;
+  bool can_delete = 17;
+}
+
+message EPAPIKey {
+  int32 id = 1;
+  string created_at = 2;
+  string updated_at = 3;
+  int32 user_id = 4;
+  bool is_banned = 5;
+  bool is_expired = 6;
+  string name = 7;
+  string desc = 8;
+  string key = 9;
+  string token = 10;
+  int32 tpm = 11;
+  int32 rpm = 12;
+  double max_quota = 13;
+  double consumed_amount = 14;
+  string supported_models = 15;
+  bool is_default = 16;
+  int32 ram_user_id = 17;
+  int32 enterprise_gateway_project_id = 18;
+}
+
+message EProject {
+  int32 id = 1;
+  string name = 2;
+  repeated EPModel models = 3;
+  repeated EPRouter routers = 4;
+  repeated EPAPIKey api_keys = 5;
+}
+
+message EProjectList {
+  repeated EProject projects = 1;
+}
+
+message EnterpriseBillRequest {
+  int32 project_id = 1;
+  optional int32 page = 2;
+  optional int32 page_size = 3;
+  optional string start_time = 4;
+  optional string end_time = 5;
+  optional string model_name = 6;
+  optional int32 ram_user_id = 7;
+}
+
+message EnterpriseBillItem {
+  string hour_time = 1;
+  string user_name = 2;
+  string model_name = 3;
+  int32 user_id = 4;
+  int32 ram_user_id = 5;
+  int32 request_count = 6;
+  string provider_name = 7;
+  int32 total_deduction_amount = 8;
+  int32 cached_amount = 9;
+  int32 total_prompt_tokens = 10;
+  int32 total_completion_tokens = 11;
+  int32 total_tokens = 12;
+}
+
+message EnterpriseBillResponse {
+  repeated EnterpriseBillItem bills = 1;
 }

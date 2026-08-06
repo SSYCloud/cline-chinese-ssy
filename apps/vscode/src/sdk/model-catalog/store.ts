@@ -117,6 +117,7 @@ const modelInfoKeysByProvider: Partial<Record<string, ModelInfoKeys>> = {
 	aihubmix: { plan: "planModeAihubmixModelInfo", act: "actModeAihubmixModelInfo" },
 	hicap: { plan: "planModeHicapModelInfo", act: "actModeHicapModelInfo" },
 	"vercel-ai-gateway": { plan: "planModeVercelAiGatewayModelInfo", act: "actModeVercelAiGatewayModelInfo" },
+	shengsuanyun: { plan: "planModeShengSuanYunModelInfo", act: "actModeShengSuanYunModelInfo" },
 }
 
 // In-memory selection envelope for providers that have a mode-specific model

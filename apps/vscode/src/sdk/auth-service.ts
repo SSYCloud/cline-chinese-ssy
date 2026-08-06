@@ -1136,6 +1136,34 @@ export class AuthService {
 		this.setProviderApiKey("openrouter", "openRouterApiKey", apiKey)
 	}
 
+	async handleShengSuanYunCallback(code: string) {
+		// Logger.error("handleShengSuanYunCallback() with code:", code)
+		try {
+			const callbackUrl = `${await HostProvider.get().getCallbackUrl("/ssy")}?from=cline-chinese`
+			const res = await axios.post("https://api.shengsuanyun.com/auth/keys", {
+				code: code,
+				callback_url: callbackUrl,
+			})
+			// Logger.error("https://api.shengsuanyun.com/auth/keys :", res.data)
+			if (!res.data || !res.data.data) {
+				throw new Error("Invalid response from handleShengSuanYunCallback()", {
+					cause: res,
+				})
+			}
+			if (res.data.data.api_key) {
+				this.setProviderApiKey("shengsuanyun", "shengSuanYunApiKey", res.data.data.api_key)
+			}
+			if (res.data.data.jwt_token) {
+				this.setProviderApiKey("shengsuanyun", "shengSuanYunToken", res.data.data.jwt_token)
+			}
+			this.markWelcomeViewCompleted()
+			await this.sendAuthStatusUpdate()
+		} catch (error) {
+			Logger.error("[SdkAuthService] Error exchanging code for shengsuanyun API key:", error)
+			throw error
+		}
+	}
+
 	/**
 	 * Handle Requesty OAuth callback.
 	 */

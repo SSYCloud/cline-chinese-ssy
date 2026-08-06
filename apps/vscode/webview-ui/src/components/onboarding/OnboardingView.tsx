@@ -1,10 +1,16 @@
-import { buildModelInfoNameMap, type ModelInfo, openAiModelInfoSafeDefaults, resolveClinePassModelInfo } from "@shared/api"
-import { StringRequest } from "@shared/proto/cline/common"
+import {
+	buildModelInfoNameMap,
+	type ModelInfo,
+	openAiModelInfoSafeDefaults,
+	resolveClinePassModelInfo,
+	shengSuanYunDefaultModelInfo,
+} from "@shared/api"
+import { EmptyRequest, StringRequest } from "@shared/proto/cline/common"
 import type { OnboardingModel, OnboardingModelGroup, OpenRouterModelInfo } from "@shared/proto/index.cline"
 import { VSCodeLink } from "@vscode/webview-ui-toolkit/react"
 import { AlertCircleIcon, CircleCheckIcon, CircleIcon, ListIcon, LoaderCircleIcon, ZapIcon } from "lucide-react"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import ClineLogoWhite from "@/assets/ClineLogoWhite"
+import ClineLogoPanda from "@/assets/ClineLogoPanda"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -28,6 +34,7 @@ import {
 	type OnboardingModelsByGroup,
 } from "./data-models"
 import { getUserTypeSelections, NEW_USER_TYPE, STEP_CONFIG } from "./data-steps"
+import OnboardingShengSuanYunModelPicker from "./OnboardingShengSuanYunModelPicker"
 import { useOnboardingModels } from "./useOnboardingModels"
 
 type OnboardingPage =
@@ -120,7 +127,7 @@ const ModelSelection = ({
 					</ItemTitle>
 					{isSelected && model.info && (
 						<ItemDescription>
-							<span className="text-foreground/70 text-sm">Support: </span>
+							<span className="text-foreground/70 text-sm">支持: </span>
 							<span className="text-foreground text-sm">{getCapabilities(model.info).join(", ")}</span>
 						</ItemDescription>
 					)}
@@ -130,14 +137,14 @@ const ModelSelection = ({
 						<div className="flex flex-col gap-3">
 							<div className="inline-flex gap-1 [&_svg]:stroke-success [&_svg]:size-3 items-center text-sm">
 								<ZapIcon />
-								<span>Speed: </span>
+								<span>速度: </span>
 								<span className="text-foreground/70">{getSpeedLabel(model.latency)}</span>
 							</div>
 							{model.info && (
 								<div className="flex w-full justify-between">
 									<div className="inline-flex gap-1 [&_svg]:stroke-foreground [&_svg]:size-3 items-center text-sm">
 										<ListIcon />
-										<span>Context: </span>
+										<span>上下文: </span>
 										<span className="text-foreground/70">{(model?.info.contextWindow || 0) / 1000}k</span>
 									</div>
 									{!hidePrice && <Badge>{getPriceRange(model.info)}</Badge>}
@@ -256,15 +263,18 @@ type UserTypeSelectionProps = {
 
 const UserTypeSelectionStep = ({ userType, onSelectUserType, userTypeSelections }: UserTypeSelectionProps) => (
 	<div className="flex flex-col w-full items-center">
-		<div className="flex w-full max-w-lg flex-col gap-3 my-2">
+		<div className="flex w-full max-w-lg flex-col gap-2 my-2">
 			{userTypeSelections.map((option) => {
 				const isSelected = userType === option.type
 
 				return (
 					<Item
-						className={cn("cursor-pointer hover:cursor-pointer w-full", {
-							"bg-input-background/50 border border-input-foreground/30": isSelected,
-						})}
+						className={cn(
+							"cursor-pointer w-full rounded-sm border border-transparent px-3 py-3 transition-colors hover:bg-input-background/40",
+							{
+								"bg-input-background/50 border-button-background": isSelected,
+							},
+						)}
 						key={option.type}
 						onClick={() => onSelectUserType(option.type)}>
 						<ItemMedia className="[&_svg]:stroke-button-background" variant="icon">
@@ -310,6 +320,7 @@ type OnboardingStepContentProps = {
 	models?: Record<string, ModelInfo>
 	onboardingModels: OnboardingModelsByGroup
 	userTypeSelections: ReturnType<typeof getUserTypeSelections>
+	currentMode: "plan" | "act"
 }
 
 const OnboardingStepContent = ({
@@ -323,6 +334,7 @@ const OnboardingStepContent = ({
 	models,
 	onboardingModels,
 	userTypeSelections,
+	currentMode,
 }: OnboardingStepContentProps) => {
 	if (step === 0) {
 		return (
@@ -336,7 +348,10 @@ const OnboardingStepContent = ({
 	if (step === 2) {
 		return null
 	}
-	if (userType === NEW_USER_TYPE.FREE || userType === NEW_USER_TYPE.POWER || userType === NEW_USER_TYPE.CLINE_PASS) {
+	if (userType === NEW_USER_TYPE.POWER) {
+		return <OnboardingShengSuanYunModelPicker currentMode={currentMode} onSelectModel={onSelectModel} />
+	}
+	if (userType === NEW_USER_TYPE.FREE || userType === NEW_USER_TYPE.CLINE_PASS) {
 		return (
 			<ModelSelection
 				models={models}
@@ -355,7 +370,7 @@ const OnboardingStepContent = ({
 
 const OnboardingViewContent = ({ onboardingModels }: { onboardingModels: OnboardingModelGroup }) => {
 	const { handleFieldsChange } = useApiConfigurationHandlers()
-	const { openRouterModels, hideSettings, hideAccount, setShowWelcome } = useExtensionState()
+	const { mode, openRouterModels, shengSuanYunModels, hideSettings, hideAccount, setShowWelcome } = useExtensionState()
 	const { models: clineModels } = useProviderModels("cline")
 	const { commitSelection } = useProviderConfig("cline")
 	const loginAttemptIdRef = useRef(0)
@@ -364,7 +379,7 @@ const OnboardingViewContent = ({ onboardingModels }: { onboardingModels: Onboard
 
 	const [stepNumber, setStepNumber] = useState(0)
 	const [isActionLoading, setIsActionLoading] = useState(false)
-	const [userType, setUserType] = useState<NEW_USER_TYPE>(NEW_USER_TYPE.FREE)
+	const [userType, setUserType] = useState<NEW_USER_TYPE>(NEW_USER_TYPE.POWER)
 
 	const [selectedModelId, setSelectedModelId] = useState("")
 	const [searchTerm, setSearchTerm] = useState("")
@@ -460,6 +475,17 @@ const OnboardingViewContent = ({ onboardingModels }: { onboardingModels: Onboard
 						planModeApiProvider: "cline-pass",
 						actModeApiProvider: "cline-pass",
 					})
+				} else if (userType === NEW_USER_TYPE.POWER) {
+					const shengSuanYunModelInfo = shengSuanYunModels[selectedModelId] ?? shengSuanYunDefaultModelInfo
+
+					await handleFieldsChange({
+						planModeShengSuanYunModelId: selectedModelId,
+						actModeShengSuanYunModelId: selectedModelId,
+						planModeShengSuanYunModelInfo: shengSuanYunModelInfo,
+						actModeShengSuanYunModelInfo: shengSuanYunModelInfo,
+						planModeApiProvider: "shengsuanyun",
+						actModeApiProvider: "shengsuanyun",
+					})
 				} else if (userType !== NEW_USER_TYPE.CLINE_PASS) {
 					const selectedModelInfo = clineModels[selectedModelId] ??
 						onboardingModelById.get(selectedModelId)?.info ?? {
@@ -518,6 +544,7 @@ const OnboardingViewContent = ({ onboardingModels }: { onboardingModels: Onboard
 			clineModels,
 			onboardingModelById,
 			commitSelection,
+			shengSuanYunModels,
 			setShowWelcome,
 			userType,
 		],
@@ -562,8 +589,39 @@ const OnboardingViewContent = ({ onboardingModels }: { onboardingModels: Onboard
 		[finishOnboarding],
 	)
 
+	const loginToShengSuanYunAndFinishOnboarding = useCallback(async () => {
+		const loginAttemptId = loginAttemptIdRef.current + 1
+		loginAttemptIdRef.current = loginAttemptId
+
+		if (loginLoadingTimeoutRef.current) {
+			clearTimeout(loginLoadingTimeoutRef.current)
+		}
+
+		setIsActionLoading(true)
+		loginLoadingTimeoutRef.current = setTimeout(() => {
+			if (loginAttemptIdRef.current === loginAttemptId) {
+				setIsActionLoading(false)
+			}
+		}, 10_000)
+
+		await AccountServiceClient.shengSuanYunLoginClicked(EmptyRequest.create()).catch((error) => {
+			console.error("Failed to log in to ShengSuanYun during onboarding:", error)
+		})
+
+		if (loginAttemptIdRef.current !== loginAttemptId) {
+			return
+		}
+		if (loginLoadingTimeoutRef.current) {
+			clearTimeout(loginLoadingTimeoutRef.current)
+			loginLoadingTimeoutRef.current = null
+		}
+
+		await finishOnboarding(true, stepNumber)
+		setIsActionLoading(false)
+	}, [finishOnboarding, stepNumber])
+
 	const handleFooterAction = useCallback(
-		async (action: "signin" | "next" | "back" | "done" | "signup") => {
+		async (action: "signin" | "signin_ssy" | "next" | "back" | "done" | "signup") => {
 			const captureNavigation = (telemetryAction: string, destinationStep?: number) => {
 				StateServiceClient.captureOnboardingProgress({
 					step: stepNumber,
@@ -577,6 +635,26 @@ const OnboardingViewContent = ({ onboardingModels }: { onboardingModels: Onboard
 			}
 
 			switch (action) {
+				case "next":
+					captureNavigation("continued")
+					if (userType === NEW_USER_TYPE.POWER) {
+						// The frontier-model path is backed by ShengSuanYun. Set it before
+						// showing its picker, so its live model list is immediately available.
+						await handleFieldsChange({
+							planModeApiProvider: "shengsuanyun",
+							actModeApiProvider: "shengsuanyun",
+						})
+						setStepNumber(stepNumber + 1)
+						break
+					}
+					if (userType === NEW_USER_TYPE.BYOK) {
+						setStepNumber(stepNumber + 1)
+						break
+					}
+
+					// Show free models before asking the user to sign in.
+					setStepNumber(stepNumber + 1)
+					break
 				case "signup":
 					// ClinePass: record the intent so App opens the subscription page once auth
 					// completes (App outlives this view, which unmounts on auth). Login flow unchanged.
@@ -590,9 +668,9 @@ const OnboardingViewContent = ({ onboardingModels }: { onboardingModels: Onboard
 					captureNavigation("signin_clicked")
 					await loginAndFinishOnboarding(true, stepNumber)
 					break
-				case "next":
-					captureNavigation("continued", stepNumber + 1)
-					setStepNumber(stepNumber + 1)
+				case "signin_ssy":
+					captureNavigation("signin_ssy_clicked")
+					await loginToShengSuanYunAndFinishOnboarding()
 					break
 				case "back":
 					// Abandon any pending ClinePass subscription redirect when the user goes back.
@@ -605,7 +683,17 @@ const OnboardingViewContent = ({ onboardingModels }: { onboardingModels: Onboard
 					break
 			}
 		},
-		[stepNumber, currentPage, userType, selectedModelId, finishOnboarding, loginAndFinishOnboarding, setShowWelcome],
+		[
+			stepNumber,
+			currentPage,
+			userType,
+			selectedModelId,
+			finishOnboarding,
+			handleFieldsChange,
+			loginAndFinishOnboarding,
+			loginToShengSuanYunAndFinishOnboarding,
+			setShowWelcome,
+		],
 	)
 
 	const stepDisplayInfo = useMemo(() => {
@@ -619,19 +707,20 @@ const OnboardingViewContent = ({ onboardingModels }: { onboardingModels: Onboard
 	return (
 		<div className="fixed inset-0 p-0 flex flex-col w-full">
 			<div className="h-full px-5 xs:mx-10 overflow-auto flex flex-col gap-4 items-center justify-center">
-				<ClineLogoWhite className="size-16 flex-shrink-0" />
-				<h2 className="text-lg font-semibold p-0 flex-shrink-0">{stepDisplayInfo.title}</h2>
+				<ClineLogoPanda className="size-16 flex-shrink-0" />
+				<h2 className="text-xl font-bold p-0 flex-shrink-0">{stepDisplayInfo.title}</h2>
 				{stepNumber === 2 && (
 					<div className="flex w-full max-w-lg flex-col gap-6 my-4 items-center ">
 						<LoaderCircleIcon className="animate-spin" />
 					</div>
 				)}
 				{stepDisplayInfo.description && (
-					<p className="text-foreground text-sm text-center m-0 p-0 flex-shrink-0">{stepDisplayInfo.description}</p>
+					<p className="text-foreground/70 text-sm text-center m-0 p-0 flex-shrink-0">{stepDisplayInfo.description}</p>
 				)}
 
 				<div className="flex-1 w-full flex max-w-lg overflow-y-auto min-h-0">
 					<OnboardingStepContent
+						currentMode={mode}
 						models={Object.keys(clineModels).length > 0 ? clineModels : openRouterModels}
 						onboardingModels={models}
 						onSelectModel={onModelClick}
@@ -648,7 +737,7 @@ const OnboardingViewContent = ({ onboardingModels }: { onboardingModels: Onboard
 				<footer className="flex w-full max-w-lg flex-col gap-3 my-2 px-2 overflow-hidden flex-shrink-0">
 					{stepDisplayInfo.buttons.map((btn) => {
 						// Block ClinePass signup when no ClinePass model is selected (e.g. empty list).
-						const isLoginAction = btn.action === "signin" || btn.action === "signup"
+						const isLoginAction = btn.action === "signin" || btn.action === "signin_ssy" || btn.action === "signup"
 						const showSpinner = isActionLoading && isLoginAction
 						const disabled =
 							isActionLoading ||
@@ -661,20 +750,20 @@ const OnboardingViewContent = ({ onboardingModels }: { onboardingModels: Onboard
 								onClick={() => handleFooterAction(btn.action)}
 								variant={btn.variant}>
 								{showSpinner && <LoaderCircleIcon className="mr-2 size-4 animate-spin" />}
-								{showSpinner ? "Waiting for sign in..." : btn.text}
+								{showSpinner ? "正在登录..." : btn.text}
 							</Button>
 						)
 					})}
 
 					{isActionLoading && stepNumber !== 2 && (
 						<div className="items-center justify-center flex text-sm text-foreground/70 text-pretty text-center">
-							Complete sign in in your browser. We'll continue automatically once you're done.
+							请在浏览器中完成登录。完成后，我们将自动继续。
 						</div>
 					)}
 
 					{stepNumber !== 2 && (
 						<div className="items-center justify-center flex text-sm text-foreground gap-2 mb-3 text-pretty">
-							<AlertCircleIcon className="shrink-0 size-2" /> You can change this later in settings
+							<AlertCircleIcon className="shrink-0 size-2" /> 您稍后可以在设置中更改此设置。
 						</div>
 					)}
 				</footer>
@@ -682,7 +771,6 @@ const OnboardingViewContent = ({ onboardingModels }: { onboardingModels: Onboard
 		</div>
 	)
 }
-
 const OnboardingWelcomeFallback = () => {
 	useEffect(() => {
 		const page: OnboardingPage = "legacy_welcome_fallback"
@@ -695,7 +783,6 @@ const OnboardingWelcomeFallback = () => {
 
 	return <WelcomeView />
 }
-
 const OnboardingView = () => {
 	const { status, models } = useOnboardingModels()
 

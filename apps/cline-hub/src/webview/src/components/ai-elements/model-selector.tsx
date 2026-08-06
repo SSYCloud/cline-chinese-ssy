@@ -159,6 +159,7 @@ export type ModelSelectorLogoProps = Omit<
 		| "zai"
 		| "inference"
 		| "requesty"
+		| "shengsuanyun"
 		| "morph"
 		| "lmstudio"
 		| "anthropic"

@@ -535,7 +535,7 @@ await runScenario(
 	{
 		env: { CLINE_BUNDLE_OVERRIDE: "next" },
 		telemetryEnabled: true,
-		contextPackageJSON: { name: "claude-dev" },
+		contextPackageJSON: { name: "cline-chinese" },
 	},
 	async ({ fetchCalls }) => {
 		await waitFor(
@@ -551,7 +551,7 @@ await runScenario(
 		assert.equal(capture.properties.fallback, false);
 		assert.equal(capture.properties.override, "env");
 		assert.equal(capture.properties.loader_version, "4.1.0-smoke");
-		assert.equal(capture.properties.extension_name, "claude-dev");
+		assert.equal(capture.properties.extension_name, "cline-chinese");
 	},
 );
 

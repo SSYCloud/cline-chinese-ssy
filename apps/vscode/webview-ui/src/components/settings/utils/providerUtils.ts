@@ -54,6 +54,7 @@ export function getModeSpecificFields(apiConfiguration: ApiConfiguration | undef
 			aihubmixModelId: undefined,
 			nousResearchModelId: undefined,
 			vercelAiGatewayModelId: undefined,
+			shengSuanYunModelId: undefined,
 
 			// Model info objects
 			openAiModelInfo: undefined,
@@ -66,6 +67,7 @@ export function getModeSpecificFields(apiConfiguration: ApiConfiguration | undef
 			huggingFaceModelInfo: undefined,
 			vsCodeLmModelSelector: undefined,
 			aihubmixModelInfo: undefined,
+			shengSuanYunModelInfo: undefined,
 
 			// AWS Bedrock fields
 			awsBedrockCustomSelected: undefined,
@@ -121,6 +123,8 @@ export function getModeSpecificFields(apiConfiguration: ApiConfiguration | undef
 			mode === "plan" ? apiConfiguration.planModeNousResearchModelId : apiConfiguration.actModeNousResearchModelId,
 		vercelAiGatewayModelId:
 			mode === "plan" ? apiConfiguration.planModeVercelAiGatewayModelId : apiConfiguration.actModeVercelAiGatewayModelId,
+		shengSuanYunModelId:
+			mode === "plan" ? apiConfiguration.planModeShengSuanYunModelId : apiConfiguration.actModeShengSuanYunModelId,
 
 		// Model info objects
 		openAiModelInfo: mode === "plan" ? apiConfiguration.planModeOpenAiModelInfo : apiConfiguration.actModeOpenAiModelInfo,
@@ -143,6 +147,8 @@ export function getModeSpecificFields(apiConfiguration: ApiConfiguration | undef
 			mode === "plan"
 				? apiConfiguration.planModeVercelAiGatewayModelInfo
 				: apiConfiguration.actModeVercelAiGatewayModelInfo,
+		shengSuanYunModelInfo:
+			mode === "plan" ? apiConfiguration.planModeShengSuanYunModelInfo : apiConfiguration.actModeShengSuanYunModelInfo,
 
 		// AWS Bedrock fields
 		awsBedrockCustomSelected:
@@ -340,6 +346,13 @@ export async function syncModeConfigurations(
 			updates.planModeAihubmixModelInfo = sourceFields.aihubmixModelInfo
 			updates.actModeAihubmixModelId = sourceFields.aihubmixModelId
 			updates.actModeAihubmixModelInfo = sourceFields.aihubmixModelInfo
+			break
+
+		case "shengsuanyun":
+			updates.planModeShengSuanYunModelId = sourceFields.shengSuanYunModelId
+			updates.actModeShengSuanYunModelId = sourceFields.shengSuanYunModelId
+			updates.planModeShengSuanYunModelInfo = sourceFields.shengSuanYunModelInfo
+			updates.actModeShengSuanYunModelInfo = sourceFields.shengSuanYunModelInfo
 			break
 
 		// Default branch: providers that use the common `apiProvider` +

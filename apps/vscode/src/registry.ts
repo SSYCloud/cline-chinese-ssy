@@ -1,7 +1,7 @@
 import { name, publisher, version } from "../package.json"
 import { HostProvider } from "./hosts/host-provider"
 
-const prefix = name === "claude-dev" ? "cline" : name
+const prefix = name === "cline-chinese" ? "cline-chinese" : name
 
 /**
  * List of commands with the name of the extension they are registered under.

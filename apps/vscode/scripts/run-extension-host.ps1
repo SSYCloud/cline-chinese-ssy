@@ -76,8 +76,8 @@ while (-not (Test-Path $extensionJs)) {
 Write-Host "Launching Extension Host..."
 code --extensionDevelopmentPath="$Workspace" `
     --disable-workspace-trust `
-    --disable-extension saoudrizwan.claude-dev `
-    --disable-extension saoudrizwan.cline-nightly `
+    --disable-extension HybridTalentComputing:cline-chinese `
+    --disable-extension HybridTalentComputing.cline-nightly `
     "$Workspace"
 Write-Host "Extension Host launched."
 

@@ -47,7 +47,7 @@ tmux bind-key -T root C-c kill-session
 tmux send-keys -t "$SESSION:0.0" "bun run watch:esbuild" Enter
 tmux send-keys -t "$SESSION:0.1" "bun run watch:tsc" Enter
 tmux send-keys -t "$SESSION:0.2" "bun run dev:webview" Enter
-tmux send-keys -t "$SESSION:0.3" "while [ ! -f '$WORKSPACE/dist/extension.js' ]; do sleep 0.5; done && echo 'Launching Extension Host...' && code --extensionDevelopmentPath='$WORKSPACE' --disable-workspace-trust --disable-extension saoudrizwan.claude-dev --disable-extension saoudrizwan.cline-nightly '$WORKSPACE' && echo 'Extension Host launched.'" Enter
+tmux send-keys -t "$SESSION:0.3" "while [ ! -f '$WORKSPACE/dist/extension.js' ]; do sleep 0.5; done && echo 'Launching Extension Host...' && code --extensionDevelopmentPath='$WORKSPACE' --disable-workspace-trust --disable-extension HybridTalentComputing:cline-chinese --disable-extension HybridTalentComputing.cline-nightly '$WORKSPACE' && echo 'Extension Host launched.'" Enter
 
 # Attach to the session
 tmux attach-session -t "$SESSION"

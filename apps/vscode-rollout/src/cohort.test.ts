@@ -119,8 +119,8 @@ describe("identity prefix", () => {
 		expect(idPrefix("cline-nightly")).toBe("cline-nightly");
 	});
 
-	it("maps everything else (stable claude-dev, unknown, missing) to cline", () => {
-		expect(idPrefix("claude-dev")).toBe("cline");
+	it("maps everything else (stable cline-chinese, unknown, missing) to cline", () => {
+		expect(idPrefix("cline-chinese")).toBe("cline");
 		expect(idPrefix("some-fork")).toBe("cline");
 		expect(idPrefix(undefined)).toBe("cline");
 	});

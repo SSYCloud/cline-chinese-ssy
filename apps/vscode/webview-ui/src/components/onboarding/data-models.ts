@@ -1,4 +1,4 @@
-import type { ClineRecommendedModel, OpenRouterModelInfo } from "@shared/proto/cline/models"
+import type { ClineRecommendedModel } from "@shared/proto/cline/models"
 import type { OnboardingModel, OnboardingModelGroup } from "@shared/proto/cline/state"
 
 export const CLINEPASS_GROUP = "cline-pass"
@@ -66,8 +66,11 @@ export function getOnboardingGroupDisplayName(group: string): string {
 	}
 	return group
 }
-
-export function getPriceRange(modelInfo: OpenRouterModelInfo): string {
+interface PriceRangeInfo {
+	inputPrice?: number
+	outputPrice?: number
+}
+export function getPriceRange(modelInfo: PriceRangeInfo): string {
 	const prompt = Number(modelInfo.inputPrice ?? 0)
 	const completion = Number(modelInfo.outputPrice ?? 0)
 	const cost = prompt + completion
@@ -82,8 +85,11 @@ export function getPriceRange(modelInfo: OpenRouterModelInfo): string {
 	}
 	return "$$"
 }
-
-export function getCapabilities(modelInfo: OpenRouterModelInfo): string[] {
+interface CapabilityInfo {
+	supportsImages?: boolean
+	supportsPromptCache?: boolean
+}
+export function getCapabilities(modelInfo: CapabilityInfo): string[] {
 	const capabilities = new Set<string>()
 	if (modelInfo.supportsImages) {
 		capabilities.add("Images")

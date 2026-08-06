@@ -33,6 +33,7 @@ const ProviderKeyMap: Partial<Record<ApiProvider, string>> = {
 	hicap: "HicapModelId",
 	nousResearch: "NousResearchModelId",
 	"vercel-ai-gateway": "VercelAiGatewayModelId",
+	shengsuanyun: "ShengSuanYunModelId",
 } as const
 
 /**
