@@ -20,12 +20,12 @@ export interface CheckpointPickerResult {
 function formatRelativeTime(timestamp: number): string {
 	const diffMs = Date.now() - timestamp;
 	const diffMins = Math.floor(diffMs / 60_000);
-	if (diffMins < 1) return "just now";
-	if (diffMins < 60) return `${diffMins}m ago`;
+	if (diffMins < 1) return "刚刚";
+	if (diffMins < 60) return `${diffMins} 分钟前`;
 	const diffHours = Math.floor(diffMins / 60);
-	if (diffHours < 24) return `${diffHours}h ago`;
+	if (diffHours < 24) return `${diffHours} 小时前`;
 	const diffDays = Math.floor(diffHours / 24);
-	return `${diffDays}d ago`;
+	return `${diffDays} 天前`;
 }
 
 const MAX_VISIBLE = 10;
@@ -90,10 +90,10 @@ export function CheckpointPickerContent(
 	if (items.length === 0) {
 		return (
 			<box flexDirection="column" paddingX={1} gap={1}>
-				<text>Restore to Checkpoint</text>
-				<text fg="gray">No checkpoints available</text>
+				<text>恢复到检查点</text>
+				<text fg="gray">没有可用的检查点</text>
 				<text fg="gray">
-					<em>Esc to close</em>
+					<em>按 Esc 关闭</em>
 				</text>
 			</box>
 		);
@@ -104,13 +104,13 @@ export function CheckpointPickerContent(
 
 	return (
 		<box flexDirection="column" paddingX={1}>
-			<text>Restore to Checkpoint</text>
+			<text>恢复到检查点</text>
 
 			<box flexDirection="column" marginTop={1}>
 				{aboveCount > 0 && (
 					<text fg="gray">
 						{"▲ "}
-						{aboveCount} more
+						{aboveCount} 更多
 					</text>
 				)}
 
@@ -152,13 +152,13 @@ export function CheckpointPickerContent(
 				{belowCount > 0 && (
 					<text fg="gray">
 						{"▼ "}
-						{belowCount} more
+						{belowCount} 更多
 					</text>
 				)}
 			</box>
 
 			<text fg="gray" marginTop={1}>
-				<em>{"↑/↓ navigate, Enter to select, Esc to cancel"}</em>
+				<em>{"↑/↓ 导航，Enter 选择，Esc 取消"}</em>
 			</text>
 		</box>
 	);

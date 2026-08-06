@@ -144,7 +144,7 @@ export function useOnboardingController(props: OnboardingControllerProps) {
 				detail: p.isOAuth
 					? "(OAuth)"
 					: p.isLocalAuth
-						? "(local CLI)"
+						? "(本地 CLI)"
 						: undefined,
 				searchText: `${p.name} ${p.id}`,
 				rightLabel: p.hasAuth ? "\u25cf" : undefined,
@@ -181,7 +181,7 @@ export function useOnboardingController(props: OnboardingControllerProps) {
 				key: m.id,
 				label: m.name,
 				searchText: `${m.name} ${m.id}`,
-				rightLabel: m.id === modelsDefaultId ? "(default)" : undefined,
+				rightLabel: m.id === modelsDefaultId ? "(默认)" : undefined,
 				rightLabelColor: "gray",
 			})),
 		[modelEntries, modelsDefaultId],
@@ -197,8 +197,8 @@ export function useOnboardingController(props: OnboardingControllerProps) {
 			}
 			return {
 				key: CUSTOM_MODEL_ID_ACTION,
-				label: "Create custom model ID",
-				detail: "manual entry",
+				label: "创建自定义模型 ID",
+				detail: "手动输入",
 				searchText: "create custom model id manual entry",
 			} satisfies SearchableItem;
 		},
@@ -407,7 +407,7 @@ export function useOnboardingController(props: OnboardingControllerProps) {
 			setDeviceUserCode("");
 			setDeviceVerifyUrl("");
 			setDeviceError("");
-			setDeviceStatus("Requesting device code...");
+			setDeviceStatus("正在请求设备代码...");
 			setOauthProvider(providerId);
 			setStep("device_code");
 
@@ -436,7 +436,7 @@ export function useOnboardingController(props: OnboardingControllerProps) {
 			resetAuth();
 			setOauthProvider(providerId);
 			setStep("oauth_pending");
-			setAuthStatus("Opening browser...");
+			setAuthStatus("正在打开浏览器...");
 
 			runOAuthAuthFlow({
 				providerId,
@@ -462,16 +462,16 @@ export function useOnboardingController(props: OnboardingControllerProps) {
 	}, [transitionToModelPicker]);
 
 	const openClinePassSubscriptionPage = useCallback(() => {
-		setClinePassSubscriptionOpenStatus("Opening subscription page...");
+		setClinePassSubscriptionOpenStatus("正在打开订阅页面...");
 		void open(clinePassSubscriptionUrl, { wait: false })
 			.then(() => {
 				setClinePassSubscriptionOpenStatus(
-					"Opened subscription page in your browser.",
+					"已在你的浏览器中打开订阅页面。",
 				);
 			})
 			.catch(() => {
 				setClinePassSubscriptionOpenStatus(
-					`Could not open browser automatically. Open ${clinePassSubscriptionUrl}`,
+					`无法自动打开浏览器。请打开 ${clinePassSubscriptionUrl}`,
 				);
 			});
 	}, [clinePassSubscriptionUrl]);
@@ -678,7 +678,7 @@ export function useOnboardingController(props: OnboardingControllerProps) {
 	const saveCustomModelId = useCallback(() => {
 		const modelId = customModelId.trim();
 		if (!modelId) {
-			setCustomModelError("Enter a model ID");
+			setCustomModelError("请输入模型 ID");
 			return;
 		}
 		completeModelSelection(modelId);
@@ -839,8 +839,8 @@ export function useOnboardingController(props: OnboardingControllerProps) {
 		customModelId,
 		customModelTitle:
 			activeProviderId === "openai-compatible"
-				? "Set model ID"
-				: "Create custom model ID",
+				? "设置模型 ID"
+				: "创建自定义模型 ID",
 		handleByoFieldInput: (field: ProviderConfigFieldKey, value: string) => {
 			setByoValues((prev) => updateProviderConfigValue(prev, field, value));
 		},

@@ -84,16 +84,16 @@ export function formatInteractiveExitSummary(
 		: true;
 	const lines = [
 		"",
-		"Session Summary",
+		"会话摘要",
 		`  ID        ${summary.sessionId}`,
-		`  Duration  ${formatDuration(summary.startedAt)}`,
-		model ? `  Model     ${model}` : undefined,
+		`  时长      ${formatDuration(summary.startedAt)}`,
+		model ? `  模型      ${model}` : undefined,
 		summary.cwd ? `  CWD       ${summary.cwd}` : undefined,
-		`  Messages  ${summary.messageCount.toLocaleString()}`,
+		`  消息数    ${summary.messageCount.toLocaleString()}`,
 		showUsageCost && typeof summary.totalCost === "number"
-			? `  Cost      ${formatUsd(summary.totalCost)}`
+			? `  费用      ${formatUsd(summary.totalCost)}`
 			: undefined,
-		`  Continue  ${c.cyan}cline --id ${summary.sessionId}${c.reset}`,
+		`  继续      ${c.cyan}cline --id ${summary.sessionId}${c.reset}`,
 		"",
 	];
 	return lines.filter((line): line is string => line !== undefined).join("\n");

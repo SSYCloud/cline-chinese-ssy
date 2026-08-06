@@ -41,7 +41,7 @@ export const HicapProvider = ({ showModelOptions, isPopup, currentMode }: HicapP
 							refreshHicapModels()
 						}
 					}}
-					placeholder="Enter API Key..."
+					placeholder="输入 API 密钥..."
 					style={{ width: "100%" }}
 					type="password">
 					<div
@@ -52,7 +52,7 @@ export const HicapProvider = ({ showModelOptions, isPopup, currentMode }: HicapP
 							width: "100%",
 							margin: "10px 0 0 0",
 						}}>
-						<span style={{ fontWeight: 500 }}>Hicap API Key</span>
+						<span style={{ fontWeight: 500 }}>Hicap API 密钥</span>
 					</div>
 				</DebouncedTextField>
 
@@ -67,7 +67,7 @@ export const HicapProvider = ({ showModelOptions, isPopup, currentMode }: HicapP
 							}
 						}}
 						style={{ margin: "5px 0 0 0" }}>
-						Generate API Key
+						生成 API 密钥
 					</VSCodeButton>
 				)}
 			</div>

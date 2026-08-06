@@ -147,7 +147,7 @@ const RuleRow: React.FC<{
 								<InfoIcon className="ml-1.5 opacity-70 size-[0.85rem]" />
 							</TooltipTrigger>
 							<TooltipContent>
-								Searches recursively for all AGENTS.md files in the workspace when a top-level AGENTS.md exists
+								当工作区存在顶层 AGENTS.md 时，会递归搜索工作区中的所有 AGENTS.md 文件
 							</TooltipContent>
 						</Tooltip>
 					)}
@@ -161,22 +161,22 @@ const RuleRow: React.FC<{
 						disabled={isDisabled}
 						key={rulePath}
 						onClick={() => toggleRule(rulePath, !enabled)}
-						title={isDisabled ? "This rule is required and cannot be disabled" : undefined}
+						title={isDisabled ? "此规则为必需项，无法禁用" : undefined}
 					/>
 					<Button
-						aria-label={isRemote ? `View ${ruleType} file` : `Edit ${ruleType} file`}
+						aria-label={isRemote ? `查看 ${ruleType} 文件` : `编辑 ${ruleType} 文件`}
 						onClick={handleEditClick}
 						size="xs"
-						title={isRemote ? `View ${ruleType} file (read-only)` : `Edit ${ruleType} file`}
+						title={isRemote ? `查看 ${ruleType} 文件（只读）` : `编辑 ${ruleType} 文件`}
 						variant="icon">
 						{isRemote ? <EyeIcon /> : <PenIcon />}
 					</Button>
 					<Button
-						aria-label={`Delete ${ruleType} file`}
+						aria-label={`删除 ${ruleType} 文件`}
 						disabled={isRemote}
 						onClick={handleDeleteClick}
 						size="xs"
-						title={`Delete ${ruleType} file`}
+						title={`删除 ${ruleType} 文件`}
 						variant="icon">
 						<Trash2Icon />
 					</Button>

@@ -21,7 +21,7 @@ async function runHistoryDelete(
 	io: HistoryIo,
 ): Promise<number> {
 	if (!sessionId) {
-		io.writeErr("history delete requires --session-id <id>");
+		io.writeErr("history delete 需要 --session-id <id>");
 		return 1;
 	}
 
@@ -32,10 +32,10 @@ async function runHistoryDelete(
 			return result.deleted ? 0 : 1;
 		}
 		if (result.deleted) {
-			io.writeln(`Deleted session ${sessionId}`);
+			io.writeln(`已删除会话 ${sessionId}`);
 			return 0;
 		}
-		io.writeErr(`Session ${sessionId} not found`);
+		io.writeErr(`未找到会话 ${sessionId}`);
 		return 1;
 	} catch (error) {
 		io.writeErr(error instanceof Error ? error.message : String(error));
@@ -52,7 +52,7 @@ async function runHistoryUpdate(
 	io: HistoryIo,
 ): Promise<number> {
 	if (!sessionId) {
-		io.writeErr("history update requires --session-id <id>");
+		io.writeErr("history update 需要 --session-id <id>");
 		return 1;
 	}
 
@@ -62,7 +62,7 @@ async function runHistoryUpdate(
 			metadata = JSON.parse(metadataStr);
 		} catch (error) {
 			io.writeErr(
-				`Invalid metadata JSON: ${error instanceof Error ? error.message : String(error)}`,
+				`无效的 metadata JSON: ${error instanceof Error ? error.message : String(error)}`,
 			);
 			return 1;
 		}
@@ -78,7 +78,7 @@ async function runHistoryUpdate(
 
 	if (prompt === undefined && metadata === undefined && title === undefined) {
 		io.writeErr(
-			"history update requires --prompt <text>, --title <text>, or --metadata <json>",
+			"history update 需要 --prompt <text>、--title <text> 或 --metadata <json>",
 		);
 		return 1;
 	}
@@ -90,10 +90,10 @@ async function runHistoryUpdate(
 			return result.updated ? 0 : 1;
 		}
 		if (result.updated) {
-			io.writeln(`Updated session ${sessionId}`);
+			io.writeln(`已更新会话 ${sessionId}`);
 			return 0;
 		}
-		io.writeErr(`Session ${sessionId} not found`);
+		io.writeErr(`未找到会话 ${sessionId}`);
 		return 1;
 	} catch (error) {
 		io.writeErr(error instanceof Error ? error.message : String(error));
@@ -108,7 +108,7 @@ async function runHistoryExport(
 	io: HistoryIo,
 ): Promise<number> {
 	if (!sessionId) {
-		io.writeErr("history export requires <session-id>");
+		io.writeErr("history export 需要 <session-id>");
 		return 1;
 	}
 
@@ -129,7 +129,7 @@ async function runHistoryExport(
 			return 0;
 		}
 
-		io.writeln(`Exported to ${targetPath}`);
+		io.writeln(`已导出到 ${targetPath}`);
 		return 0;
 	} catch (error) {
 		io.writeErr(error instanceof Error ? error.message : String(error));
@@ -157,7 +157,7 @@ export async function runHistoryList(input: {
 		if (input.outputMode === "json") {
 			process.stdout.write(JSON.stringify([]));
 		} else {
-			io.writeln("No history found.");
+			io.writeln("未找到历史记录。");
 		}
 		return 0;
 	}

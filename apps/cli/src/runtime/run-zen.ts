@@ -32,7 +32,7 @@ export async function runZen(
 ): Promise<void> {
 	if (config.sandbox) {
 		writeErr(
-			"--zen cannot be combined with --data-dir (sandbox requires a local backend).",
+			"--zen 不能与 --data-dir 组合使用（沙箱需要本地后端）。",
 		);
 		process.exitCode = 1;
 		return;
@@ -41,7 +41,7 @@ export async function runZen(
 		process.env.CLINE_SESSION_BACKEND_MODE?.trim().toLowerCase() === "local"
 	) {
 		writeErr(
-			"--zen requires the hub backend but CLINE_SESSION_BACKEND_MODE=local is set.",
+			"--zen 需要 hub 后端，但已设置 CLINE_SESSION_BACKEND_MODE=local。",
 		);
 		process.exitCode = 1;
 		return;
@@ -56,7 +56,7 @@ export async function runZen(
 		hubAuthToken = hub.authToken;
 	} catch (error) {
 		const message = error instanceof Error ? error.message : String(error);
-		writeErr(`failed to start background hub: ${message}`);
+		writeErr(`无法启动后台 hub：${message}`);
 		process.exitCode = 1;
 		return;
 	}
@@ -156,10 +156,10 @@ export async function runZen(
 			});
 		} else {
 			writeln(
-				`${c.dim}[zen]${c.reset} the CLI is exiting; the session ${sessionId} will continue running in the background.`,
+				`${c.dim}[zen]${c.reset} CLI 正在退出；会话 ${sessionId} 将在后台继续运行。`,
 			);
 			writeln(
-				`${c.dim}[zen]${c.reset} check ${c.dim} history${c.reset} later to see the result.`,
+				`${c.dim}[zen]${c.reset} 稍后可运行 ${c.dim}history${c.reset} 查看结果。`,
 			);
 		}
 		process.exitCode = 0;
@@ -172,7 +172,7 @@ export async function runZen(
 				message,
 			});
 		} else {
-			writeErr(`zen dispatch failed: ${message}`);
+			writeErr(`zen 派发失败：${message}`);
 		}
 		process.exitCode = 1;
 	} finally {

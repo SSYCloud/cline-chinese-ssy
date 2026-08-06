@@ -8,37 +8,37 @@ interface FeatureTipItem {
 
 const FEATURE_TIPS: FeatureTipItem[] = [
 	{
-		text: 'Enable "Double-Check Completion" in settings to have Cline verify its work before finishing a task.',
+		text: "在设置中启用“双重检查完成”，让 Cline 在完成任务前验证其工作。",
 	},
 	{
-		text: "Add a .clinerules file to your project root to give Cline project-specific instructions.",
+		text: "在项目根目录添加 .clinerules 文件，为 Cline 提供项目特定的指令。",
 	},
 	{
-		text: "Switch to Plan Mode to discuss and plan an approach before Cline takes action.",
+		text: "切换到计划模式，在 Cline 采取行动之前讨论并规划方案。",
 	},
 	{
-		text: "Use @ in the chat input to add files, folders, or URLs as context for your task.",
+		text: "在聊天输入框中使用 @ 添加文件、文件夹或 URL 作为任务的上下文。",
 	},
 	{
-		text: "Set up MCP Servers to give Cline access to external tools and APIs.",
+		text: "配置 MCP 服务器，让 Cline 访问外部工具和 API。",
 	},
 	{
-		text: "Cline creates checkpoints after changes — you can always restore to a previous state.",
+		text: "Cline 会在更改后创建检查点——你随时可以恢复到之前的状态。",
 	},
 	{
-		text: "Use /compact to condense long conversations and free up context window space.",
+		text: "使用 /compact 压缩冗长的对话，释放上下文窗口空间。",
 	},
 	{
-		text: "Enable auto-approve for read-only tools like file reads to speed up exploration.",
+		text: "为读取文件等只读工具启用自动批准，以加快探索速度。",
 	},
 	{
-		text: "Use the quote button to select text from Cline's response and reference it in your reply.",
+		text: "使用引用按钮选择 Cline 回复中的文本，并在你的回复中引用它。",
 	},
 	{
-		text: "You can drag and drop images into the chat to share screenshots with Cline.",
+		text: "你可以将图片拖放到聊天中，与 Cline 分享截图。",
 	},
 	{
-		text: 'You can disable these tips in Settings → Features → "Feature Tips".',
+		text: "你可以在 设置 → 功能 → “功能提示” 中关闭这些提示。",
 	},
 ]
 
@@ -102,7 +102,7 @@ export const FeatureTip = memo(() => {
 			)}>
 			<LightbulbIcon className="size-3 text-description shrink-0 mt-[1px]" />
 			<span className="text-xs text-description leading-relaxed">
-				<span className="font-medium">Tip:</span> {currentTip.text}
+				<span className="font-medium">提示：</span> {currentTip.text}
 			</span>
 		</div>
 	)

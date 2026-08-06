@@ -84,7 +84,7 @@ export function ClineModelSelectorContent(
 				rows.push({
 					key: "browse-all",
 					kind: "browse",
-					label: "Browse all models...",
+					label: "浏览所有模型...",
 					tags: [],
 					isCurrent: false,
 					entryIndex: i,
@@ -136,7 +136,7 @@ export function ClineModelSelectorContent(
 	return (
 		<box flexDirection="column" gap={1}>
 			<text>
-				<strong>Choose a model</strong>
+				<strong>选择模型</strong>
 			</text>
 
 			<ProviderRow providerName={currentProviderName} focused={onProvider} />
@@ -199,7 +199,7 @@ export function ClineModelSelectorContent(
 									fg={isSel ? palette.textOnSelection : "gray"}
 									flexShrink={0}
 								>
-									(current)
+									（当前）
 								</text>
 							)}
 						</box>
@@ -208,7 +208,7 @@ export function ClineModelSelectorContent(
 			</box>
 
 			<text fg="gray">
-				↑/↓ navigate, Enter to select, Tab to change provider, Esc to go back
+				↑/↓ 导航，Enter 选择，Tab 切换提供商，Esc 返回
 			</text>
 		</box>
 	);
@@ -224,14 +224,14 @@ export function ClineModelSelectorDialogContent(
 	const { dismiss, dialogId, loadEntries } = props;
 	const [state, setState] = useState<ClineModelEntriesState>({
 		status: "loading",
-		message: "Loading Cline models...",
+		message: "正在加载 Cline 模型...",
 	});
 	const generation = useRef(0);
 
 	const reload = useCallback(async () => {
 		const currentGeneration = generation.current + 1;
 		generation.current = currentGeneration;
-		setState({ status: "loading", message: "Loading Cline models..." });
+		setState({ status: "loading", message: "正在加载 Cline 模型..." });
 		try {
 			const entries = await loadEntries();
 			if (generation.current === currentGeneration) {
@@ -271,20 +271,20 @@ export function ClineModelSelectorDialogContent(
 	if (state.status === "error") {
 		return (
 			<box flexDirection="column" gap={1}>
-				<text fg={palette.act}>Choose a model</text>
+				<text fg={palette.act}>选择模型</text>
 				<ProviderRow providerName={props.currentProviderName} focused={false} />
 				<text fg="red">{state.message}</text>
-				<text fg="gray">R to retry, Esc to go back</text>
+				<text fg="gray">按 R 重试，Esc 返回</text>
 			</box>
 		);
 	}
 
 	return (
 		<box flexDirection="column" gap={1}>
-			<text fg={palette.act}>Choose a model</text>
+			<text fg={palette.act}>选择模型</text>
 			<ProviderRow providerName={props.currentProviderName} focused={false} />
 			<text fg="gray">{state.message}</text>
-			<text fg="gray">Esc to go back</text>
+			<text fg="gray">按 Esc 返回</text>
 		</box>
 	);
 }

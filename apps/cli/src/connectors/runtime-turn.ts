@@ -56,12 +56,12 @@ export function formatConnectorToolStatus(input: {
 }): string {
 	const resolvedName = input.toolName?.trim() || "unknown_tool";
 	if (input.status === "start") {
-		return `Executing ${resolvedName}...`;
+		return `正在执行 ${resolvedName}...`;
 	}
 	const detail = input.errorMessage?.trim();
 	return detail
-		? `${resolvedName} failed: ${truncateConnectorText(detail, 240)}`
-		: `${resolvedName} failed`;
+		? `${resolvedName} 失败：${truncateConnectorText(detail, 240)}`
+		: `${resolvedName} 失败`;
 }
 
 export function formatConnectorApprovalPrompt(
@@ -70,19 +70,19 @@ export function formatConnectorApprovalPrompt(
 	const summary = formatToolInput(input.toolName, input.input);
 	return summary
 		? [
-				`Approval required for "${input.toolName}"`,
-				`Request: ${truncateConnectorText(summary, 220)}`,
-				'Reply "Y" to approve or "N" to deny.',
+				`需要对 "${input.toolName}" 进行审批`,
+				`请求：${truncateConnectorText(summary, 220)}`,
+				'回复 "Y" 批准或 "N" 拒绝。',
 			].join("\n")
 		: [
-				`Approval required for "${input.toolName}"`,
-				'Reply "Y" to approve or "N" to deny.',
+				`需要对 "${input.toolName}" 进行审批`,
+				'回复 "Y" 批准或 "N" 拒绝。',
 			].join("\n");
 }
 
 export function parseConnectorApprovalDecision(
 	text: string,
-	deniedReason = "Denied by user",
+	deniedReason = "用户拒绝",
 ): { approved: boolean; reason?: string } | undefined {
 	const normalized = text.trim().toLowerCase();
 	if (
@@ -172,7 +172,7 @@ export function createConnectorRuntimeTurnStream(input: {
 				try {
 					await input.onToolStatus?.(message);
 				} catch (error) {
-					input.logger.core.log("Connector tool status delivery failed", {
+					input.logger.core.log("连接器工具状态投递失败", {
 						severity: "warn",
 						transport: input.transport,
 						conversationId: input.conversationId,
@@ -252,7 +252,7 @@ export function createConnectorRuntimeTurnStream(input: {
 									typeof event.payload.error === "string" &&
 									event.payload.error.trim()
 										? event.payload.error.trim()
-										: "Runtime turn failed";
+										: "运行时回合失败";
 								const error = new Error(message);
 								void input.onFailed?.(error);
 								push({ type: "error", error });
@@ -267,7 +267,7 @@ export function createConnectorRuntimeTurnStream(input: {
 					},
 					onError: (error) => {
 						input.logger.core.log(
-							"Connector runtime event stream failed mid-turn",
+							"连接器运行时事件流在回合中途失败",
 							{
 								severity: "warn",
 								transport: input.transport,
@@ -285,7 +285,7 @@ export function createConnectorRuntimeTurnStream(input: {
 				.sendRuntimeSession(input.sessionId, input.request, { timeoutMs: null })
 				.then(async (response) => {
 					if (!response.result) {
-						input.logger.core.log("Connector runtime turn queued", {
+						input.logger.core.log("连接器运行时回合已排队", {
 							transport: input.transport,
 							conversationId: input.conversationId,
 							sessionId: input.sessionId,

@@ -6,53 +6,53 @@ export interface CronPreset {
 
 export const CRON_PRESETS: CronPreset[] = [
 	{
-		label: "Every 5 minutes",
+		label: "每 5 分钟",
 		value: "*/5 * * * *",
 		hint: "*/5 * * * *",
 	},
 	{
-		label: "Every 15 minutes",
+		label: "每 15 分钟",
 		value: "*/15 * * * *",
 		hint: "*/15 * * * *",
 	},
 	{
-		label: "Every hour",
+		label: "每小时",
 		value: "0 * * * *",
 		hint: "0 * * * *",
 	},
 	{
-		label: "Every 6 hours",
+		label: "每 6 小时",
 		value: "0 */6 * * *",
 		hint: "0 */6 * * *",
 	},
 	{
-		label: "Daily at midnight",
+		label: "每天午夜",
 		value: "0 0 * * *",
 		hint: "0 0 * * *",
 	},
 	{
-		label: "Daily at 9am",
+		label: "每天上午 9 点",
 		value: "0 9 * * *",
 		hint: "0 9 * * *",
 	},
 	{
-		label: "Every weekday at 9am",
+		label: "每个工作日上午 9 点",
 		value: "0 9 * * 1-5",
 		hint: "0 9 * * 1-5",
 	},
 	{
-		label: "Every Monday at 9am",
+		label: "每周一上午 9 点",
 		value: "0 9 * * 1",
 		hint: "0 9 * * 1",
 	},
 	{
-		label: "First of every month",
+		label: "每月第一天",
 		value: "0 0 1 * *",
 		hint: "0 0 1 * *",
 	},
 	{
-		label: "Custom",
+		label: "自定义",
 		value: "__custom__",
-		hint: "enter your own cron expression",
+		hint: "输入你自己的 cron 表达式",
 	},
 ];

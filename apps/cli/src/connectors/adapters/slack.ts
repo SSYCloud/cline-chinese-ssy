@@ -470,7 +470,7 @@ async function deliverScheduledResult(input: {
 			clearSlackBinding(input.bindingsPath, deliveryThreadId)
 		) {
 			input.logger.core.log(
-				"Cleared stale Slack binding after invalid_thread_ts",
+				"在 invalid_thread_ts 后清除了过期的 Slack 绑定",
 				{
 					severity: "warn",
 					transport: "slack",
@@ -491,7 +491,7 @@ class SlackConnector extends ConnectorBase<
 	constructor() {
 		super(
 			"slack",
-			"Slack webhook/socket bridge backed by RPC runtime sessions",
+			"Slack Webhook/Socket 桥接，以 RPC 运行时会话为后端",
 		);
 	}
 
@@ -500,61 +500,61 @@ class SlackConnector extends ConnectorBase<
 			super
 				.createCommand()
 				.usage("--base-url <PUBLIC_BASE_URL> [options]")
-				.option("--user-name <name>", "Slack bot username label")
+				.option("--user-name <name>", "Slack 机器人用户名标签")
 				.option(
 					"--bot-token <token>",
-					"Slack bot token for single-workspace mode",
+					"单工作区模式的 Slack 机器人令牌",
 				)
-				.option("--signing-secret <secret>", "Slack signing secret")
-				.option("--app-token <token>", "Slack app-level token for socket mode")
-				.option("--client-id <id>", "Slack OAuth client id")
-				.option("--client-secret <secret>", "Slack OAuth client secret")
+				.option("--signing-secret <secret>", "Slack 签名密钥")
+				.option("--app-token <token>", "Socket 模式的 Slack 应用级令牌")
+				.option("--client-id <id>", "Slack OAuth 客户端 ID")
+				.option("--client-secret <secret>", "Slack OAuth 客户端密钥")
 				.option(
 					"--encryption-key <key>",
-					"Base64 32-byte key for encrypted installations",
+					"用于加密安装的 Base64 32 字节密钥",
 				)
 				.option(
 					"--installation-key-prefix <prefix>",
-					"Override stored installation key prefix",
+					"覆盖已存储的安装密钥前缀",
 				)
-				.option("--provider <id>", "Provider override")
-				.option("--model <id>", "Model override")
-				.option("--api-key <key>", "Provider API key override")
-				.option("--system <prompt>", "System prompt override")
-				.option("--cwd <path>", "Workspace / cwd for runtime")
-				.option("--mode <act|plan>", "Agent mode", "act")
-				.option("-i, --interactive", "Keep connector in foreground")
-				.option("--no-tools", "Disable tools for Slack sessions")
-				// Retained so existing invocations and persisted autostart arguments
-				// keep parsing; tools are on unless --no-tools is passed.
-				.option("--enable-tools", "Enable tools (default)")
+				.option("--provider <id>", "覆盖提供商")
+				.option("--model <id>", "覆盖模型")
+				.option("--api-key <key>", "覆盖提供商 API 密钥")
+				.option("--system <prompt>", "覆盖系统提示词")
+				.option("--cwd <path>", "运行时的工作区 / cwd")
+				.option("--mode <act|plan>", "代理模式", "act")
+				.option("-i, --interactive", "保持连接器在前台运行")
+				.option("--no-tools", "为 Slack 会话禁用工具")
+				// 保留以便现有调用和已持久化的自动启动参数
+				// 继续正常解析；除非传入 --no-tools，否则工具始终开启。
+				.option("--enable-tools", "启用工具（默认）")
 				.option(
 					"--hook-command <command>",
-					"Run a shell command for connector events",
+					"为连接器事件运行一条 shell 命令",
 				)
 				.option(
 					"--rpc-address <host:port>",
-					"RPC address",
+					"RPC 地址",
 					process.env.CLINE_RPC_ADDRESS?.trim() ||
 						resolveDefaultCliRpcAddress(),
 				)
-				.option("--host <host>", "Webhook listen host")
-				.option("--port <port>", "Webhook listen port")
+				.option("--host <host>", "Webhook 监听主机")
+				.option("--port <port>", "Webhook 监听端口")
 				.option(
 					"--base-url <url>",
-					"Public base URL for webhooks and OAuth callback",
+					"Webhook 和 OAuth 回调的公共基础 URL",
 				)
 				.addHelpText(
 					"after",
 					[
 						"",
-						"Environment:",
-						"  SLACK_BOT_TOKEN             Single-workspace bot token",
-						"  SLACK_SIGNING_SECRET        Slack signing secret",
-						"  SLACK_APP_TOKEN             App-level token for socket mode",
-						"  SLACK_CLIENT_ID             OAuth client id",
-						"  SLACK_CLIENT_SECRET         OAuth client secret",
-						"  SLACK_ENCRYPTION_KEY        Optional installation encryption key",
+						"环境变量：",
+						"  SLACK_BOT_TOKEN             单工作区机器人令牌",
+						"  SLACK_SIGNING_SECRET        Slack 签名密钥",
+						"  SLACK_APP_TOKEN             Socket 模式的应用级令牌",
+						"  SLACK_CLIENT_ID             OAuth 客户端 ID",
+						"  SLACK_CLIENT_SECRET         OAuth 客户端密钥",
+						"  SLACK_ENCRYPTION_KEY        可选的安装加密密钥",
 					].join("\n"),
 				)
 		);
@@ -594,7 +594,7 @@ class SlackConnector extends ConnectorBase<
 		const isSocketMode = connectionMode === "socket";
 		if (isSocketMode && (opts.clientId?.trim() || opts.clientSecret?.trim())) {
 			throw new Error(
-				"Slack socket mode does not support --client-id or --client-secret",
+				"Slack Socket 模式不支持 --client-id 或 --client-secret",
 			);
 		}
 		const botToken =
@@ -604,12 +604,12 @@ class SlackConnector extends ConnectorBase<
 			: undefined;
 		if (isSocketMode && !appToken) {
 			throw new Error(
-				"Slack socket mode requires --app-token or SLACK_APP_TOKEN",
+				"Slack Socket 模式需要 --app-token 或 SLACK_APP_TOKEN",
 			);
 		}
 		if (isSocketMode && !botToken) {
 			throw new Error(
-				"Slack socket mode requires --bot-token or SLACK_BOT_TOKEN",
+				"Slack Socket 模式需要 --bot-token 或 SLACK_BOT_TOKEN",
 			);
 		}
 		return {
@@ -709,7 +709,7 @@ class SlackConnector extends ConnectorBase<
 			statePath,
 			readState: (path) => this.readConnectorState(path),
 			describeStoppedProcess: (state) =>
-				`[slack] stopped pid=${state.pid} user=${state.userName}`,
+				`[slack] 已停止 pid=${state.pid} user=${state.userName}`,
 			getPid: (state) => state.pid,
 			stopSessions: stopSessionsForUser,
 			clearBindings: (state) => {
@@ -764,8 +764,8 @@ class SlackConnector extends ConnectorBase<
 		}
 		const formatAlreadyRunning = (state: SlackConnectorState) =>
 			state.connectionMode === "socket"
-				? `[slack] connector already running pid=${state.pid} rpc=${state.rpcAddress} mode=socket`
-				: `[slack] connector already running pid=${state.pid} rpc=${state.rpcAddress} url=${state.baseUrl}`;
+				? `[slack] 连接器已在运行 pid=${state.pid} rpc=${state.rpcAddress} mode=socket`
+				: `[slack] 连接器已在运行 pid=${state.pid} rpc=${state.rpcAddress} url=${state.baseUrl}`;
 		const backgroundExitCode = await this.maybeRunInBackground({
 			rawArgs,
 			io,
@@ -776,10 +776,10 @@ class SlackConnector extends ConnectorBase<
 			isRunning: (state) => isProcessRunning(state.pid),
 			formatAlreadyRunningMessage: formatAlreadyRunning,
 			formatBackgroundStartMessage: (pid) =>
-				`[slack] starting background connector pid=${pid} user=${options.userName} mode=${options.connectionMode}`,
+				`[slack] 正在后台启动连接器 pid=${pid} user=${options.userName} mode=${options.connectionMode}`,
 			foregroundHint:
-				"[slack] use `cline connect slack -i ...` to run in the foreground",
-			launchFailureMessage: "failed to launch Slack connector in background",
+				"[slack] 使用 `cline connect slack -i ...` 在前台运行",
+			launchFailureMessage: "无法在后台启动 Slack 连接器",
 		});
 		if (backgroundExitCode !== undefined) {
 			return backgroundExitCode;
@@ -808,7 +808,7 @@ class SlackConnector extends ConnectorBase<
 			io.writeln(
 				claim.running
 					? formatAlreadyRunning(claim.running)
-					: `[slack] connector already running for user=${options.userName}`,
+					: `[slack] 连接器已在运行 user=${options.userName}`,
 			);
 			return CONNECT_ALREADY_RUNNING_EXIT_CODE;
 		}
@@ -980,8 +980,8 @@ class SlackConnector extends ConnectorBase<
 										? { slackParticipantLabel: currentState.participantLabel }
 										: {}),
 								}),
-								reusedLogMessage: "Slack thread reusing RPC session",
-								startedLogMessage: "Slack thread started RPC session",
+								reusedLogMessage: "Slack 线程正在复用 RPC 会话",
+								startedLogMessage: "Slack 线程已启动 RPC 会话",
 								onMessageReceived: async (details) => {
 									await dispatchConnectorHook(
 										options.hookCommand,
@@ -1040,7 +1040,7 @@ class SlackConnector extends ConnectorBase<
 					await withSlackTeamBotToken({
 						slack,
 						teamId: currentState.teamId,
-						work: () => thread.post(`Slack bridge error: ${message}`),
+						work: () => thread.post(`Slack 桥接错误：${message}`),
 					});
 				}
 			};
@@ -1072,7 +1072,7 @@ class SlackConnector extends ConnectorBase<
 					client,
 					clientId,
 					pendingApprovals,
-					deniedReason: "Denied by Slack user",
+					deniedReason: "Slack 用户拒绝",
 				})
 			) {
 				return;
@@ -1099,7 +1099,7 @@ class SlackConnector extends ConnectorBase<
 					client,
 					clientId,
 					pendingApprovals,
-					deniedReason: "Denied by Slack user",
+					deniedReason: "Slack 用户拒绝",
 				})
 			) {
 				return;
@@ -1112,7 +1112,7 @@ class SlackConnector extends ConnectorBase<
 				.filter(Boolean)
 				.join(" ");
 			const rootMessage = await event.channel.post(
-				`${event.user.fullName} invoked ${commandText}`,
+				`${event.user.fullName} 调用了 ${commandText}`,
 			);
 			const thread = new ThreadImpl<SlackThreadState>({
 				adapterName: "slack",
@@ -1154,7 +1154,7 @@ class SlackConnector extends ConnectorBase<
 							clearSlackBinding(bindingsPath, threadId)
 						) {
 							loggerAdapter.core.log(
-								"Cleared stale Slack binding after invalid_thread_ts",
+								"在 invalid_thread_ts 后清除了过期的 Slack 绑定",
 								{
 									severity: "warn",
 									transport: "slack",
@@ -1190,17 +1190,17 @@ class SlackConnector extends ConnectorBase<
 									try {
 										const result = await slack.handleOAuthCallback(request);
 										return new Response(
-											`Slack installation stored for team ${result.teamId}. You can return to Slack.`,
+											`Slack 安装已存储到团队 ${result.teamId}。你可以返回 Slack。`,
 										);
 									} catch (error) {
 										const message =
 											error instanceof Error ? error.message : String(error);
-										loggerAdapter.core.log("Slack OAuth callback failed", {
+										loggerAdapter.core.log("Slack OAuth 回调失败", {
 											severity: "warn",
 											transport: "slack",
 											error: message,
 										});
-										return new Response(`Slack OAuth error: ${message}`, {
+										return new Response(`Slack OAuth 错误：${message}`, {
 											status: 500,
 										});
 									}
@@ -1209,16 +1209,16 @@ class SlackConnector extends ConnectorBase<
 								"/": () =>
 									new Response(
 										[
-											"Slack connector is running.",
-											"Connection mode: webhook",
-											`Webhook URL: ${webhookUrl}`,
-											`OAuth callback URL: ${oauthCallbackUrl}`,
+											"Slack 连接器正在运行。",
+											"连接模式：webhook",
+											`Webhook URL：${webhookUrl}`,
+											`OAuth 回调 URL：${oauthCallbackUrl}`,
 											options.botToken?.trim()
-												? "Auth mode: single workspace"
+												? "认证模式：单工作区"
 												: options.clientId?.trim() &&
 														options.clientSecret?.trim()
-													? "Auth mode: multi-workspace OAuth"
-													: "Auth mode: incomplete (set bot token or OAuth credentials)",
+													? "认证模式：多工作区 OAuth"
+													: "认证模式：不完整（请设置机器人令牌或 OAuth 凭据）",
 										].join("\n"),
 									),
 							},
@@ -1288,13 +1288,13 @@ class SlackConnector extends ConnectorBase<
 		process.once("SIGTERM", () => requestStop("sigterm"));
 
 		if (options.connectionMode === "webhook") {
-			io.writeln(`[slack] listening on ${options.host}:${options.port}`);
-			io.writeln(`[slack] configure Slack webhook URL: ${webhookUrl}`);
+			io.writeln(`[slack] 正在监听 ${options.host}:${options.port}`);
+			io.writeln(`[slack] 配置 Slack Webhook URL：${webhookUrl}`);
 			io.writeln(
-				`[slack] configure Slack OAuth callback URL: ${oauthCallbackUrl}`,
+				`[slack] 配置 Slack OAuth 回调 URL：${oauthCallbackUrl}`,
 			);
 		} else {
-			io.writeln("[slack] socket mode connected");
+			io.writeln("[slack] Socket 模式已连接");
 		}
 
 		await stopPromise;

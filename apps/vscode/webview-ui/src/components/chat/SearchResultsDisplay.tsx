@@ -97,7 +97,7 @@ const SearchResultsDisplay: React.FC<SearchResultsDisplayProps> = ({
 				border: "1px solid var(--vscode-editorGroup-border)",
 			}}>
 			<div
-				aria-label={isExpanded ? "Collapse search results" : "Expand search results"}
+				aria-label={isExpanded ? "折叠搜索结果" : "展开搜索结果"}
 				onClick={onToggleExpand}
 				onKeyDown={(e) => {
 					if (e.key === "Enter" || e.key === " ") {
@@ -176,7 +176,7 @@ const SearchResultsDisplay: React.FC<SearchResultsDisplayProps> = ({
 										fontWeight: "500",
 										color: "var(--vscode-foreground)",
 									}}>
-									Workspace: {section.workspace}
+									工作区：{section.workspace}
 								</span>
 							</div>
 

@@ -55,7 +55,7 @@ function ReasoningBlock(props: { text: string; streaming: boolean }) {
 				<box flexDirection="row" gap={1}>
 					<spinner name="dots" color="gray" />
 					<text fg="gray">
-						<em>Thinking...</em>
+						<em>思考中...</em>
 					</text>
 				</box>
 			);
@@ -70,7 +70,7 @@ function ReasoningBlock(props: { text: string; streaming: boolean }) {
 				<box flexDirection="row" gap={1}>
 					<spinner name="dots" color="gray" />
 					<text fg="gray">
-						<em>Thinking...</em>
+						<em>思考中...</em>
 					</text>
 				</box>
 				<box flexDirection="column" paddingLeft={2}>
@@ -89,7 +89,7 @@ function ReasoningBlock(props: { text: string; streaming: boolean }) {
 		return (
 			<box flexDirection="column" onMouseDown={() => setExpanded(false)}>
 				<text fg="gray">
-					{"\u25bc"} <em>Thinking:</em>
+					{"\u25bc"} <em>思考中：</em>
 				</text>
 				<box flexDirection="column" paddingLeft={2}>
 					{lines.map((line) => (
@@ -103,7 +103,7 @@ function ReasoningBlock(props: { text: string; streaming: boolean }) {
 	}
 
 	const padding = 4;
-	const prefix = "\u25b6 Thinking: ";
+	const prefix = "\u25b6 思考中：";
 	const available = Math.max(10, width - padding - prefix.length - 3);
 	const flat = content.replace(/\n/g, " ").trim();
 	const tail =
@@ -114,7 +114,7 @@ function ReasoningBlock(props: { text: string; streaming: boolean }) {
 	return (
 		<box onMouseDown={() => setExpanded(true)}>
 			<text fg="gray" selectable>
-				{"\u25b6"} <em>Thinking: {tail}</em>
+				{"\u25b6"} <em>思考中：{tail}</em>
 			</text>
 		</box>
 	);
@@ -283,16 +283,16 @@ function ClineCreditsClinePassErrorView(props: {
 				borderColor="red"
 				paddingX={1}
 			>
-				<text fg="red">Cline Credits depleted</text>
+				<text fg="red">Cline 积分已耗尽</text>
 				<text
 					fg={props.defaultFg}
 					selectable
 					content={
-						"You have run out of Cline credits. Add credits in the dashboard or purchase and switch to ClinePass to continue."
+						"你的 Cline 积分已用完。请在控制台中添加积分，或购买并切换到 ClinePass 以继续。"
 					}
 				/>
 				<box flexDirection="row">
-					<text fg="gray">Purchase Credits: </text>
+					<text fg="gray">购买积分：</text>
 					<text fg={linkColor} selectable>
 						<a href={CLINE_CREDITS_DASHBOARD_URL}>
 							{CLINE_CREDITS_DASHBOARD_URL}
@@ -300,15 +300,15 @@ function ClineCreditsClinePassErrorView(props: {
 					</text>
 				</box>
 				<box flexDirection="row">
-					<text fg="gray">Purchase ClinePass: </text>
+					<text fg="gray">购买 ClinePass：</text>
 					<text fg={linkColor} selectable>
 						<a href={subscriptionUrl}>{subscriptionUrl}</a>
 					</text>
 				</box>
 				<box flexDirection="row">
-					<text fg="gray">Switch to ClinePass: </text>
+					<text fg="gray">切换到 ClinePass：</text>
 					<text fg="gray">
-						type /settings in CLI and switch provider to ClinePass
+						在 CLI 中输入 /settings 并将提供商切换为 ClinePass
 					</text>
 				</box>
 			</box>
@@ -368,15 +368,15 @@ function ClinePassSubscriptionErrorView(props: {
 				borderColor={planAccent}
 				paddingX={1}
 			>
-				<text fg={planAccent}>ClinePass subscription required</text>
+				<text fg={planAccent}>需要 ClinePass 订阅</text>
 				<text
 					fg={props.defaultFg}
 					selectable
-					content="No access to ClinePass subscription models yet. Subscribe to ClinePass, the low cost open weights model coding plan."
+					content="尚无法使用 ClinePass 订阅模型。订阅 ClinePass——低价开源权重模型编程方案。"
 				/>
 				{planFeatures.length > 0 && (
 					<box flexDirection="column" marginTop={1}>
-						<text fg={props.defaultFg}>ClinePass includes:</text>
+						<text fg={props.defaultFg}>ClinePass 包含：</text>
 						{planFeatures.map((feature) => (
 							<text key={feature} fg={props.defaultFg} selectable>
 								<span fg="green">✓ </span>
@@ -386,13 +386,12 @@ function ClinePassSubscriptionErrorView(props: {
 					</box>
 				)}
 				<box flexDirection="row">
-					<text fg="gray">Subscribe: </text>
+					<text fg="gray">订阅：</text>
 					<text fg={props.theme.accents.act} selectable>
-						<a href={subscriptionUrl}>Open subscription page</a>
+						<a href={subscriptionUrl}>打开订阅页面</a>
 					</text>
 				</box>
 				<box flexDirection="row">
-					<text fg="gray">URL: </text>
 					<text fg={props.theme.accents.act} selectable>
 						<a href={subscriptionUrl}>{subscriptionUrl}</a>
 					</text>
@@ -418,7 +417,7 @@ function ClineOrgIndividualInferenceSubscriptionErrorView(props: {
 				borderColor={planAccent}
 				paddingX={1}
 			>
-				<text fg={planAccent}>Personal ClinePass required</text>
+				<text fg={planAccent}>需要个人 ClinePass</text>
 				<text
 					fg={props.defaultFg}
 					selectable
@@ -479,23 +478,23 @@ function ClinePassLimitErrorView(props: {
 				borderColor={accent}
 				paddingX={1}
 			>
-				<text fg={props.theme.accents.error}>ClinePass limit reached</text>
+				<text fg={props.theme.accents.error}>已达到 ClinePass 限额</text>
 				<text fg={props.defaultFg} selectable content={detail} />
 				<text
 					fg={props.defaultFg}
 					selectable
-					content="Switch to Cline usage-based billing and retry with the Cline provider."
+					content="切换到 Cline 按用量计费，并使用 Cline 提供商重试。"
 				/>
 				<box flexDirection="row">
-					<text fg="gray">Headless CLI: </text>
-					<text fg={props.defaultFg} selectable content="rerun with " />
+					<text fg="gray">无头 CLI：</text>
+					<text fg={props.defaultFg} selectable content="使用 " />
 					<code
 						content="--provider cline"
 						filetype="bash"
 						syntaxStyle={getSyntaxStyle(props.theme)}
 						selectable
 					/>
-					<text fg={props.defaultFg} selectable content="." />
+					<text fg={props.defaultFg} selectable content=" 重新运行。" />
 				</box>
 			</box>
 		</box>
@@ -521,23 +520,23 @@ function ClineFreeModelLimitErrorView(props: {
 				paddingX={1}
 			>
 				<text fg={props.theme.accents.error}>
-					Daily free model limit reached
+					已达到每日免费模型限额
 				</text>
 				<text
 					fg={props.defaultFg}
 					selectable
-					content="You've reached today's free usage limit for this model."
+					content="你已达到该模型今天的免费使用限额。"
 				/>
 				<text
 					fg={props.defaultFg}
 					selectable
 					content={
 						resetTime
-							? `Try again in ${resetTime} or select another model.`
-							: "Try again later or select another model."
+							? `${resetTime} 后再试，或选择其他模型。`
+							: "稍后再试，或选择其他模型。"
 					}
 				/>
-				<text fg="gray">Open the model selector with /model.</text>
+				<text fg="gray">使用 /model 打开模型选择器。</text>
 			</box>
 		</box>
 	);
@@ -558,18 +557,18 @@ function ClineFreePromotionEndedErrorView(props: {
 				borderColor={accent}
 				paddingX={1}
 			>
-				<text fg={props.theme.accents.error}>Free model promotion ended</text>
+				<text fg={props.theme.accents.error}>免费模型推广已结束</text>
 				<text
 					fg={props.defaultFg}
 					selectable
-					content="The free promotion for this model has ended and it is no longer available."
+					content="该模型的免费推广已结束，不再可用。"
 				/>
 				<text
 					fg={props.defaultFg}
 					selectable
-					content="Select another model to continue."
+					content="选择其他模型以继续。"
 				/>
-				<text fg="gray">Open the model selector with /model.</text>
+				<text fg="gray">使用 /model 打开模型选择器。</text>
 			</box>
 		</box>
 	);
@@ -619,8 +618,8 @@ export function ChatEntryView(props: {
 					<box width={2}>
 						<text fg={accent}>{"❯"}</text>
 					</box>
-					{entry.delivery === "steer" && <text fg="yellow">[steer] </text>}
-					{entry.delivery === "queue" && <text fg="gray">[queued] </text>}
+					{entry.delivery === "steer" && <text fg="yellow">[转向] </text>}
+					{entry.delivery === "queue" && <text fg="gray">[排队] </text>}
 					<text fg={defaultFg} selectable>
 						{entry.text}
 					</text>
@@ -722,7 +721,7 @@ export function ChatEntryView(props: {
 					<text
 						fg={theme.accents.error}
 						selectable
-						content={`Error: ${entry.text}`}
+						content={`错误：${entry.text}`}
 					/>
 				</box>
 			);
@@ -748,14 +747,12 @@ export function ChatEntryView(props: {
 
 		case "done": {
 			const parts: string[] = [];
-			if (entry.elapsed) parts.push(`${entry.elapsed}s`);
+			if (entry.elapsed) parts.push(`${entry.elapsed} 秒`);
 			if (entry.tokens > 0)
 				parts.push(`${entry.tokens.toLocaleString()} tokens`);
-			if (entry.cost > 0) parts.push(`$${entry.cost.toFixed(2)}`);
+			if (entry.cost > 0) parts.push(`${entry.cost.toFixed(2)} 美元`);
 			if (entry.iterations > 0)
-				parts.push(
-					`${entry.iterations} iteration${entry.iterations !== 1 ? "s" : ""}`,
-				);
+				parts.push(`${entry.iterations} 次迭代`);
 			if (parts.length === 0) return null;
 			return <text fg="gray" content={parts.join(" | ")} />;
 		}

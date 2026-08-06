@@ -52,12 +52,12 @@ export async function runStopAllConnectors(io: ConnectIo): Promise<number> {
 	const { stoppedProcesses, failedProcesses, stoppedSessions, executed } =
 		await stopAllConnectors(io);
 	if (executed === 0) {
-		io.writeln("[connect] no adapters support stop yet");
+		io.writeln("[connect] 目前还没有适配器支持停止");
 		return 0;
 	}
 	disableConnectorAutostart();
 	io.writeln(
-		`[connect] stopped processes=${stoppedProcesses} failed=${failedProcesses} sessions=${stoppedSessions}`,
+		`[connect] 已停止进程=${stoppedProcesses} 失败=${failedProcesses} 会话=${stoppedSessions}`,
 	);
 	return failedProcesses === 0 ? 0 : 1;
 }
@@ -74,7 +74,7 @@ export async function runStopConnector(
 ): Promise<number> {
 	const connector = await getConnector(adapterName);
 	if (!connector) {
-		io.writeErr(`unknown connect adapter "${adapterName}"`);
+		io.writeErr(`未知的 connect 适配器 "${adapterName}"`);
 		return 1;
 	}
 	const stop = options.instanceId
@@ -85,7 +85,7 @@ export async function runStopConnector(
 			? () => connector.stopAll?.(io)
 			: undefined;
 	if (!stop) {
-		io.writeErr(`connect adapter "${adapterName}" does not support stop`);
+		io.writeErr(`connect 适配器 "${adapterName}" 不支持停止`);
 		return 1;
 	}
 	// Retire it with the hub first. The local stop below finds processes through
@@ -99,19 +99,19 @@ export async function runStopConnector(
 	});
 	if (stoppedByHub) {
 		io.writeln(
-			`[connect] hub stopped supervising ${stoppedByHub} ${connector.name} connector${stoppedByHub === 1 ? "" : "s"}`,
+			`[connect] hub 已停止监管 ${stoppedByHub} 个 ${connector.name} 连接器`,
 		);
 	}
 	const result = await stop();
 	if (!result) {
-		io.writeErr(`connect adapter "${adapterName}" does not support stop`);
+		io.writeErr(`connect 适配器 "${adapterName}" 不支持停止`);
 		return 1;
 	}
 	if (options.autostart === "disable") {
 		disableConnectorAutostart(connector.name, options.instanceId);
 	}
 	io.writeln(
-		`[connect] ${connector.name}${options.instanceId ? ` instance=${options.instanceId}` : ""} stopped processes=${result.stoppedProcesses} failed=${result.failedProcesses} sessions=${result.stoppedSessions}`,
+		`[connect] ${connector.name}${options.instanceId ? ` 实例=${options.instanceId}` : ""} 已停止 进程=${result.stoppedProcesses} 失败=${result.failedProcesses} 会话=${result.stoppedSessions}`,
 	);
 	return result.failedProcesses === 0 ? 0 : 1;
 }
@@ -133,18 +133,18 @@ export async function runCleanupConnectorInstance(
 ): Promise<number> {
 	const connector = await getConnector(adapterName);
 	if (!connector) {
-		io.writeErr(`unknown connect adapter "${adapterName}"`);
+		io.writeErr(`未知的 connect 适配器 "${adapterName}"`);
 		return 1;
 	}
 	if (!connector.stopInstance) {
 		io.writeErr(
-			`connect adapter "${adapterName}" does not support per-instance stop`,
+			`connect 适配器 "${adapterName}" 不支持按实例停止`,
 		);
 		return 1;
 	}
 	const result = await connector.stopInstance(instanceId, io);
 	io.writeln(
-		`[connect] ${connector.name} instance=${instanceId} cleaned processes=${result.stoppedProcesses} failed=${result.failedProcesses} sessions=${result.stoppedSessions}`,
+		`[connect] ${connector.name} 实例=${instanceId} 已清理 进程=${result.stoppedProcesses} 失败=${result.failedProcesses} 会话=${result.stoppedSessions}`,
 	);
 	return result.failedProcesses === 0 ? 0 : 1;
 }
@@ -160,7 +160,7 @@ export async function runRestartConnector(
 	}
 	const connector = await getConnector(adapterName);
 	if (!connector) {
-		io.writeErr(`unknown connect adapter "${adapterName}"`);
+		io.writeErr(`未知的 connect 适配器 "${adapterName}"`);
 		return 1;
 	}
 	const activeInstances = listActiveConnectors().filter(
@@ -168,7 +168,7 @@ export async function runRestartConnector(
 	);
 	if (!requestedInstanceId && activeInstances.length > 1) {
 		io.writeErr(
-			`cannot safely restart ${adapterName}: ${activeInstances.length} instances are active; specify an instance`,
+			`无法安全重启 ${adapterName}: 有 ${activeInstances.length} 个实例处于活动状态；请指定一个实例`,
 		);
 		return 1;
 	}
@@ -223,19 +223,19 @@ export async function runRestartConnector(
 	}
 	if (replacement.exitCode === CONNECT_ALREADY_RUNNING_EXIT_CODE) {
 		io.writeErr(
-			`[connect] replacement was not started because ${adapterName} instance ${instanceId} is still running`,
+			`[connect] 替换进程未启动，因为 ${adapterName} 实例 ${instanceId} 仍在运行`,
 		);
 		return 1;
 	}
 	if (!previousConnection) {
 		io.writeErr(
-			`[connect] replacement failed and ${adapterName} instance ${instanceId} has no successful launch arguments for rollback`,
+			`[connect] 替换失败，且 ${adapterName} 实例 ${instanceId} 没有可用于回滚的成功启动参数`,
 		);
 		return replacement.exitCode;
 	}
 
 	io.writeErr(
-		`[connect] replacement failed; restoring ${adapterName} instance ${instanceId}`,
+		`[connect] 替换失败；正在恢复 ${adapterName} 实例 ${instanceId}`,
 	);
 	const rollback = await runConnectAdapterWithResult(
 		adapterName,
@@ -243,10 +243,10 @@ export async function runRestartConnector(
 		io,
 	);
 	if (rollback.exitCode === 0) {
-		io.writeln(`[connect] restored ${adapterName} instance ${instanceId}`);
+		io.writeln(`[connect] 已恢复 ${adapterName} 实例 ${instanceId}`);
 	} else {
 		io.writeErr(
-			`[connect] failed to restore ${adapterName} instance ${instanceId}`,
+			`[connect] 恢复 ${adapterName} 实例 ${instanceId} 失败`,
 		);
 	}
 	return replacement.exitCode;
@@ -264,7 +264,7 @@ async function runConnectAdapterWithResult(
 ): Promise<ConnectAdapterResult> {
 	const connector = await getConnector(adapterName);
 	if (!connector) {
-		io.writeErr(`unknown connect adapter "${adapterName}"`);
+		io.writeErr(`未知的 connect 适配器 "${adapterName}"`);
 		return { exitCode: 1 };
 	}
 	let persistenceArgs = passthroughArgs;

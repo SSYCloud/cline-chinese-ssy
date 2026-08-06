@@ -69,7 +69,7 @@ export function HomeView(props: {
 	const inputForeground = getModeInputForeground(session.uiMode, terminalBg);
 	const inputPlaceholder = getModeInputPlaceholder(session.uiMode, terminalBg);
 	const placeholder =
-		session.uiMode === "plan" ? "Plan something..." : "What can I do for you?";
+		session.uiMode === "plan" ? "计划些什么..." : "有什么可以帮你的？";
 	const modelDisplayName = resolveModelDisplayName(config);
 	const maxInputTokens = resolveModelMaxInputTokens(config);
 	const hasAutocomplete =
@@ -98,13 +98,13 @@ export function HomeView(props: {
 			<TrackedRobot cursorX={trackedCursorX} cursorY={trackedCursorY} />
 			<box marginTop={1} marginBottom={1} flexShrink={0}>
 				<text fg={defaultFg}>
-					<strong>What can I do for you?</strong>
+					<strong>有什么可以帮你的？</strong>
 				</text>
 			</box>
 			<box marginBottom={1} flexShrink={0}>
 				<text fg="gray">
 					<em>
-						Use / for slash commands, @ for file mentions, Ctrl+P for menu
+						使用 / 输入斜杠命令，@ 提及文件，Ctrl+P 打开菜单
 					</em>
 				</text>
 			</box>

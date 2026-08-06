@@ -100,10 +100,10 @@ export const VertexProvider = ({ showModelOptions, isPopup, currentMode }: Verte
 					disabled={remoteConfigSettings?.vertexProjectId !== undefined}
 					initialValue={vertexProjectId}
 					onChange={handleProjectIdChange}
-					placeholder="Enter Project ID..."
+					placeholder="输入项目 ID..."
 					style={{ width: "100%" }}>
 					<div className="flex items-center gap-2 mb-1">
-						<span style={{ fontWeight: 500 }}>Google Cloud Project ID</span>
+						<span style={{ fontWeight: 500 }}>Google Cloud 项目 ID</span>
 						{remoteConfigSettings?.vertexProjectId !== undefined && <LockIcon />}
 					</div>
 				</DebouncedTextField>
@@ -115,7 +115,7 @@ export const VertexProvider = ({ showModelOptions, isPopup, currentMode }: Verte
 						className="flex items-center gap-2 mb-1"
 						style={{ opacity: remoteConfigSettings?.vertexRegion !== undefined ? 0.4 : 1 }}>
 						<label htmlFor="vertex-region-dropdown">
-							<span className="font-medium">Google Cloud Region</span>
+							<span className="font-medium">Google Cloud 区域</span>
 						</label>
 						{remoteConfigSettings?.vertexRegion !== undefined && <LockIcon />}
 					</div>
@@ -125,7 +125,7 @@ export const VertexProvider = ({ showModelOptions, isPopup, currentMode }: Verte
 						onChange={(e: any) => handleRegionChange(e.target.value)}
 						style={{ width: "100%" }}
 						value={vertexRegion}>
-						<VSCodeOption value="">Select a region...</VSCodeOption>
+						<VSCodeOption value="">选择区域...</VSCodeOption>
 						{REGIONS.map((region) => (
 							<VSCodeOption key={region} value={region}>
 								{region}
@@ -141,23 +141,23 @@ export const VertexProvider = ({ showModelOptions, isPopup, currentMode }: Verte
 					marginTop: "5px",
 					color: "var(--vscode-descriptionForeground)",
 				}}>
-				To use Google Cloud Vertex AI, you need to
+				要使用 Google Cloud Vertex AI，你需要
 				<VSCodeLink
 					href="https://cloud.google.com/vertex-ai/generative-ai/docs/partner-models/use-claude#before_you_begin"
 					style={{ display: "inline", fontSize: "inherit" }}>
-					{"1) create a Google Cloud account › enable the Vertex AI API › enable the desired Claude models,"}
+					{"1) 创建 Google Cloud 账户 › 启用 Vertex AI API › 启用所需的 Claude 模型，"}
 				</VSCodeLink>{" "}
 				<VSCodeLink
 					href="https://cloud.google.com/docs/authentication/provide-credentials-adc#google-idp"
 					style={{ display: "inline", fontSize: "inherit" }}>
-					{"2) install the Google Cloud CLI › configure Application Default Credentials."}
+					{"2) 安装 Google Cloud CLI › 配置应用默认凭据。"}
 				</VSCodeLink>
 			</p>
 
 			{showModelOptions && (
 				<>
 					<ModelSelector
-						label="Model"
+						label="模型"
 						models={modelsToUse}
 						onChange={(e: any) => {
 							const modelId = e.target.value
@@ -175,15 +175,15 @@ export const VertexProvider = ({ showModelOptions, isPopup, currentMode }: Verte
 							allowedEfforts={["none", "low", "medium", "high", "xhigh"] as const}
 							currentMode={currentMode}
 							defaultEffort={adaptiveThinkingDefaultEffort}
-							description="Use None to disable adaptive thinking. Higher effort increases response detail and token usage."
-							label="Adaptive Thinking"
+							description="选择“无”可禁用自适应思考。更高的努力程度会增加响应细节和 token 消耗。"
+							label="自适应思考"
 							onEffortChange={handleReasoningEffortChange}
 						/>
 					) : selectedModelInfo.supportsReasoning === true ? (
 						<ReasoningEffortSelector
 							currentMode={currentMode}
 							defaultEffort="none"
-							description="Use None to disable extended thinking. Higher effort improves depth, but uses more tokens."
+							description="选择“无”可禁用扩展思考。更高的努力程度会提升思考深度，但会消耗更多 tokens。"
 							onEffortChange={handleReasoningEffortChange}
 						/>
 					) : null}

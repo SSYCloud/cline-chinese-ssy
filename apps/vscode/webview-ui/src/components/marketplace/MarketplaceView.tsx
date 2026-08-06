@@ -49,10 +49,10 @@ type PrimitiveConfig = {
 const PRIMITIVES: PrimitiveConfig[] = [
 	{
 		type: "skill",
-		label: "Skills",
-		singular: "skill",
-		plural: "skills",
-		title: "Skills",
+		label: "技能",
+		singular: "技能",
+		plural: "技能",
+		title: "技能",
 		description: (
 			<>
 				可按需加载的可复用指令集，供 Cline 在特定任务中使用，而不会一直占用无关工作的上下文。浏览更多：{" "}

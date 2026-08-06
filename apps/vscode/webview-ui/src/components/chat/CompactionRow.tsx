@@ -31,18 +31,18 @@ function parseCompactionInfo(text: string | undefined): ClineCompactionInfo | un
 /** Mirrors the CLI's formatCompactionDividerLabel wording for product consistency. */
 function formatCompactionLabel(info: ClineCompactionInfo): string {
 	if (info.status === "started") {
-		return info.mode === "manual" ? "Compacting context" : "Auto compacting context"
+		return info.mode === "manual" ? "正在压缩上下文" : "正在自动压缩上下文"
 	}
 	if (info.status === "failed") {
-		return "Compaction failed"
+		return "压缩失败"
 	}
 	if (info.status === "cancelled") {
-		return "Compaction cancelled"
+		return "压缩已取消"
 	}
 	if (info.status === "skipped") {
-		return "Compaction skipped"
+		return "压缩已跳过"
 	}
-	const parts: string[] = [info.mode === "manual" ? "Context compacted (manual)" : "Context compacted"]
+	const parts: string[] = [info.mode === "manual" ? "上下文已压缩（手动）" : "上下文已压缩"]
 	if (typeof info.tokensBefore === "number" && typeof info.tokensAfter === "number") {
 		parts.push(`${formatTokenCount(info.tokensBefore)} → ${formatTokenCount(info.tokensAfter)} tokens`)
 	}

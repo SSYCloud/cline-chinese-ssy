@@ -76,7 +76,7 @@ export function AutocompleteDropdown(props: AutocompleteDropdownProps) {
 			{showAboveIndicator && (
 				<box paddingX={1} justifyContent="center">
 					<text fg="gray">
-						{"\u25b2"} {aboveCount} more
+						{"\u25b2"} {aboveCount} 更多
 					</text>
 				</box>
 			)}
@@ -97,7 +97,7 @@ export function AutocompleteDropdown(props: AutocompleteDropdownProps) {
 			{showBelowIndicator && (
 				<box paddingX={1} justifyContent="center">
 					<text fg="gray">
-						{"\u25bc"} {belowCount} more
+						{"\u25bc"} {belowCount} 更多
 					</text>
 				</box>
 			)}

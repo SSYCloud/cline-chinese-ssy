@@ -239,10 +239,10 @@ export function StatusBar(props: StatusBarProps) {
 					onMouseDown={onToggleMode}
 				>
 					<text fg={uiMode === "plan" ? planAccent : "gray"}>
-						{uiMode === "plan" ? "●" : "○"} Plan
+						{uiMode === "plan" ? "●" : "○"} 计划
 					</text>
 					<text fg={uiMode === "act" ? actAccent : "gray"}>
-						{uiMode === "act" ? "●" : "○"} Act
+						{uiMode === "act" ? "●" : "○"} 执行
 					</text>
 					<text fg="gray">(Tab)</text>
 				</box>
@@ -266,12 +266,12 @@ export function StatusBar(props: StatusBarProps) {
 			{autoApproveAll ? (
 				<text fg={defaultFg}>
 					<span fg={successColor}>
-						{"\u23f5\u23f5"} Auto-approve all enabled
+						{"\u23f5\u23f5"} 已启用全部自动批准
 					</span>
 					<span fg="gray"> (Shift+Tab)</span>
 				</text>
 			) : (
-				<text fg="gray">Auto-approve all disabled (Shift+Tab)</text>
+				<text fg="gray">已禁用全部自动批准（Shift+Tab）</text>
 			)}
 		</box>
 	);

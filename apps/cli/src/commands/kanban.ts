@@ -292,11 +292,11 @@ async function ensureKanbanInstalled(
 		options.preferredInstaller,
 	);
 	if (!installCommand) {
-		writeErr('kanban is not installed. Install it with "npm i -g kanban"');
+		writeErr('kanban 未安装。请使用 "npm i -g kanban" 安装');
 		return false;
 	}
 
-	writeln(`${c.cyan}Installing kanban@latest…${c.reset}`);
+	writeln(`${c.cyan}正在安装 kanban@latest…${c.reset}`);
 	const installProcess = spawnKanbanInstallProcess(installCommand, {
 		env: process.env,
 		windowsHide: true,
@@ -304,20 +304,20 @@ async function ensureKanbanInstalled(
 	const installExitCode = await waitForProcessExit(installProcess).catch(
 		(error: unknown) => {
 			const message = error instanceof Error ? error.message : String(error);
-			writeErr(`Failed to run ${installCommand.displayCommand}: ${message}`);
+			writeErr(`运行 ${installCommand.displayCommand} 失败: ${message}`);
 			return 1;
 		},
 	);
 	if (installExitCode !== 0) {
 		writeErr(
-			`Failed to install kanban. Try running: ${installCommand.displayCommand}`,
+			`安装 kanban 失败。请尝试运行: ${installCommand.displayCommand}`,
 		);
 		return false;
 	}
 
 	if (!isCommandAvailable(command)) {
 		writeErr(
-			`Installed kanban, but ${command} was not found in PATH. Try opening a new terminal.`,
+			`已安装 kanban，但在 PATH 中未找到 ${command}。请尝试打开新的终端。`,
 		);
 		return false;
 	}
@@ -395,7 +395,7 @@ export async function launchKanban(
 
 		child.once("error", (error) => {
 			const message = error instanceof Error ? error.message : String(error);
-			writeErr(`Failed to run kanban: ${message}`);
+			writeErr(`运行 kanban 失败: ${message}`);
 			settle(1);
 		});
 		child.once("close", (code, signal) => {

@@ -208,7 +208,7 @@ export async function startConnectorViaHub(input: {
 	} catch (error) {
 		return {
 			delegated: false,
-			reason: `hub unavailable: ${
+			reason: `hub 不可用: ${
 				error instanceof Error ? error.message : String(error)
 			}`,
 		};
@@ -216,7 +216,7 @@ export async function startConnectorViaHub(input: {
 	if (!(await hubSupportsSupervision())) {
 		return {
 			delegated: false,
-			reason: "hub does not support connector supervision",
+			reason: "hub 不支持连接器监管",
 		};
 	}
 
@@ -237,7 +237,7 @@ export async function startConnectorViaHub(input: {
 		});
 		if (!reply.ok) {
 			const code = reply.error?.code ?? "";
-			const message = reply.error?.message ?? "connector start failed";
+			const message = reply.error?.message ?? "连接器启动失败";
 			if (
 				UNSUPPORTED_ERROR_CODES.has(code) ||
 				message.includes(UNSUPPORTED_MESSAGE_FRAGMENT)
@@ -245,7 +245,7 @@ export async function startConnectorViaHub(input: {
 				return { delegated: false, reason: message };
 			}
 			input.io.writeErr(
-				`[connect] hub refused to start ${input.channel}: ${message}`,
+				`[connect] hub 拒绝启动 ${input.channel}: ${message}`,
 			);
 			return { delegated: true, exitCode: 1 };
 		}
@@ -253,29 +253,29 @@ export async function startConnectorViaHub(input: {
 		const record = payload?.record;
 		if (payload?.started === false && payload.reason === "already_running") {
 			input.io.writeln(
-				`[connect] ${input.channel} connector ${input.instanceId} is already running under the hub${describeRecord(record)}`,
+				`[connect] ${input.channel} 连接器 ${input.instanceId} 已在 hub 下运行${describeRecord(record)}`,
 			);
 			return { delegated: true, exitCode: 0 };
 		}
 		if (payload?.started !== true) {
 			input.io.writeErr(
-				`[connect] hub could not start ${input.channel} connector ${input.instanceId}${
+				`[connect] hub 无法启动 ${input.channel} 连接器 ${input.instanceId}${
 					record?.lastError ? `: ${record.lastError}` : ""
 				}`,
 			);
 			return { delegated: true, exitCode: 1 };
 		}
 		input.io.writeln(
-			`[connect] ${input.channel} connector ${input.instanceId} started under hub supervision${describeRecord(record)}`,
+			`[connect] ${input.channel} 连接器 ${input.instanceId} 已在 hub 监管下启动${describeRecord(record)}`,
 		);
 		input.io.writeln(
-			"[connect] the hub will restart it if it exits; use `cline connect --stop` to retire it",
+			"[connect] 如果它退出，hub 将重新启动它；使用 `cline connect --stop` 将其停用",
 		);
 		return { delegated: true, exitCode: 0 };
 	} catch (error) {
 		return {
 			delegated: false,
-			reason: `hub command failed: ${
+			reason: `hub 命令失败: ${
 				error instanceof Error ? error.message : String(error)
 			}`,
 		};

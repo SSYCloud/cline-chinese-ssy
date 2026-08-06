@@ -148,8 +148,8 @@ export const AUTO_THEME_ID = "auto";
 export const THEMES: readonly ThemeDefinition[] = [
 	{
 		id: AUTO_THEME_ID,
-		label: "Auto",
-		description: "Adapts to your terminal's colors",
+		label: "自动",
+		description: "适配您终端的颜色",
 		variant: "auto",
 		background: null,
 		foreground: null,
@@ -157,7 +157,7 @@ export const THEMES: readonly ThemeDefinition[] = [
 	{
 		id: "dark",
 		label: "Cline Dark",
-		description: "Cline's accents on deep charcoal",
+		description: "深炭灰背景上的 Cline 强调色",
 		variant: "dark",
 		background: "#14161b",
 		foreground: "#e8eaed",
@@ -165,7 +165,7 @@ export const THEMES: readonly ThemeDefinition[] = [
 	{
 		id: "light",
 		label: "Cline Light",
-		description: "Crisp white, high-contrast accents",
+		description: "清晰白色，高对比度强调色",
 		variant: "light",
 		background: "#ffffff",
 		foreground: "#1a1a1a",
@@ -173,7 +173,7 @@ export const THEMES: readonly ThemeDefinition[] = [
 	{
 		id: "tokyo-night",
 		label: "Tokyo Night",
-		description: "Moody blues and neon city glow",
+		description: "忧郁蓝调与霓虹都市光芒",
 		variant: "dark",
 		background: "#1a1b26",
 		foreground: "#c0caf5",
@@ -207,7 +207,7 @@ export const THEMES: readonly ThemeDefinition[] = [
 	{
 		id: "gruvbox-dark",
 		label: "Gruvbox Dark",
-		description: "Retro warmth, earthy and amber",
+		description: "复古温暖，大地色与琥珀色",
 		variant: "dark",
 		background: "#282828",
 		foreground: "#ebdbb2",
@@ -241,7 +241,7 @@ export const THEMES: readonly ThemeDefinition[] = [
 	{
 		id: "nord",
 		label: "Nord",
-		description: "Cool arctic blues and frosted teals",
+		description: "凉爽的北极蓝与霜感青色",
 		variant: "dark",
 		background: "#2e3440",
 		foreground: "#d8dee9",
@@ -275,7 +275,7 @@ export const THEMES: readonly ThemeDefinition[] = [
 	{
 		id: "dracula",
 		label: "Dracula",
-		description: "Vivid color on a dark violet night",
+		description: "深紫罗兰夜晚上的鲜艳色彩",
 		variant: "dark",
 		background: "#282a36",
 		foreground: "#f8f8f2",
@@ -309,7 +309,7 @@ export const THEMES: readonly ThemeDefinition[] = [
 	{
 		id: "catppuccin-mocha",
 		label: "Catppuccin Mocha",
-		description: "Soothing pastels on warm mocha",
+		description: "温暖摩卡上的柔和粉彩色",
 		variant: "dark",
 		background: "#1e1e2e",
 		foreground: "#cdd6f4",
@@ -343,7 +343,7 @@ export const THEMES: readonly ThemeDefinition[] = [
 	{
 		id: "one-dark",
 		label: "One Dark",
-		description: "Atom's balanced, easygoing dark",
+		description: "Atom 经典平衡的舒适深色",
 		variant: "dark",
 		background: "#282c34",
 		foreground: "#abb2bf",
@@ -377,7 +377,7 @@ export const THEMES: readonly ThemeDefinition[] = [
 	{
 		id: "solarized-dark",
 		label: "Solarized Dark",
-		description: "Low-glare teal depths, easy on eyes",
+		description: "低眩光青色层次，护眼",
 		variant: "dark",
 		background: "#002b36",
 		foreground: "#93a1a1",
@@ -411,7 +411,7 @@ export const THEMES: readonly ThemeDefinition[] = [
 	{
 		id: "solarized-light",
 		label: "Solarized Light",
-		description: "Warm parchment with muted accents",
+		description: "暖色羊皮纸配柔和强调色",
 		variant: "light",
 		background: "#fdf6e3",
 		foreground: "#657b83",

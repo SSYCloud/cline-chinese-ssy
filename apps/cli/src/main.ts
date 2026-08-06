@@ -134,7 +134,7 @@ function promptArgLooksQuoted(arg: string | undefined): boolean {
 function writePromptArgError(args: string[]): void {
 	const renderedArgs = args.join(" ");
 	writeErr(
-		`Unknown command or unquoted prompt: ${renderedArgs}\nPrompt text must be passed as a single quoted argument, for example: cline "fix the tests". Use "cline --help" to see available commands and flags.`,
+		`未知命令或未加引号的提示词：${renderedArgs}\n提示词必须以单个带引号的参数传递，例如：cline "fix the tests"。使用 "cline --help" 查看可用命令和标志。`,
 	);
 }
 
@@ -187,20 +187,20 @@ export async function runCli(): Promise<void> {
 	// conflict.
 	const authCmd = program
 		.command("auth")
-		.description("Authenticate a provider and configure what model is used")
-		.argument("[provider]", "Provider id (positional shorthand for -p)")
-		.option("-p, --provider <id>", "Provider ID")
-		.option("-k, --apikey <key>", "API key")
-		.option("-m, --modelid <id>", "Model ID")
-		.option("-b, --baseurl <url>", "Base URL")
-		.option("--azure-api-version <version>", "Azure API version")
-		.option("--config <dir>", "configuration directory")
-		.option("-c, --cwd <path>", "Working directory")
+		.description("认证提供商并配置使用的模型")
+		.argument("[provider]", "提供商 ID（-p 的位置简写）")
+		.option("-p, --provider <id>", "提供商 ID")
+		.option("-k, --apikey <key>", "API 密钥")
+		.option("-m, --modelid <id>", "模型 ID")
+		.option("-b, --baseurl <url>", "基础 URL")
+		.option("--azure-api-version <version>", "Azure API 版本")
+		.option("--config <dir>", "配置目录")
+		.option("-c, --cwd <path>", "工作目录")
 		.option(
 			"--data-dir <dir>",
-			"Use isolated local state at <dir> instead of ~/.cline (enables sandbox mode)",
+			"使用 <dir> 中的隔离本地状态，而不是 ~/.cline（启用沙盒模式）",
 		)
-		.option("-v, --verbose", "Show verbose output")
+		.option("-v, --verbose", "显示详细输出")
 		.action(async (positionalProvider: string | undefined) => {
 			const opts = authCmd.opts<{
 				provider?: string;
@@ -269,9 +269,9 @@ export async function runCli(): Promise<void> {
 
 	program
 		.command("config")
-		.description("Show current configuration")
-		.option("--json", "Output as JSON")
-		.option("--config <dir>", "configuration directory")
+		.description("显示当前配置")
+		.option("--json", "以 JSON 输出")
+		.option("--config <dir>", "配置目录")
 		.allowUnknownOption()
 		.allowExcessArguments()
 		.passThroughOptions()
@@ -282,7 +282,7 @@ export async function runCli(): Promise<void> {
 
 	const pluginCmd = program
 		.command("plugin")
-		.description("Manage Cline Plugins")
+		.description("管理 Cline 插件")
 		.action(() => {
 			pluginCmd.help();
 		});
@@ -290,17 +290,17 @@ export async function runCli(): Promise<void> {
 		.command("install")
 		.alias("i")
 		.description(
-			"Install a Cline Plugin from an official keyword, npm, git, URL, or a local path",
+			"从官方关键字、npm、git、URL 或本地路径安装 Cline 插件",
 		)
 		.argument(
 			"<source>",
-			"official keyword, npm package, git URL, plugin file URL, or local plugin path",
+			"官方关键字、npm 包、git URL、插件文件 URL 或本地插件路径",
 		)
-		.option("--npm", "Treat source as an npm package")
-		.option("--git", "Treat source as a git repository")
-		.option("--force", "Replace an existing install for the same source")
-		.option("--json", "Output as JSON")
-		.option("--cwd <path>", "Install to <path>/.cline/plugins")
+		.option("--npm", "将源视为 npm 包")
+		.option("--git", "将源视为 git 仓库")
+		.option("--force", "替换同一源的现有安装")
+		.option("--json", "以 JSON 输出")
+		.option("--cwd <path>", "安装到 <path>/.cline/plugins")
 		.action(async (source: string) => {
 			const opts = pluginInstallCmd.opts<{
 				npm?: boolean;
@@ -314,7 +314,7 @@ export async function runCli(): Promise<void> {
 				opts.git ? ("git" as const) : undefined,
 			].filter((sourceType) => sourceType !== undefined);
 			if (sourceTypes.length > 1) {
-				writeErr("plugin install accepts only one source type flag");
+				writeErr("plugin install 仅接受一个源类型标志");
 				ctx.exitCode = 1;
 				return;
 			}
@@ -332,12 +332,12 @@ export async function runCli(): Promise<void> {
 		.command("uninstall")
 		.alias("remove")
 		.alias("rm")
-		.description("Uninstall a Cline Plugin by name or path")
-		.argument("<name>", "plugin package name, installed slug, or plugin path")
-		.option("--json", "Output as JSON")
+		.description("按名称或路径卸载 Cline 插件")
+		.argument("<name>", "插件包名称、已安装的 slug 或插件路径")
+		.option("--json", "以 JSON 输出")
 		.option(
 			"--cwd <path>",
-			"Search <path>/.cline/plugins before global plugins",
+			"先搜索 <path>/.cline/plugins，再搜索全局插件",
 		)
 		.action(async (name: string) => {
 			const opts = pluginUninstallCmd.opts<{
@@ -354,20 +354,20 @@ export async function runCli(): Promise<void> {
 		});
 	const skillCmd = program
 		.command("skill")
-		.description("Manage Cline Skills via the open skills CLI (npx skills)")
+		.description("通过开放的 skills CLI（npx skills）管理 Cline Skills")
 		.allowUnknownOption()
 		.passThroughOptions()
-		.argument("[args...]", "arguments forwarded to the skills CLI")
+		.argument("[args...]", "转发给 skills CLI 的参数")
 		.addHelpText(
 			"after",
-			"\nForwards to the open skills CLI via npx. Examples:\n" +
-				"  cline skill add <owner/repo>       Add a skill into Cline\n" +
-				"  cline skill install <owner/repo>   Alias for add\n" +
-				"  cline skill list                   List installed skills\n" +
-				"  cline skill remove                 Remove installed skills\n" +
-				"  cline skill uninstall              Alias for remove\n" +
-				"\nadd/install and remove/uninstall default to '--agent cline' unless you pass your own --agent.\n" +
-				"Run 'npx skills --help' for the full command reference.",
+			"\n通过 npx 转发到开放的 skills CLI。示例：\n" +
+				"  cline skill add <owner/repo>       将技能添加到 Cline\n" +
+				"  cline skill install <owner/repo>   add 的别名\n" +
+				"  cline skill list                   列出已安装的技能\n" +
+				"  cline skill remove                 移除已安装的技能\n" +
+				"  cline skill uninstall               remove 的别名\n" +
+				"\n除非你传入自己的 --agent，add/install 和 remove/uninstall 默认使用 '--agent cline'。\n" +
+				"运行 'npx skills --help' 获取完整的命令参考。",
 		)
 		.action(async () => {
 			const { runSkillCommand } = await import("./commands/skill");
@@ -376,23 +376,23 @@ export async function runCli(): Promise<void> {
 
 	const connectCmd = program
 		.command("connect")
-		.description("Connect to an external channel")
-		.argument("[channel]", "Channel to connect Cline CLI to")
-		.option("--stop", "Kill all current channel connections")
-		.option("--restart", "Restart a channel connection")
+		.description("连接到外部频道")
+		.argument("[channel]", "用于连接 Cline CLI 的频道")
+		.option("--stop", "终止所有当前的频道连接")
+		.option("--restart", "重启频道连接")
 		.option(
 			"--restart-instance <id>",
-			"Restart one connector instance (used by daemon recovery)",
+			"重启一个连接器实例（用于守护进程恢复）",
 		)
 		.option(
 			"--cleanup-instance <id>",
-			"Reap one dead connector instance, preserving autostart (used by hub supervision)",
+			"回收一个已停止的连接器实例，保留自动启动（用于 hub 监管）",
 		)
 		.allowUnknownOption()
 		.passThroughOptions()
 		.addHelpText(
 			"after",
-			"\nRun 'connect <channel> --help' for channel-specific options.",
+			"\n运行 'connect <channel> --help' 查看频道特定的选项。",
 		)
 		.action(async (adapter: string | undefined) => {
 			const {
@@ -411,12 +411,12 @@ export async function runCli(): Promise<void> {
 			].filter(Boolean).length;
 			if (exclusiveModes > 1) {
 				io.writeErr(
-					"connect accepts only one of --stop, --restart or --cleanup-instance",
+					"connect 仅接受 --stop、--restart 或 --cleanup-instance 中的一个",
 				);
 				ctx.exitCode = 1;
 			} else if (opts.cleanupInstance) {
 				if (!adapter) {
-					io.writeErr("connect --cleanup-instance requires a channel");
+					io.writeErr("connect --cleanup-instance 需要指定频道");
 					ctx.exitCode = 1;
 				} else {
 					ctx.exitCode = await runCleanupConnectorInstance(
@@ -433,7 +433,7 @@ export async function runCli(): Promise<void> {
 				}
 			} else if (opts.restart || opts.restartInstance) {
 				if (!adapter) {
-					io.writeErr("connect --restart requires a channel");
+					io.writeErr("connect --restart 需要指定频道");
 					ctx.exitCode = 1;
 				} else {
 					ctx.exitCode = await runRestartConnector(
@@ -454,39 +454,39 @@ export async function runCli(): Promise<void> {
 			} else if (isFullTTY) {
 				ctx.exitCode = await runConnectWizard();
 			} else {
-				writeln(`\nAdapters:\n${formatAdapterList()}`);
+				writeln(`\n适配器：\n${formatAdapterList()}`);
 				connectCmd.help();
 			}
 		});
 
 	const mcpCmd = program
 		.command("mcp")
-		.description("Manage MCP servers")
+		.description("管理 MCP 服务器")
 		.action(async () => {
 			if (isFullTTY) {
 				ctx.exitCode = await runMcpWizard();
 			} else {
 				writeln(
-					"MCP wizard requires a TTY. Use cline config mcp to list servers.",
+					"MCP 向导需要 TTY。使用 cline config mcp 列出服务器。",
 				);
 			}
 		});
 	const mcpInstallCmd = mcpCmd
 		.command("install")
 		.alias("add")
-		.description("Open the MCP add wizard with server fields prefilled")
-		.argument("<name>", "MCP server name")
+		.description("打开 MCP 添加向导，并预填服务器字段")
+		.argument("<name>", "MCP 服务器名称")
 		.argument(
 			"[targetArgs...]",
-			"URL for remote transports, or command and args after -- for stdio",
+			"远程传输的 URL，或 -- 之后的命令和参数用于 stdio",
 		)
 		.option(
 			"--transport <transport>",
-			"stdio, sse, http, streamable-http, or streamableHttp (default: stdio)",
+			"stdio、sse、http、streamable-http 或 streamableHttp（默认：stdio）",
 		)
-		.option("--header <header>", "Remote MCP request header", collectOption, [])
-		.option("--yes", "Install noninteractively without opening the wizard")
-		.option("--json", "Output as JSON")
+		.option("--header <header>", "远程 MCP 请求头", collectOption, [])
+		.option("--yes", "非交互式安装，不打开向导")
+		.option("--json", "以 JSON 输出")
 		.action(async (name: string, targetArgs: string[]) => {
 			const opts = mcpInstallCmd.opts<{
 				header?: string[];
@@ -515,13 +515,13 @@ export async function runCli(): Promise<void> {
 
 	program
 		.command("doctor")
-		.description("Diagnose and fix configuration issues")
+		.description("诊断并修复配置问题")
 		.allowUnknownOption()
 		.allowExcessArguments()
 		.passThroughOptions()
 		.addHelpText(
 			"after",
-			"\nCommands:\n  fix  Kill all running processes\n  log  Open the CLI log file\n",
+			"\n命令：\n  fix  终止所有正在运行的进程\n  log  打开 CLI 日志文件\n",
 		)
 		.action(async (_opts: unknown, cmd: Command) => {
 			const doctorCmd = await createDoctorRuntimeCommand();
@@ -542,7 +542,7 @@ export async function runCli(): Promise<void> {
 
 	program
 		.command("hook")
-		.description("Handle a hook payload from stdin")
+		.description("处理来自 stdin 的 hook 负载")
 		.allowUnknownOption()
 		.allowExcessArguments()
 		.action(async () => {
@@ -565,7 +565,7 @@ export async function runCli(): Promise<void> {
 
 	program
 		.command("schedule")
-		.description("Manage scheduled tasks")
+		.description("管理计划任务")
 		.allowUnknownOption()
 		.allowExcessArguments()
 		.passThroughOptions()
@@ -579,7 +579,7 @@ export async function runCli(): Promise<void> {
 		});
 	program
 		.command("hub")
-		.description("Manage the local hub daemon")
+		.description("管理本地 hub 守护进程")
 		.allowUnknownOption()
 		.allowExcessArguments()
 		.passThroughOptions()
@@ -590,18 +590,18 @@ export async function runCli(): Promise<void> {
 
 	const dashboardCmd = program
 		.command("dashboard")
-		.description("Start the Cline Hub dashboard and open it in a browser")
-		.option("--config <dir>", "configuration directory")
-		.option("-c, --cwd <path>", "Workspace root", process.cwd())
+		.description("启动 Cline Hub 仪表板并在浏览器中打开")
+		.option("--config <dir>", "配置目录")
+		.option("-c, --cwd <path>", "工作区根目录", process.cwd())
 		.option(
 			"--data-dir <dir>",
-			"Use isolated local state at <dir> instead of ~/.cline (enables sandbox mode)",
+			"使用 <dir> 中的隔离本地状态，而不是 ~/.cline（启用沙盒模式）",
 		)
-		.option("--host <host>", "Dashboard bind host")
-		.option("--port <port>", "Dashboard HTTP/WebSocket port")
-		.option("--public-url <url>", "Public dashboard URL")
-		.option("--room-secret <secret>", "Invite secret for browser access")
-		.option("--no-open", "Start the dashboard without opening a browser")
+		.option("--host <host>", "仪表板绑定主机")
+		.option("--port <port>", "仪表板 HTTP/WebSocket 端口")
+		.option("--public-url <url>", "公共仪表板 URL")
+		.option("--room-secret <secret>", "浏览器访问的邀请密钥")
+		.option("--no-open", "启动仪表板但不打开浏览器")
 		.action(async () => {
 			const opts = dashboardCmd.opts<{
 				config?: string;
@@ -629,11 +629,11 @@ export async function runCli(): Promise<void> {
 
 	const updateCmd = program
 		.command("update")
-		.description("Check for updates and install if available")
+		.description("检查更新并在可用时安装")
 		.allowUnknownOption()
 		.allowExcessArguments()
-		.option("-v, --verbose", "Show verbose output")
-		.option("--config <dir>", "configuration directory")
+		.option("-v, --verbose", "显示详细输出")
+		.option("--config <dir>", "配置目录")
 		.action(async () => {
 			const { checkForUpdates } = await import("./commands/update");
 			ctx.exitCode = await checkForUpdates({
@@ -643,7 +643,7 @@ export async function runCli(): Promise<void> {
 
 	program
 		.command("version")
-		.description("Show Cline CLI version number")
+		.description("显示 Cline CLI 版本号")
 		.action(async () => {
 			const { showVersion } = await import("./commands/help");
 			showVersion();
@@ -652,7 +652,7 @@ export async function runCli(): Promise<void> {
 
 	program
 		.command("kanban")
-		.description("Run the kanban app")
+		.description("运行看板应用")
 		.action(async () => {
 			const { launchKanban } = await import("./commands/kanban");
 			ctx.exitCode = await launchKanban({
@@ -687,7 +687,7 @@ export async function runCli(): Promise<void> {
 	}>();
 	if (rootOpts.update) {
 		if (rootOpts.kanban || rootOpts.tui || program.args.length > 0) {
-			writeErr("Use --update without a prompt or task flags.");
+			writeErr("使用 --update 时不要包含提示词或任务标志。");
 			process.exitCode = 1;
 			return;
 		}
@@ -699,12 +699,12 @@ export async function runCli(): Promise<void> {
 	}
 	if (rootOpts.kanban) {
 		if (rootOpts.tui) {
-			writeErr("Use either --kanban or --tui, not both.");
+			writeErr("只能使用 --kanban 或 --tui 之一，不能同时使用。");
 			process.exitCode = 1;
 			return;
 		}
 		if (program.args.length > 0) {
-			writeErr("Use --kanban without a prompt.");
+			writeErr("使用 --kanban 时不要包含提示词。");
 			process.exitCode = 1;
 			return;
 		}
@@ -723,7 +723,7 @@ export async function runCli(): Promise<void> {
 	if (args.id !== undefined) {
 		const sessionId = args.id.trim();
 		if (!sessionId) {
-			writeErr("--id requires <session-id>");
+			writeErr("--id 需要 <session-id>");
 			process.exitCode = 1;
 			return;
 		}
@@ -743,35 +743,35 @@ export async function runCli(): Promise<void> {
 
 	if (args.invalidThinkingLevel) {
 		writeErr(
-			`invalid thinking level "${args.invalidThinkingLevel}" (expected "none", "low", "medium", "high", or "xhigh")`,
+			`无效的思考级别 "${args.invalidThinkingLevel}"（期望 "none"、"low"、"medium"、"high" 或 "xhigh"）`,
 		);
 		process.exitCode = 1;
 		return;
 	}
 	if (args.invalidCompactionMode) {
 		writeErr(
-			`invalid compaction mode "${args.invalidCompactionMode}" (expected ${CLI_COMPACTION_MODE_EXPECTED_TEXT})`,
+			`无效的压缩模式 "${args.invalidCompactionMode}"（期望 ${CLI_COMPACTION_MODE_EXPECTED_TEXT}）`,
 		);
 		process.exitCode = 1;
 		return;
 	}
 	if (args.invalidAutoApprove) {
 		writeErr(
-			`invalid auto-approve value "${args.invalidAutoApprove}" (expected "true" or "false")`,
+			`无效的自动批准值 "${args.invalidAutoApprove}"（期望 "true" 或 "false"）`,
 		);
 		process.exitCode = 1;
 		return;
 	}
 	if (args.invalidTimeoutSeconds) {
 		writeErr(
-			`invalid timeout "${args.invalidTimeoutSeconds}" (expected integer >= 1)`,
+			`无效的超时时间 "${args.invalidTimeoutSeconds}"（期望整数 >= 1）`,
 		);
 		process.exitCode = 1;
 		return;
 	}
 	if (args.invalidRetries) {
 		writeln(
-			`${c.dim}[warn] ignoring invalid --retries value "${args.invalidRetries}" (expected integer >= 1)${c.reset}`,
+			`${c.dim}[警告] 忽略无效的 --retries 值 "${args.invalidRetries}"（期望整数 >= 1）${c.reset}`,
 		);
 	}
 	if (args.hooksDir?.trim()) {
@@ -788,7 +788,7 @@ export async function runCli(): Promise<void> {
 
 	if (args.outputMode === "json" && (args.interactive || !args.prompt)) {
 		writeErr(
-			"JSON output mode requires a prompt argument or piped stdin (interactive mode is unsupported)",
+			"JSON 输出模式需要提示词参数或管道 stdin（不支持交互模式）",
 		);
 		process.exitCode = 1;
 		return;
@@ -809,7 +809,7 @@ export async function runCli(): Promise<void> {
 			!stdinHasPipedInput() &&
 			!isFullTTY
 		) {
-			writeErr("--worktree without a prompt requires an interactive terminal.");
+			writeErr("--worktree 不带提示词时需要交互式终端。");
 			process.exitCode = 1;
 			return;
 		}
@@ -817,7 +817,7 @@ export async function runCli(): Promise<void> {
 			const { getSessionRow } = await import("./session/session");
 			const session = await getSessionRow(resumeSessionId);
 			if (!session) {
-				writeErr(`Session not found: ${resumeSessionId}`);
+				writeErr(`找不到会话：${resumeSessionId}`);
 				process.exitCode = 1;
 				return;
 			}
@@ -826,11 +826,11 @@ export async function runCli(): Promise<void> {
 		const sourceCwd = args.cwd ?? process.cwd();
 		const result = await createTaskWorktree({ cwd: sourceCwd });
 		if (!result.success || !result.path) {
-			writeErr(`--worktree failed: ${result.message}`);
+			writeErr(`--worktree 失败：${result.message}`);
 			process.exitCode = 1;
 			return;
 		}
-		writeln(`Created worktree at ${result.path}`);
+		writeln(`已在 ${result.path} 创建 worktree`);
 		args = {
 			...args,
 			cwd: result.path,
@@ -1005,7 +1005,7 @@ export async function runCli(): Promise<void> {
 		} catch (error) {
 			const message = error instanceof Error ? error.message : String(error);
 			writeln(
-				`${c.dim}[model-catalog] catalog resolution failed (${message})${c.reset}`,
+				`${c.dim}[模型目录] 目录解析失败（${message}）${c.reset}`,
 			);
 		}
 		const knownModelIds = knownModels ? Object.keys(knownModels) : [];
@@ -1104,7 +1104,7 @@ export async function runCli(): Promise<void> {
 		} catch (error) {
 			const message = error instanceof Error ? error.message : String(error);
 			writeln(
-				`${c.dim}[provider-settings] failed to persist selection (${message})${c.reset}`,
+				`${c.dim}[提供商设置] 保存选择失败（${message}）${c.reset}`,
 			);
 		}
 		// Check for piped input (skip when stdin is not a real pipe/file, e.g. headless CI).
@@ -1147,8 +1147,8 @@ export async function runCli(): Promise<void> {
 			if (isZenMode) {
 				writeErr(
 					args.interactive
-						? "--zen is not compatible with interactive mode."
-						: "--zen requires a prompt.",
+						? "--zen 不兼容交互模式。"
+						: "--zen 需要提示词。",
 				);
 				process.exitCode = 1;
 				return;

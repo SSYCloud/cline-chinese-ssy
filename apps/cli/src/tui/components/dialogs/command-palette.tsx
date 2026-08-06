@@ -136,7 +136,7 @@ export function CommandPaletteContent(
 	return (
 		<box flexDirection="column" width={contentWidth} gap={1}>
 			<box flexDirection="row" width="100%" gap={1}>
-				<text flexGrow={1}>Command Palette</text>
+				<text flexGrow={1}>命令面板</text>
 				<text fg="gray" flexShrink={0}>
 					Ctrl+P
 				</text>
@@ -155,7 +155,7 @@ export function CommandPaletteContent(
 						setQuery(value);
 						setSelected(0);
 					}}
-					placeholder="Search actions..."
+					placeholder="搜索操作..."
 					flexGrow={1}
 					focused
 				/>
@@ -163,7 +163,7 @@ export function CommandPaletteContent(
 
 			<box flexDirection="column">
 				{visible.length === 0 ? (
-					<text fg="gray">No matching commands found.</text>
+					<text fg="gray">未找到匹配的命令。</text>
 				) : (
 					visible.map((item, localIndex) => {
 						const absoluteIndex = start + localIndex;
@@ -221,7 +221,7 @@ export function CommandPaletteContent(
 			</box>
 
 			<text fg="gray">
-				Type to search, arrow keys navigate, Enter to run, Esc to close
+				输入搜索，方向键导航，回车执行，Esc 关闭
 			</text>
 		</box>
 	);

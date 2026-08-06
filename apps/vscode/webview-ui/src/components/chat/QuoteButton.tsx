@@ -25,14 +25,14 @@ const QuoteButton: React.FC<QuoteButtonProps> = ({ top, left, onClick }) => {
 		// Pass transient props to the styled component
 		<ButtonContainer $left={left} $top={top} className="quote-button-class absolute">
 			<Button
-				aria-label="Quote selection"
+				aria-label="引用选中文本"
 				className="p-3 h-auto min-w-auto rounded-md shadow-sm transition-transform hover:scale-105 z-10"
 				onClick={(e) => {
 					e.stopPropagation() // Prevent triggering mouseup on the parent
 					onClick()
 				}}
 				size="sm"
-				title="Quote selection in reply">
+				title="在回复中引用选中文本">
 				<QuoteIcon className="size-2 fill-button-foreground rotate-180 stroke-1" />
 			</Button>
 		</ButtonContainer>

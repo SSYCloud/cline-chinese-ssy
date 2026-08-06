@@ -116,27 +116,27 @@ export function listInteractiveSlashCommands(
 		{
 			name: "config",
 			instructions: "",
-			description: "Open interactive config browser",
+			description: "打开交互式配置浏览器",
 		},
 		{
 			name: "settings",
 			instructions: "",
-			description: "Modify agent configuration",
+			description: "修改代理配置",
 		},
 		{
 			name: "mcp",
 			instructions: "",
-			description: "Manage MCP servers",
+			description: "管理 MCP 服务器",
 		},
 		{
 			name: "fork",
 			instructions: "/fork",
-			description: "Create a named fork of the current session",
+			description: "创建当前会话的命名分叉",
 		},
 		{
 			name: "team",
 			instructions: "/team [prompt]",
-			description: "Start the task with agent team",
+			description: "使用代理团队启动任务",
 		},
 	];
 	if (!userInstructionService) {
@@ -179,7 +179,7 @@ export async function resolveClineWelcomeLine(input: {
 		const snapshot = await loadClineAccountSnapshot(input);
 		const parts = [
 			snapshot.user.email,
-			`Credits: ${formatClineCredits(snapshot.displayedBalance)}`,
+			`积分：${formatClineCredits(snapshot.displayedBalance)}`,
 		];
 		if (snapshot.activeOrganization?.name.trim()) {
 			parts.push(snapshot.activeOrganization.name);

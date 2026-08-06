@@ -157,25 +157,25 @@ function toSorted<T extends InteractiveConfigItem>(items: T[]): T[] {
 
 function getMcpAuthLabel(registration: McpServerRegistration): string {
 	if (registration.transport.type === "stdio") {
-		return "local";
+		return "本地";
 	}
 	if (registration.oauth?.lastError) {
-		return "oauth error";
+		return "OAuth 错误";
 	}
 	const accessToken = registration.oauth?.tokens?.access_token;
 	if (typeof accessToken === "string" && accessToken.trim().length > 0) {
-		return "oauth authorized";
+		return "OAuth 已授权";
 	}
 	if (registration.oauth && Object.keys(registration.oauth).length > 0) {
-		return "oauth pending";
+		return "OAuth 待处理";
 	}
 	if (
 		registration.transport.headers &&
 		Object.keys(registration.transport.headers).length > 0
 	) {
-		return "static headers";
+		return "静态标头";
 	}
-	return "no auth";
+	return "无认证";
 }
 
 export function getMcpDescription(registration: McpServerRegistration): string {
@@ -183,8 +183,8 @@ export function getMcpDescription(registration: McpServerRegistration): string {
 	const timeoutDescription =
 		registration.transport.type === "stdio" &&
 		!isMcpTimeoutConfigured(registration.timeoutSeconds)
-			? `request timeout ${timeoutSeconds}s, initialize probe 1.5s`
-			: `timeout ${timeoutSeconds}s`;
+			? `请求超时 ${timeoutSeconds} 秒，初始化探测 1.5 秒`
+			: `超时 ${timeoutSeconds} 秒`;
 	return `${registration.transport.type}, ${getMcpAuthLabel(registration)}, ${timeoutDescription}`;
 }
 
@@ -294,7 +294,7 @@ function findPluginSkillOwner(
 }
 
 function formatPluginFailure(failure: PluginInitializationFailure): string {
-	return `${failure.phase === "setup" ? "setup failed" : "load failed"}: ${failure.message}`;
+	return `${failure.phase === "setup" ? "设置失败" : "加载失败"}: ${failure.message}`;
 }
 
 export function applyPluginFailures(

@@ -124,8 +124,8 @@ export function getContextMenuOptions(
 	const workingChanges: ContextMenuQueryItem = {
 		type: ContextMenuOptionType.Git,
 		value: "git-changes",
-		label: "Working changes",
-		description: "Current uncommitted changes",
+		label: "工作区更改",
+		description: "当前的未提交更改",
 	}
 
 	const searchResultItems: ContextMenuQueryItem[] = dynamicSearchResults.map((result) => {
@@ -182,8 +182,8 @@ export function getContextMenuOptions(
 	if ("git".startsWith(lowerQuery)) {
 		suggestions.push({
 			type: ContextMenuOptionType.Git,
-			label: "Git Commits",
-			description: "Search repository history",
+			label: "Git 提交",
+			description: "搜索仓库历史",
 		})
 	} else if ("git-changes".startsWith(lowerQuery)) {
 		suggestions.push(workingChanges)
@@ -207,8 +207,8 @@ export function getContextMenuOptions(
 			suggestions.push({
 				type: ContextMenuOptionType.Git,
 				value: lowerQuery,
-				label: `Commit ${lowerQuery}`,
-				description: "Git commit hash",
+				label: `提交 ${lowerQuery}`,
+				description: "Git 提交哈希",
 			})
 		}
 	}

@@ -77,7 +77,7 @@ export const VSCodeLmProvider = ({ currentMode }: VSCodeLmProviderProps) => {
 				onFocusCapture={() => void requestVsCodeLmModels()}
 				zIndex={DROPDOWN_Z_INDEX - 2}>
 				<label htmlFor="vscode-lm-model">
-					<span style={{ fontWeight: 500 }}>Language Model</span>
+					<span style={{ fontWeight: 500 }}>语言模型</span>
 				</label>
 				{vsCodeLmModels.length > 0 ? (
 					<VSCodeDropdown
@@ -85,7 +85,7 @@ export const VSCodeLmProvider = ({ currentMode }: VSCodeLmProviderProps) => {
 						onChange={(e) => handleModelSelect((e.target as HTMLInputElement).value)}
 						style={{ width: "100%" }}
 						value={selectedModelId}>
-						<VSCodeOption value="">Select a model...</VSCodeOption>
+						<VSCodeOption value="">选择模型...</VSCodeOption>
 						{vsCodeLmModels.map((model) => {
 							const value = stringifyVsCodeLmModelSelector(model)
 							return (
@@ -102,17 +102,15 @@ export const VSCodeLmProvider = ({ currentMode }: VSCodeLmProviderProps) => {
 							marginTop: "5px",
 							color: "var(--vscode-descriptionForeground)",
 						}}>
-						Uses models contributed by other extensions through the VS Code Language Model API. The most common source
-						is GitHub Copilot — install the{" "}
-						<a href="https://marketplace.visualstudio.com/items?itemName=GitHub.copilot">Copilot extension</a> and
-						enable models in Copilot settings — but any extension that registers a language model provider will appear
-						here.{" "}
+						使用其他扩展通过 VS Code 语言模型 API 贡献的模型。最常见的来源是 GitHub Copilot —— 安装{" "}
+						<a href="https://marketplace.visualstudio.com/items?itemName=GitHub.copilot">Copilot 扩展</a> 并在 Copilot
+						设置中启用模型 —— 但任何注册了语言模型提供程序的扩展都会显示在这里。{" "}
 						<VSCodeLink
 							onClick={() => void requestVsCodeLmModels()}
 							style={{ display: "inline", fontSize: "inherit" }}>
-							Refresh the model list
+							刷新模型列表
 						</VSCodeLink>{" "}
-						after enabling models.
+						启用模型后进行刷新。
 					</p>
 				)}
 			</DropdownContainer>

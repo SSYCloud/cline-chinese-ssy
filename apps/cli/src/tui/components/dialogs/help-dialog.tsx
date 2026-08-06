@@ -9,24 +9,24 @@ type HelpRow =
 	| { kind: "spacer"; id: string };
 
 const HELP_ROWS: HelpRow[] = [
-	{ kind: "heading", id: "h-keys", text: "Keyboard Shortcuts" },
+	{ kind: "heading", id: "h-keys", text: "键盘快捷键" },
 	{
 		kind: "entry",
 		id: "k-enter",
 		key: "Enter",
-		desc: "Submit prompt (or select autocomplete)",
+		desc: "提交提示（或选择自动补全）",
 	},
 	{
 		kind: "entry",
 		id: "k-shift-enter",
 		key: "Shift+Enter",
-		desc: "Newline in input",
+		desc: "在输入中换行",
 	},
 	{
 		kind: "entry",
 		id: "k-tab",
 		key: "Tab",
-		desc: "Toggle Plan / Act mode",
+		desc: "切换计划 / 执行模式",
 	},
 	{
 		kind: "entry",
@@ -295,7 +295,7 @@ export function HelpDialogContent(props: ChoiceContext<void>) {
 			</scrollbox>
 
 			<text fg="gray" marginTop={1}>
-				<em>Esc/Enter to close</em>
+				<em>按 Esc/Enter 关闭</em>
 			</text>
 		</box>
 	);

@@ -88,7 +88,7 @@ const CreateWorktreeModal = ({ open, onClose, openAfterCreate = false, onSuccess
 				onClose()
 			}
 		} catch (err) {
-			setCreateError(err instanceof Error ? err.message : "Failed to create worktree")
+			setCreateError(err instanceof Error ? err.message : "创建工作树失败")
 		} finally {
 			setIsCreating(false)
 		}
@@ -98,12 +98,10 @@ const CreateWorktreeModal = ({ open, onClose, openAfterCreate = false, onSuccess
 		return null
 	}
 
-	const title = openAfterCreate ? "New Worktree" : "Create New Worktree"
-	const buttonText = openAfterCreate ? "Create & Open" : "Create Worktree"
-	const creatingText = openAfterCreate ? "Creating & Opening..." : "Creating..."
-	const description = openAfterCreate
-		? "This will create a copy of your project on a new branch and open in a separate window."
-		: "This will create a copy of your project on a new branch."
+	const title = openAfterCreate ? "新建工作树" : "创建新工作树"
+	const buttonText = openAfterCreate ? "创建并打开" : "创建工作树"
+	const creatingText = openAfterCreate ? "正在创建并打开..." : "正在创建..."
+	const description = openAfterCreate ? "这将在新分支上创建项目副本，并在单独窗口中打开。" : "这将在新分支上创建项目副本。"
 
 	return (
 		<div
@@ -129,21 +127,21 @@ const CreateWorktreeModal = ({ open, onClose, openAfterCreate = false, onSuccess
 						style={{ backgroundColor: "var(--vscode-inputValidation-warningBackground)" }}>
 						<AlertTriangle className="w-4 h-4 flex-shrink-0 mt-0.5 text-[var(--vscode-editorWarning-foreground)]" />
 						<p className="text-xs text-[var(--vscode-foreground)] m-0">
-							No .worktreeinclude detected.{" "}
+							未检测到 .worktreeinclude。{" "}
 							<a
 								className="text-[var(--vscode-textLink-foreground)] hover:text-[var(--vscode-textLink-activeForeground)]"
 								href="https://docs.cline.bot/features/worktrees#worktreeinclude"
 								rel="noopener noreferrer"
 								style={{ fontSize: "inherit" }}
 								target="_blank">
-								Learn more
+								了解更多
 							</a>
 						</p>
 					</div>
 				)}
 				<div className="flex flex-col">
 					<div>
-						<label className="block text-sm font-medium mb-1">Branch Name *</label>
+						<label className="block text-sm font-medium mb-1">分支名称 *</label>
 						<VSCodeTextField
 							className="w-full"
 							onInput={(e) => setNewBranchName((e.target as HTMLInputElement).value)}
@@ -151,7 +149,7 @@ const CreateWorktreeModal = ({ open, onClose, openAfterCreate = false, onSuccess
 							value={newBranchName}>
 							{newBranchName && (
 								<div
-									aria-label="Clear"
+									aria-label="清除"
 									className="input-icon-button codicon codicon-close"
 									onClick={() => setNewBranchName("")}
 									slot="end"
@@ -164,12 +162,10 @@ const CreateWorktreeModal = ({ open, onClose, openAfterCreate = false, onSuccess
 								/>
 							)}
 						</VSCodeTextField>
-						<p className="text-xs text-[var(--vscode-descriptionForeground)] mt-1">
-							Your new copy will be checked out to this branch.
-						</p>
+						<p className="text-xs text-[var(--vscode-descriptionForeground)] mt-1">你的新副本将检出到此分支。</p>
 					</div>
 					<div>
-						<label className="block text-sm font-medium mb-1">Folder Path *</label>
+						<label className="block text-sm font-medium mb-1">文件夹路径 *</label>
 						<VSCodeTextField
 							className="w-full"
 							onInput={(e) => setNewWorktreePath((e.target as HTMLInputElement).value)}
@@ -177,7 +173,7 @@ const CreateWorktreeModal = ({ open, onClose, openAfterCreate = false, onSuccess
 							value={newWorktreePath}>
 							{newWorktreePath && (
 								<div
-									aria-label="Clear"
+									aria-label="清除"
 									className="input-icon-button codicon codicon-close"
 									onClick={() => setNewWorktreePath("")}
 									slot="end"
@@ -191,7 +187,7 @@ const CreateWorktreeModal = ({ open, onClose, openAfterCreate = false, onSuccess
 							)}
 						</VSCodeTextField>
 						<p className="text-xs text-[var(--vscode-descriptionForeground)] mt-1">
-							Where the project will be copied for the worktree.
+							工作树的项目副本将保存到此位置。
 						</p>
 					</div>
 					{createError && (
@@ -207,7 +203,7 @@ const CreateWorktreeModal = ({ open, onClose, openAfterCreate = false, onSuccess
 							{isLoadingDefaults ? (
 								<>
 									<Loader2 className="w-4 h-4 mr-1 animate-spin" />
-									Loading...
+									正在加载...
 								</>
 							) : isCreating ? (
 								<>

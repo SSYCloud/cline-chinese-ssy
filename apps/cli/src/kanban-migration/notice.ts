@@ -97,7 +97,7 @@ export function getClineCliMigrationNotice(
 	}
 	return {
 		id: NOTICE_ID,
-		title: "Try ClinePass",
+		title: "试用 ClinePass",
 	};
 }
 

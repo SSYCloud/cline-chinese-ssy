@@ -25,10 +25,10 @@ export function formatApprovalParams(
 			if (!info?.files.length) break;
 			const keys = buildReadFilesKeys(info.files);
 			return info.files.map((f, i) => {
-				const range =
-					f.startLine != null
-						? ` lines ${f.startLine}-${f.endLine ?? "end"}`
-						: "";
+			const range =
+				f.startLine != null
+					? ` 行 ${f.startLine}-${f.endLine ?? "末尾"}`
+					: "";
 				return (
 					<text key={keys[i]} fg="gray" selectable>
 						{"  "}
@@ -105,7 +105,7 @@ export function formatApprovalParams(
 		case "switch_to_act_mode":
 			return (
 				<text fg="gray" selectable>
-					{"  "}Switch from plan mode to act mode
+					{"  "}从计划模式切换到执行模式
 				</text>
 			);
 		case "ask_followup_question": {
@@ -155,7 +155,7 @@ export function ToolApprovalContent(
 
 	return (
 		<box flexDirection="column" paddingX={1}>
-			<text fg="yellow">Approve tool call?</text>
+			<text fg="yellow">批准工具调用？</text>
 
 			<text fg={palette.act} marginTop={1}>
 				<strong>{props.request.toolName}</strong>
@@ -168,8 +168,8 @@ export function ToolApprovalContent(
 			)}
 
 			<text marginTop={1}>
-				<span fg={palette.success}>[y]</span> approve{"  "}
-				<span fg="red">[n]</span> deny
+				<span fg={palette.success}>[y]</span> 批准{"  "}
+				<span fg="red">[n]</span> 拒绝
 			</text>
 		</box>
 	);

@@ -51,13 +51,13 @@ const DeleteWorktreeModal = ({ open, onClose, onConfirm, worktreePath, branchNam
 				{/* Title row with icon */}
 				<div className="flex items-center gap-2 mb-3 pr-6">
 					<AlertTriangle className="w-5 h-5 text-[var(--vscode-errorForeground)]" />
-					<h4 className="m-0">Delete Worktree</h4>
+					<h4 className="m-0">删除工作树</h4>
 				</div>
 
 				{/* Content */}
 				<p className="text-sm text-[var(--vscode-descriptionForeground)] mt-0 mb-3">
-					This will delete the worktree directory at{" "}
-					<span className="font-semibold text-[var(--vscode-foreground)] break-all">{worktreePath}</span>
+					这将删除位于 <span className="font-semibold text-[var(--vscode-foreground)] break-all">{worktreePath}</span>
+					的工作树目录
 				</p>
 
 				<label className="flex items-center gap-2 cursor-pointer mb-3">
@@ -66,29 +66,29 @@ const DeleteWorktreeModal = ({ open, onClose, onConfirm, worktreePath, branchNam
 						onChange={(e) => setDeleteBranch((e.target as HTMLInputElement).checked)}
 					/>
 					<span className="text-sm">
-						Also delete branch <span className="font-semibold">{branchName}</span>
+						同时删除分支 <span className="font-semibold">{branchName}</span>
 					</span>
 				</label>
 
 				{deleteBranch && (
 					<p className="text-sm text-[var(--vscode-inputValidation-warningForeground)] mt-0 mb-3">
-						Warning: Unpushed commits on this branch will be lost.
+						警告：此分支上未推送的提交将丢失。
 					</p>
 				)}
 
 				{/* Buttons */}
 				<div className="flex justify-end gap-2">
 					<VSCodeButton appearance="secondary" disabled={isDeleting} onClick={onClose}>
-						Cancel
+						取消
 					</VSCodeButton>
 					<Button disabled={isDeleting} onClick={handleDelete} variant="danger">
 						{isDeleting ? (
 							<>
 								<Loader2 className="w-4 h-4 mr-1 animate-spin" />
-								Deleting...
+								正在删除...
 							</>
 						) : (
-							"Delete"
+							"删除"
 						)}
 					</Button>
 				</div>

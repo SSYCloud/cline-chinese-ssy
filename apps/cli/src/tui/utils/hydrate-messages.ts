@@ -32,7 +32,7 @@ function stringifyToolResult(
 			if (block.type === "text" && typeof block.text === "string")
 				return block.text;
 			if (block.type === "file" && typeof block.path === "string")
-				return `Attached file: ${block.path}`;
+				return `附加文件：${block.path}`;
 			return "";
 		})
 		.filter(Boolean)

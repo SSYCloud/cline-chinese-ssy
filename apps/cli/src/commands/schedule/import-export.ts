@@ -53,9 +53,9 @@ export function registerScheduleExportCommand(
 ): void {
 	const exportCmd = schedule
 		.command("export")
-		.description("Export a schedule")
-		.argument("<schedule-id>", "Schedule ID")
-		.option("--to <path>", "Output file path");
+		.description("导出计划")
+		.argument("<schedule-id>", "计划 ID")
+		.option("--to <path>", "输出文件路径");
 	addSharedOptions(exportCmd);
 	exportCmd.action(
 		action(async (scheduleId: string) => {
@@ -64,7 +64,7 @@ export function registerScheduleExportCommand(
 			const ensured = await ensureSchedulerHub(address, process.cwd(), io);
 			if (!ensured.ok) {
 				io.writeErr(
-					`failed to ensure hub server${formatResolvedAddressLabel(address)}`,
+					`无法确保 hub 服务器${formatResolvedAddressLabel(address)}`,
 				);
 				fail();
 				return;
@@ -73,7 +73,7 @@ export function registerScheduleExportCommand(
 			try {
 				const result = await client.getSchedule(scheduleId);
 				if (!result) {
-					io.writeErr(`schedule not found: ${scheduleId}`);
+					io.writeErr(`未找到计划: ${scheduleId}`);
 					fail();
 					return;
 				}
@@ -96,7 +96,7 @@ export function registerScheduleExportCommand(
 							serialized = yaml.stringify(result);
 						}
 						await writeFile(resolvedPath, serialized, "utf8");
-						io.writeln(`Exported schedule ${scheduleId} to ${resolvedPath}`);
+						io.writeln(`已导出计划 ${scheduleId} 到 ${resolvedPath}`);
 					} catch (error) {
 						io.writeErr(error instanceof Error ? error.message : String(error));
 						fail();
@@ -124,8 +124,8 @@ export function registerScheduleImportCommand(
 ): void {
 	const importCmd = schedule
 		.command("import")
-		.description("Import a schedule from file")
-		.argument("<path>", "Source file path");
+		.description("从文件导入计划")
+		.argument("<path>", "源文件路径");
 	addSharedOptions(importCmd);
 	importCmd.action(
 		action(async (sourcePath: string) => {
@@ -134,7 +134,7 @@ export function registerScheduleImportCommand(
 			const ensured = await ensureSchedulerHub(address, process.cwd(), io);
 			if (!ensured.ok) {
 				io.writeErr(
-					`failed to ensure hub server${formatResolvedAddressLabel(address)}`,
+					`无法确保 hub 服务器${formatResolvedAddressLabel(address)}`,
 				);
 				fail();
 				return;
@@ -154,7 +154,7 @@ export function registerScheduleImportCommand(
 				).trim();
 				if (!workspaceRoot) {
 					io.writeErr(
-						"schedule import requires workspaceRoot/workspace_root in the source file",
+						"计划导入要求源文件中包含 workspaceRoot/workspace_root",
 					);
 					fail();
 					return;
@@ -204,7 +204,7 @@ export function registerScheduleImportCommand(
 					),
 				});
 				if (!created) {
-					io.writeErr("failed to import schedule");
+					io.writeErr("导入计划失败");
 					fail();
 					return;
 				}
@@ -224,26 +224,26 @@ export function registerScheduleUpdateCommand(
 ): void {
 	const updateCmd = schedule
 		.command("update")
-		.description("Update a schedule")
-		.argument("<schedule-id>", "Schedule ID")
-		.option("--clear-timeout", "Clear timeout")
-		.option("--cron <pattern>", "New cron pattern")
-		.option("--cwd <path>", "New working directory")
-		.option("--disabled", "Disable the schedule")
-		.option("--enabled", "Enable the schedule")
-		.option("--max-parallel <n>", "New max parallel executions")
-		.option("--metadata-json <json>", "New metadata as JSON object")
-		.option("--mode <act|plan|yolo>", "New execution mode")
-		.option("--model <model>", "New model")
-		.option("--name <name>", "New name")
-		.option("--pause", "Pause the schedule")
-		.option("--prompt <text>", "New prompt")
-		.option("--provider <id>", "New provider ID")
-		.option("--resume", "Resume the schedule")
-		.option("--system-prompt <text>", "New system prompt")
-		.option("--tags <list>", "New comma-separated tags")
-		.option("--timeout <n>", "New timeout in seconds")
-		.option("--workspace <path>", "New workspace root");
+		.description("更新计划")
+		.argument("<schedule-id>", "计划 ID")
+		.option("--clear-timeout", "清除超时")
+		.option("--cron <pattern>", "新的 cron 表达式")
+		.option("--cwd <path>", "新的工作目录")
+		.option("--disabled", "禁用计划")
+		.option("--enabled", "启用计划")
+		.option("--max-parallel <n>", "新的最大并行执行数")
+		.option("--metadata-json <json>", "新的元数据（JSON 对象）")
+		.option("--mode <act|plan|yolo>", "新的执行模式")
+		.option("--model <model>", "新的模型")
+		.option("--name <name>", "新名称")
+		.option("--pause", "暂停计划")
+		.option("--prompt <text>", "新的提示")
+		.option("--provider <id>", "新的提供方 ID")
+		.option("--resume", "恢复计划")
+		.option("--system-prompt <text>", "新的系统提示")
+		.option("--tags <list>", "新的逗号分隔标签")
+		.option("--timeout <n>", "新的超时秒数")
+		.option("--workspace <path>", "新的工作区根目录");
 	addDeliveryOptions(updateCmd);
 	addAutonomousOptions(updateCmd);
 	addSharedOptions(updateCmd);
@@ -254,7 +254,7 @@ export function registerScheduleUpdateCommand(
 			const ensured = await ensureSchedulerHub(address, process.cwd(), io);
 			if (!ensured.ok) {
 				io.writeErr(
-					`failed to ensure hub server${formatResolvedAddressLabel(address)}`,
+					`无法确保 hub 服务器${formatResolvedAddressLabel(address)}`,
 				);
 				fail();
 				return;
@@ -279,7 +279,7 @@ export function registerScheduleUpdateCommand(
 						| { metadata?: Record<string, unknown> }
 						| undefined;
 					if (!current) {
-						io.writeErr(`schedule not found: ${scheduleId}`);
+						io.writeErr(`未找到计划: ${scheduleId}`);
 						fail();
 						return;
 					}
@@ -312,7 +312,7 @@ export function registerScheduleUpdateCommand(
 					metadata,
 				});
 				if (!updated) {
-					io.writeErr(`schedule not found: ${scheduleId}`);
+					io.writeErr(`未找到计划: ${scheduleId}`);
 					fail();
 					return;
 				}

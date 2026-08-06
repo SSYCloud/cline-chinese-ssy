@@ -52,65 +52,65 @@ const TUI_LOCAL_COMMANDS: Array<{
 }> = [
 	{
 		name: "settings",
-		description: "Modify agent configuration",
+		description: "修改代理配置",
 	},
 	{
 		name: "config",
-		description: "Modify agent configuration",
+		description: "修改代理配置",
 		visible: false,
 	},
 	{
 		name: "model",
-		description: "Switch model or provider",
+		description: "切换模型或提供商",
 	},
 	{
 		name: "theme",
-		description: "Change color theme",
+		description: "更改颜色主题",
 	},
 	{
 		name: "account",
-		description: "View Cline account",
+		description: "查看 Cline 账户",
 	},
 	{
 		name: "mcp",
-		description: "Manage MCP servers",
+		description: "管理 MCP 服务器",
 	},
 	{
 		name: "plugins",
-		description: "Manage plugins",
+		description: "管理插件",
 	},
 	{
 		name: "compact",
-		description: "Compact context",
+		description: "压缩上下文",
 	},
 	{
 		name: "skills",
-		description: "Browse skills and workflows",
+		description: "浏览技能和工作流",
 		preserveInput: true,
 	},
 	{
 		name: "fork",
-		description: "Create a named fork of the current session",
+		description: "创建当前会话的命名分叉",
 	},
 	{
 		name: "undo",
-		description: "Restore to a previous checkpoint",
+		description: "恢复到之前的检查点",
 	},
 	{
 		name: "clear",
-		description: "Start a new session",
+		description: "开始新会话",
 	},
 	{
 		name: "history",
-		description: "View session history",
+		description: "查看会话历史",
 	},
 	{
 		name: "help",
-		description: "Show help",
+		description: "显示帮助",
 	},
 	{
 		name: "quit",
-		description: "Exit Cline",
+		description: "退出 Cline",
 	},
 ];
 

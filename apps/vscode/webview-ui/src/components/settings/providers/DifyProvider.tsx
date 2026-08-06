@@ -37,10 +37,10 @@ export const DifyProvider = ({ showModelOptions, isPopup, currentMode }: DifyPro
 					onChange={(value) => {
 						handleFieldChange("difyBaseUrl", value)
 					}}
-					placeholder={"Enter base URL..."}
+					placeholder={"输入基础 URL..."}
 					style={{ width: "100%", marginBottom: 10 }}
 					type="text">
-					<span style={{ fontWeight: 500 }}>Base URL</span>
+					<span style={{ fontWeight: 500 }}>基础 URL</span>
 				</DebouncedTextField>
 
 				<ApiKeyField
@@ -52,12 +52,9 @@ export const DifyProvider = ({ showModelOptions, isPopup, currentMode }: DifyPro
 				/>
 
 				<div style={{ fontSize: "12px", color: "var(--vscode-descriptionForeground)", marginTop: "5px" }}>
-					<p>
-						Dify is a platform that provides access to various AI models through a unified API. Configure your Dify
-						instance URL and API key to get started.
-					</p>
+					<p>Dify 是一个通过统一 API 提供多种 AI 模型访问的平台。配置你的 Dify 实例 URL 和 API 密钥即可开始使用。</p>
 					<p style={{ marginTop: "8px" }}>
-						<strong>Note:</strong> The model selection is handled within your Dify application configuration.
+						<strong>注意：</strong>模型选择在你的 Dify 应用配置中完成。
 					</p>
 				</div>
 			</div>

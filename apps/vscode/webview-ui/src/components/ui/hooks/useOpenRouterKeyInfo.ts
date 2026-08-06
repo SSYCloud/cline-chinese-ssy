@@ -124,7 +124,7 @@ export const useOpenRouterKeyInfo = (apiKey?: string) => {
 				.catch((err) => {
 					if (!signal.aborted) {
 						console.error("[useOpenRouterKeyInfo] Fetch error:", err)
-						setError(err instanceof Error ? err : new Error("An unknown error occurred"))
+						setError(err instanceof Error ? err : new Error("发生未知错误"))
 						if (!isBackgroundFetch) {
 							setData(null)
 							moduleCachedData = null

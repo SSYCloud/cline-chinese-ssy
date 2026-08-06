@@ -233,10 +233,10 @@ export function SearchableList(props: {
 	const {
 		items,
 		selected,
-		placeholder = "Type to search...",
+		placeholder = "输入以搜索...",
 		onSearchChange,
 		onItemSelect,
-		emptyText = "No results",
+		emptyText = "无结果",
 		borderColor = "gray",
 	} = props;
 

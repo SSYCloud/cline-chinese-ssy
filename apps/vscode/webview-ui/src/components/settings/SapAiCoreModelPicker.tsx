@@ -32,7 +32,7 @@ const SapAiCoreModelPicker: React.FC<SapAiCoreModelPickerProps> = ({
 	selectedModelId,
 	selectedDeploymentId,
 	onModelChange,
-	placeholder = "Select a model...",
+	placeholder = "选择模型...",
 	useOrchestrationMode = true,
 }) => {
 	const { models: sapAiCoreModels } = useProviderModels("sapaicore")
@@ -139,7 +139,7 @@ const SapAiCoreModelPicker: React.FC<SapAiCoreModelPickerProps> = ({
 				// Add section separator (disabled option)
 				options.push(
 					<VSCodeOption disabled key="deployed-header" value="">
-						── Deployed Models ──
+						── 已部署模型 ──
 					</VSCodeOption>,
 				)
 
@@ -157,7 +157,7 @@ const SapAiCoreModelPicker: React.FC<SapAiCoreModelPickerProps> = ({
 				// Add section separator (disabled option)
 				options.push(
 					<VSCodeOption disabled key="supported-header" value="">
-						── Not Deployed Models ──
+						── 未部署模型 ──
 					</VSCodeOption>,
 				)
 
@@ -177,7 +177,7 @@ const SapAiCoreModelPicker: React.FC<SapAiCoreModelPickerProps> = ({
 	return (
 		<DropdownContainer className="dropdown-container" zIndex={SAP_AI_CORE_MODEL_PICKER_Z_INDEX}>
 			<label htmlFor="sap-ai-core-model-dropdown">
-				<span className="font-medium">Model</span>
+				<span className="font-medium">模型</span>
 			</label>
 			<VSCodeDropdown
 				id="sap-ai-core-model-dropdown"

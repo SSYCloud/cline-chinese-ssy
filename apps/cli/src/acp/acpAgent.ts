@@ -142,7 +142,7 @@ export class AcpAgent implements Agent {
 			if (!this.authResult) {
 				throw RequestError.authRequired(
 					undefined,
-					"Call authenticate before starting a session",
+					"在开始会话前先进行身份验证",
 				);
 			}
 		}
@@ -152,14 +152,14 @@ export class AcpAgent implements Agent {
 		return [
 			{
 				id: "plan",
-				name: "Plan",
+				name: "规划",
 				description:
-					"Explore the codebase and plan changes without modifying files",
+					"探索代码库并规划更改，而不修改文件",
 			},
 			{
 				id: "act",
-				name: "Act",
-				description: "Make changes to the codebase",
+				name: "执行",
+				description: "对代码库进行更改",
 			},
 		];
 	}
@@ -299,7 +299,7 @@ export class AcpAgent implements Agent {
 	async prompt(params: PromptRequest): Promise<PromptResponse> {
 		const session = this.sessions.get(params.sessionId);
 		if (!session) {
-			throw new Error(`unknown session: ${params.sessionId}`);
+			throw new Error(`未知会话: ${params.sessionId}`);
 		}
 
 		const promptText = extractTextFromContentBlocks(params.prompt);
@@ -341,7 +341,7 @@ export class AcpAgent implements Agent {
 			const activeSessionId = session.activeSessionId;
 			const sessionManager = session.sessionManager;
 			if (!activeSessionId || !sessionManager) {
-				throw new Error("Session manager was not initialized");
+				throw new Error("会话管理器尚未初始化");
 			}
 			const result = await sessionManager.send({
 				sessionId: activeSessionId,
@@ -394,12 +394,12 @@ export class AcpAgent implements Agent {
 	): Promise<SetSessionModeResponse> {
 		if (params.modeId !== "plan" && params.modeId !== "act") {
 			throw new Error(
-				`invalid modeId: ${params.modeId} (must be "plan" or "act")`,
+				`无效的 modeId: ${params.modeId}（必须是 "plan" 或 "act"）`,
 			);
 		}
 		const session = this.sessions.get(params.sessionId);
 		if (!session) {
-			throw new Error(`unknown session: ${params.sessionId}`);
+			throw new Error(`未知会话: ${params.sessionId}`);
 		}
 		session.currentMode = params.modeId;
 		sendCurrentModeUpdate(this.conn, params.sessionId, params.modeId);
@@ -411,7 +411,7 @@ export class AcpAgent implements Agent {
 	): Promise<SetSessionModelResponse> {
 		const session = this.sessions.get(params.sessionId);
 		if (!session) {
-			throw new Error(`unknown session: ${params.sessionId}`);
+			throw new Error(`未知会话: ${params.sessionId}`);
 		}
 		session.currentModelId = params.modelId;
 		if (session.sessionManager && session.activeSessionId) {
@@ -428,7 +428,7 @@ export class AcpAgent implements Agent {
 	): Promise<SetSessionConfigOptionResponse> {
 		const session = this.sessions.get(params.sessionId);
 		if (!session) {
-			throw new Error(`unknown session: ${params.sessionId}`);
+			throw new Error(`未知会话: ${params.sessionId}`);
 		}
 
 		const value = params.value as string;
@@ -438,13 +438,13 @@ export class AcpAgent implements Agent {
 				if (process.env.CLINE_PROVIDER) {
 					throw RequestError.invalidParams(
 						undefined,
-						"Cannot change provider: CLINE_PROVIDER environment variable is set",
+						"无法更改提供商: 已设置 CLINE_PROVIDER 环境变量",
 					);
 				}
 				if (!isAcpAuthMethodId(value)) {
 					throw RequestError.invalidParams(
 						undefined,
-						`Unknown provider: ${value}`,
+						`未知提供商: ${value}`,
 					);
 				}
 
@@ -478,7 +478,7 @@ export class AcpAgent implements Agent {
 					const message = describeAgentError(error);
 					throw RequestError.internalError(
 						{ message },
-						`Failed to switch account: ${message}`,
+						`切换账户失败: ${message}`,
 					);
 				}
 
@@ -503,7 +503,7 @@ export class AcpAgent implements Agent {
 				if (value !== "plan" && value !== "act") {
 					throw RequestError.invalidParams(
 						undefined,
-						`Invalid mode: ${value} (must be "plan" or "act")`,
+						`无效模式: ${value}（必须是 "plan" 或 "act"）`,
 					);
 				}
 				session.currentMode = value;
@@ -514,7 +514,7 @@ export class AcpAgent implements Agent {
 			default:
 				throw RequestError.invalidParams(
 					undefined,
-					`Unknown config option: ${params.configId}`,
+					`未知配置选项: ${params.configId}`,
 				);
 		}
 
@@ -535,7 +535,7 @@ export class AcpAgent implements Agent {
 		if (!isAcpAuthMethodId(params.methodId)) {
 			throw RequestError.invalidParams(
 				undefined,
-				`Unsupported auth method: ${params.methodId}`,
+				`不支持的认证方法: ${params.methodId}`,
 			);
 		}
 
@@ -823,8 +823,8 @@ async function buildProviderConfigOption(
 	return {
 		type: "select",
 		id: "provider",
-		name: "Provider",
-		description: "The authentication provider to use",
+		name: "提供商",
+		description: "要使用的认证提供商",
 		category: "model",
 		currentValue: currentProviderId,
 		options,
@@ -838,7 +838,7 @@ function buildModelConfigOption(
 	return {
 		type: "select",
 		id: "model",
-		name: "Model",
+		name: "模型",
 		category: "model",
 		currentValue: currentModelId,
 		options: Object.entries(providerModels).map(([modelId, info]) => ({
@@ -853,21 +853,21 @@ function buildModeConfigOption(currentMode: string): SessionConfigOption {
 	return {
 		type: "select",
 		id: "mode",
-		name: "Session Mode",
-		description: "Controls whether the agent can modify files",
+		name: "会话模式",
+		description: "控制代理是否可以修改文件",
 		category: "mode",
 		currentValue: currentMode,
 		options: [
 			{
 				value: "plan",
-				name: "Plan",
+				name: "规划",
 				description:
-					"Explore the codebase and plan changes without modifying files",
+					"探索代码库并规划更改，而不修改文件",
 			},
 			{
 				value: "act",
-				name: "Act",
-				description: "Make changes to the codebase",
+				name: "执行",
+				description: "对代码库进行更改",
 			},
 		],
 	};

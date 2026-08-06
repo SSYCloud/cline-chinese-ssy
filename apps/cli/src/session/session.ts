@@ -69,9 +69,9 @@ export async function createCliCore(options?: {
 	try {
 		await core.featureFlags.poll();
 	} catch (error) {
-		options?.logger?.error?.("Error polling CLI feature flags", { error });
+		options?.logger?.error?.("轮询 CLI 功能开关时出错", { error });
 	}
-	options?.logger?.log("CLI core runtime routing selected", {
+	options?.logger?.log("CLI 核心运行时路由已选择", {
 		backendMode: explicitBackendMode ?? "env-managed",
 		rpcAddress: core.runtimeAddress,
 		forceLocalBackend: options?.forceLocalBackend === true,

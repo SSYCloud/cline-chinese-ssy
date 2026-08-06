@@ -6,12 +6,12 @@ export function describeAbortSource(input: {
 	timedOut: boolean;
 }): string {
 	if (input.timedOut) {
-		return "aborted after timeout";
+		return "超时后中止";
 	}
 	if (input.abortRequested) {
-		return "aborted";
+		return "已中止";
 	}
-	return "aborted by another client";
+	return "被另一客户端中止";
 }
 
 export async function resolveMistakeLimitDecision(
@@ -31,7 +31,7 @@ export async function resolveMistakeLimitDecision(
 	if (yoloEnabled) {
 		return {
 			action: "stop",
-			reason: `max consecutive mistakes reached (${context.maxConsecutiveMistakes}) in yolo mode`,
+			reason: `在 yolo 模式下达到最大连续错误次数（${context.maxConsecutiveMistakes}）`,
 		};
 	}
 	const detail = context.details?.trim();
@@ -45,31 +45,34 @@ export async function resolveMistakeLimitDecision(
 		};
 	}
 	const answer = await askQuestionInTerminal(
-		`mistake_limit_reached (${context.consecutiveMistakes}/${context.maxConsecutiveMistakes})\nLatest: ${summary}\nHow should Cline continue?`,
-		["Try a different approach", "Stop this run"],
+		`已达到连续错误上限 (${context.consecutiveMistakes}/${context.maxConsecutiveMistakes})\n最新：${summary}\nCline 应如何继续？`,
+		["尝试不同的方法", "停止本次运行"],
 	);
 	const normalized = answer.trim().toLowerCase();
 	if (
 		normalized === "2" ||
+		normalized === "停止本次运行" ||
 		normalized === "stop this run" ||
+		normalized === "停止" ||
 		normalized === "stop" ||
 		normalized === "n" ||
 		normalized === "no"
 	) {
 		return {
 			action: "stop",
-			reason: "stopped after mistake_limit_reached prompt",
+			reason: "在达到连续错误上限提示后已停止",
 		};
 	}
 	if (
 		normalized === "1" ||
+		normalized === "尝试不同的方法" ||
 		normalized === "try a different approach" ||
 		normalized.length === 0
 	) {
 		return {
 			action: "continue",
 			guidance:
-				"mistake_limit_reached: retry with a different approach, validate tool parameters before calls, and avoid repeating failed steps.",
+				"mistake_limit_reached：以不同的方法重试，在调用前验证工具参数，并避免重复失败步骤。",
 		};
 	}
 	return {

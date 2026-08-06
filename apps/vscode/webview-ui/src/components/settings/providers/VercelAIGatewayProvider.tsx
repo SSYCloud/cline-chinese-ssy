@@ -27,10 +27,10 @@ export const VercelAIGatewayProvider = ({ showModelOptions, isPopup, currentMode
 				<DebouncedTextField
 					initialValue={apiConfiguration?.vercelAiGatewayApiKey || ""}
 					onChange={(value) => handleFieldChange("vercelAiGatewayApiKey", value)}
-					placeholder="Enter API Key..."
+					placeholder="输入 API 密钥..."
 					style={{ width: "100%" }}
 					type="password">
-					<span style={{ fontWeight: 500 }}>Vercel AI Gateway API Key</span>
+					<span style={{ fontWeight: 500 }}>Vercel AI Gateway API 密钥</span>
 				</DebouncedTextField>
 				<p
 					style={{
@@ -38,15 +38,15 @@ export const VercelAIGatewayProvider = ({ showModelOptions, isPopup, currentMode
 						marginTop: "5px",
 						color: "var(--vscode-descriptionForeground)",
 					}}>
-					This key is stored locally and only used to make API requests from this extension.
+					此密钥仅存储在本地，仅用于从此扩展发起 API 请求。
 					{!apiConfiguration?.vercelAiGatewayApiKey && (
 						<>
 							{" "}
-							You can get a Vercel AI Gateway API key by{" "}
+							你可以通过{" "}
 							<VSCodeLink
 								href="https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai"
 								style={{ display: "inline", fontSize: "inherit" }}>
-								signing up here.
+								在此注册获取 Vercel AI Gateway API 密钥。
 							</VSCodeLink>
 						</>
 					)}

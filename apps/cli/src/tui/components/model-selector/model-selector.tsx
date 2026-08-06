@@ -72,7 +72,7 @@ export function ModelIdInputContent(
 	const submit = () => {
 		const trimmed = modelId.trim();
 		if (!trimmed) {
-			setError("Enter a model ID");
+			setError("请输入模型 ID");
 			return;
 		}
 		resolve(trimmed);
@@ -98,12 +98,12 @@ export function ModelIdInputContent(
 
 	return (
 		<box flexDirection="column" gap={1}>
-			<text>Set Model ID</text>
+			<text>设置模型 ID</text>
 
 			<ProviderRow providerName={currentProviderName} focused={onProvider} />
 
 			<box flexDirection="column" gap={0}>
-				<text fg="gray">Model ID</text>
+				<text fg="gray">模型 ID</text>
 				<box
 					border
 					borderStyle="rounded"
@@ -124,7 +124,7 @@ export function ModelIdInputContent(
 				{error && <text fg="red">{error}</text>}
 			</box>
 
-			<text fg="gray">Enter to save, Tab to change provider, Esc to close</text>
+			<text fg="gray">Enter 保存，Tab 切换提供商，Esc 关闭</text>
 		</box>
 	);
 }
@@ -226,7 +226,7 @@ export function ModelSelectorContent(
 	if (isCreatingCustomModel) {
 		return (
 			<box flexDirection="column" gap={1}>
-				<text>Create custom model ID</text>
+				<text>创建自定义模型 ID</text>
 
 				<ProviderRow providerName={currentProviderName} focused={false} />
 
@@ -247,7 +247,7 @@ export function ModelSelectorContent(
 							onSubmit={() => {
 								const modelId = customModelId.trim();
 								if (!modelId) {
-									setCustomModelError("Enter a model ID");
+									setCustomModelError("请输入模型 ID");
 									return;
 								}
 								resolve(modelId);
@@ -261,7 +261,7 @@ export function ModelSelectorContent(
 				</box>
 
 				<text fg="gray">
-					Enter to create, Esc to go back to model selection
+					Enter 创建，Esc 返回模型选择
 				</text>
 			</box>
 		);
@@ -269,7 +269,7 @@ export function ModelSelectorContent(
 
 	return (
 		<box flexDirection="column" gap={1}>
-			<text>Select Model</text>
+			<text>选择模型</text>
 
 			<ProviderRow providerName={currentProviderName} focused={onProvider} />
 
@@ -280,7 +280,7 @@ export function ModelSelectorContent(
 						setSelected(0);
 						setOnProvider(false);
 					}}
-					placeholder="Search models..."
+					placeholder="搜索模型..."
 					flexGrow={1}
 					focused
 				/>
@@ -314,11 +314,11 @@ export type ThinkingLevel = "none" | "low" | "medium" | "high" | "xhigh";
 
 const THINKING_LEVELS: { value: ThinkingLevel; label: string; desc: string }[] =
 	[
-		{ value: "none", label: "Off", desc: "No extended thinking" },
-		{ value: "low", label: "Low", desc: "Minimal reasoning" },
-		{ value: "medium", label: "Medium", desc: "Balanced reasoning" },
-		{ value: "high", label: "High", desc: "Deep reasoning" },
-		{ value: "xhigh", label: "Extra High", desc: "Maximum reasoning" },
+		{ value: "none", label: "关闭", desc: "不进行扩展思考" },
+		{ value: "low", label: "低", desc: "最少推理" },
+		{ value: "medium", label: "中", desc: "均衡推理" },
+		{ value: "high", label: "高", desc: "深度推理" },
+		{ value: "xhigh", label: "极高", desc: "最大推理" },
 	];
 
 export function ThinkingLevelContent(
@@ -356,7 +356,7 @@ export function ThinkingLevelContent(
 
 	return (
 		<box flexDirection="column" gap={1}>
-			<text>Thinking Level for {modelName}</text>
+			<text>{modelName} 的思考级别</text>
 
 			<box flexDirection="column">
 				{THINKING_LEVELS.map((level, i) => (
@@ -536,10 +536,10 @@ function CreateCustomModelRow(props: {
 				{isSelected ? "\u276f" : " "}
 			</text>
 			<text fg={isSelected ? palette.textOnSelection : undefined}>
-				Create custom model ID
+				创建自定义模型 ID
 			</text>
 			<text fg={isSelected ? palette.textOnSelection : "gray"} flexShrink={0}>
-				manual entry
+				手动输入
 			</text>
 		</box>
 	);

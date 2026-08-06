@@ -69,7 +69,7 @@ const UserMessage: React.FC<UserMessageProps> = ({ text, images, files, messageT
 			setSavingMode(undefined)
 		} catch (error) {
 			console.error("Failed to edit and regenerate message:", error)
-			setErrorMessage(error instanceof Error ? error.message : "Failed to edit and regenerate message")
+			setErrorMessage(error instanceof Error ? error.message : "编辑并重新生成消息失败")
 			setSavingMode(undefined)
 		}
 	}
@@ -97,13 +97,13 @@ const UserMessage: React.FC<UserMessageProps> = ({ text, images, files, messageT
 				wordWrap: "break-word",
 			}}
 			tabIndex={messageTs && !isEditing ? 0 : undefined}
-			title={messageTs && !isEditing ? "Edit and regenerate from here" : undefined}>
+			title={messageTs && !isEditing ? "从此处编辑并重新生成" : undefined}>
 			{messageTs && !isEditing && (
 				<Tooltip>
-					<TooltipContent side="left">Edit and regenerate from here</TooltipContent>
+					<TooltipContent side="left">从此处编辑并重新生成</TooltipContent>
 					<TooltipTrigger asChild>
 						<button
-							aria-label="Edit and regenerate from this message"
+							aria-label="从此消息编辑并重新生成"
 							className="absolute right-1.5 top-1.5 opacity-0 group-hover:opacity-80 hover:opacity-100 bg-transparent border-0 text-badge-foreground cursor-pointer p-1"
 							onClick={(event) => {
 								event.stopPropagation()
@@ -139,11 +139,11 @@ const UserMessage: React.FC<UserMessageProps> = ({ text, images, files, messageT
 							disabled={!!savingMode}
 							onClick={cancelEditing}
 							type="button">
-							Cancel
+							取消
 						</button>
 						<div className="flex items-center gap-1.5">
 							<Tooltip>
-								<TooltipContent side="top">Rewind conversation, keep current code edits</TooltipContent>
+								<TooltipContent side="top">回退对话，保留当前代码编辑</TooltipContent>
 								<TooltipTrigger asChild>
 									<span className="inline-flex shrink-0">
 										<button
@@ -151,14 +151,14 @@ const UserMessage: React.FC<UserMessageProps> = ({ text, images, files, messageT
 											disabled={!!savingMode}
 											onClick={() => handleSave(false)}
 											type="button">
-											{savingMode === "chat" ? "Running..." : "Reset Chat"}
+											{savingMode === "chat" ? "运行中..." : "重置对话"}
 										</button>
 									</span>
 								</TooltipTrigger>
 							</Tooltip>
 							{canRestoreWorkspace && (
 								<Tooltip>
-									<TooltipContent side="top">Rewind conversation, reset code edits</TooltipContent>
+									<TooltipContent side="top">回退对话，重置代码编辑</TooltipContent>
 									<TooltipTrigger asChild>
 										<span className="inline-flex shrink-0">
 											<button
@@ -166,7 +166,7 @@ const UserMessage: React.FC<UserMessageProps> = ({ text, images, files, messageT
 												disabled={!!savingMode}
 												onClick={() => handleSave(true)}
 												type="button">
-												{savingMode === "workspace" ? "Restoring..." : "Reset Code"}
+												{savingMode === "workspace" ? "恢复中..." : "重置代码"}
 											</button>
 										</span>
 									</TooltipTrigger>

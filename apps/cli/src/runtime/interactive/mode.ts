@@ -26,7 +26,7 @@ export type AppliedModeChange = {
  * filters it out of the chat display.
  */
 export const ACT_MODE_CONTINUATION_PROMPT =
-	"The user approved switching to act mode. Continue with the approved plan now.";
+	"用户已批准切换到执行模式。现在继续执行已批准的计划。";
 
 export function createInteractiveModeSwitchTool(input: {
 	config: Config;
@@ -57,12 +57,12 @@ export function createInteractiveModeSwitchTool(input: {
 			if (input.config.mode === "act") {
 				// Throw instead of returning: a successful result would end the
 				// run via completesRun even though nothing changed.
-				throw new Error("Already in act mode.");
+				throw new Error("已处于执行模式。");
 			}
 			input.pendingModeChange.current = "act";
 			input.pendingModeChange.source = "tool";
 			input.tuiModeChanged.current?.("act");
-			return "You successfully switched to act mode, proceed with the plan. You now have access to editing files and running commands. (The switch_to_act_mode tool is only available in plan mode.)";
+			return "你已成功切换到执行模式，请继续执行计划。你现在可以访问编辑文件和运行命令。（switch_to_act_mode 工具仅在规划模式中可用。）";
 		},
 	});
 }

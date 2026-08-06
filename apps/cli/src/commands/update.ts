@@ -276,8 +276,8 @@ export async function ensureCliHubServerAfterUpdate(
 	const exitCode = await waitForProcessExit(child);
 	if (exitCode !== 0) {
 		throw new Error(
-			`freshly installed Cline failed to start the hub (exit code ${exitCode})`,
-		);
+				`新安装的 Cline 无法启动 hub（退出码 ${exitCode}）`,
+			);
 	}
 }
 
@@ -289,10 +289,10 @@ function formatUpdateSummaryTargets(targets: string[]): string {
 		return targets[0] ?? "";
 	}
 	if (targets.length === 2) {
-		return `${targets[0]} and ${targets[1]}`;
+		return `${targets[0]} 和 ${targets[1]}`;
 	}
 	const lastTarget = targets[targets.length - 1];
-	return `${targets.slice(0, -1).join(", ")}, and ${lastTarget}`;
+	return `${targets.slice(0, -1).join(", ")} 和 ${lastTarget}`;
 }
 
 function packageManagerToKanbanInstaller(
@@ -361,7 +361,7 @@ async function restartHubServerIfRunning(): Promise<void> {
 	if (!discovery || !health?.url) return;
 
 	const pid = discovery?.pid;
-	writeln(`${c.dim}[hub] restarting server…${c.reset}`);
+	writeln(`${c.dim}[hub] 正在重启服务器…${c.reset}`);
 
 	let stopped = await stopLocalHubServerGracefully(owner).catch(() => false);
 	if (!stopped && pid) {
@@ -387,10 +387,10 @@ async function restartHubServerIfRunning(): Promise<void> {
 	// Re-ensure a fresh hub instance is spawned.
 	try {
 		await ensureCliHubServerAfterUpdate(process.cwd());
-		writeln(`${c.green}✓${c.reset} ${c.dim}[hub] server restarted${c.reset}`);
+		writeln(`${c.green}✓${c.reset} ${c.dim}[hub] 服务器已重启${c.reset}`);
 	} catch (err) {
 		writeErr(
-			`[hub] failed to restart server: ${err instanceof Error ? err.message : String(err)}`,
+			`[hub] 重启服务器失败: ${err instanceof Error ? err.message : String(err)}`,
 		);
 	}
 }
@@ -453,7 +453,7 @@ export async function checkForUpdates(
 	const currentVersion = version;
 	const includeKanban = options.includeKanban ?? true;
 	writeln(
-		`${c.cyan}Checking for updates${includeKanban ? " to Cline CLI and kanban" : ""}…${c.reset}`,
+		`${c.cyan}正在检查更新${includeKanban ? "（Cline CLI 和 kanban）" : ""}…${c.reset}`,
 	);
 
 	const { packageName, updateCommand, packageManager } =
@@ -481,29 +481,29 @@ export async function checkForUpdates(
 				compareVersions(installedKanbanVersion, latestKanbanVersion) < 0);
 
 		if (options.verbose) {
-			writeln(`${c.dim}Current version: ${currentVersion}${c.reset}`);
-			writeln(`${c.dim}Package manager: ${packageManager}${c.reset}`);
-			writeln(`${c.dim}Package name:    ${packageName}${c.reset}`);
+			writeln(`${c.dim}当前版本: ${currentVersion}${c.reset}`);
+			writeln(`${c.dim}包管理器: ${packageManager}${c.reset}`);
+			writeln(`${c.dim}包名称:    ${packageName}${c.reset}`);
 			if (latestVersion) {
-				writeln(`${c.dim}Latest version:  ${latestVersion}${c.reset}`);
+				writeln(`${c.dim}最新版本:  ${latestVersion}${c.reset}`);
 			}
 			if (includeKanban) {
 				writeln(
-					`${c.dim}Kanban version:  ${installedKanbanVersion ?? "(not installed)"}${c.reset}`,
+					`${c.dim}kanban 版本:  ${installedKanbanVersion ?? "（未安装）"}${c.reset}`,
 				);
 				if (latestKanbanVersion) {
-					writeln(`${c.dim}Latest kanban:   ${latestKanbanVersion}${c.reset}`);
+					writeln(`${c.dim}最新 kanban:   ${latestKanbanVersion}${c.reset}`);
 				}
 				if (!kanbanInstallCommand) {
 					writeln(
-						`${c.dim}Kanban installer: unavailable (npm, pnpm, or bun not found)${c.reset}`,
+						`${c.dim}kanban 安装器: 不可用（未找到 npm、pnpm 或 bun）${c.reset}`,
 					);
 				}
 			}
 		}
 
 		if (!latestVersion && !shouldUpdateKanban) {
-			writeErr("Failed to check for updates: could not fetch latest version");
+			writeErr("检查更新失败：无法获取最新版本");
 			return 1;
 		}
 
@@ -517,11 +517,11 @@ export async function checkForUpdates(
 		if (!cliUpdateAvailable && !shouldUpdateKanban) {
 			if (cliIsUpToDate && installedKanbanVersion && latestKanbanVersion) {
 				writeln(
-					`${c.green}✓${c.reset} Already on the latest versions ${c.bold}${packageName}@${currentVersion}${c.reset} and ${c.bold}kanban@${installedKanbanVersion}${c.reset}`,
+					`${c.green}✓${c.reset} 已是最新版本 ${c.bold}${packageName}@${currentVersion}${c.reset} 和 ${c.bold}kanban@${installedKanbanVersion}${c.reset}`,
 				);
 			} else if (cliIsUpToDate) {
 				writeln(
-					`${c.green}✓${c.reset} Already on the latest version ${c.bold}${currentVersion}${c.reset}`,
+					`${c.green}✓${c.reset} 已是最新版本 ${c.bold}${currentVersion}${c.reset}`,
 				);
 			}
 			return 0;
@@ -529,7 +529,7 @@ export async function checkForUpdates(
 
 		if (cliUpdateAvailable && latestVersion) {
 			writeln(
-				`${c.yellow}New version available:${c.reset} ${c.bold}${latestVersion}${c.reset} (current: ${currentVersion})`,
+				`${c.yellow}有新版本可用：${c.reset} ${c.bold}${latestVersion}${c.reset}（当前: ${currentVersion}）`,
 			);
 		}
 
@@ -539,7 +539,7 @@ export async function checkForUpdates(
 		if (cliUpdateAvailable && latestVersion) {
 			if (!updateCommand) {
 				writeln(
-					`${c.dim}Unable to determine Cline update command. Please update manually with your package manager.${c.reset}`,
+					`${c.dim}无法确定 Cline 更新命令。请使用你的包管理器手动更新。${c.reset}`,
 				);
 				hadFailure = true;
 			} else {
@@ -548,7 +548,7 @@ export async function checkForUpdates(
 					packageManager,
 				);
 				writeln(
-					`${c.cyan}Installing ${packageName}@${latestVersion}…${c.reset}`,
+					`${c.cyan}正在安装 ${packageName}@${latestVersion}…${c.reset}`,
 				);
 				try {
 					const exitCode = await runCliUpdate(manualUpdateCommand);
@@ -557,7 +557,7 @@ export async function checkForUpdates(
 						await restartHubServerIfRunning();
 					} else {
 						writeErr(
-							`Cline update failed (exit code ${exitCode}). Try running: ${manualUpdateCommand.command}`,
+							`Cline 更新失败（退出码 ${exitCode}）。请尝试运行: ${manualUpdateCommand.command}`,
 						);
 						hadFailure = true;
 					}
@@ -565,7 +565,7 @@ export async function checkForUpdates(
 					const message =
 						error instanceof Error ? error.message : String(error);
 					writeErr(
-						`Failed to run Cline update command ${manualUpdateCommand.command}: ${message}`,
+						`运行 Cline 更新命令 ${manualUpdateCommand.command} 失败: ${message}`,
 					);
 					hadFailure = true;
 				}
@@ -573,21 +573,21 @@ export async function checkForUpdates(
 		}
 
 		if (shouldUpdateKanban && kanbanInstallCommand && latestKanbanVersion) {
-			writeln(`${c.cyan}Installing kanban@${latestKanbanVersion}…${c.reset}`);
+			writeln(`${c.cyan}正在安装 kanban@${latestKanbanVersion}…${c.reset}`);
 			try {
 				const exitCode = await runKanbanUpdate(kanbanInstallCommand);
 				if (exitCode === 0) {
 					installedUpdates.push(`kanban@${latestKanbanVersion}`);
 				} else {
 					writeErr(
-						`Kanban update failed (exit code ${exitCode}). Try running: ${kanbanInstallCommand.displayCommand}`,
+						`Kanban 更新失败（退出码 ${exitCode}）。请尝试运行: ${kanbanInstallCommand.displayCommand}`,
 					);
 					hadFailure = true;
 				}
 			} catch (error) {
 				const message = error instanceof Error ? error.message : String(error);
 				writeErr(
-					`Failed to run Kanban update command ${kanbanInstallCommand.displayCommand}: ${message}`,
+					`运行 Kanban 更新命令 ${kanbanInstallCommand.displayCommand} 失败: ${message}`,
 				);
 				hadFailure = true;
 			}
@@ -596,8 +596,8 @@ export async function checkForUpdates(
 		if (installedUpdates.length > 0) {
 			const label =
 				installedUpdates.length === 1
-					? "Installed update for"
-					: "Installed updates for";
+					? "已安装更新"
+					: "已安装以下更新";
 			writeln(
 				`${c.green}✓${c.reset} ${label} ${formatUpdateSummaryTargets(installedUpdates)}`,
 			);
@@ -606,7 +606,7 @@ export async function checkForUpdates(
 		return hadFailure ? 1 : 0;
 	} catch (error) {
 		const message = error instanceof Error ? error.message : String(error);
-		writeErr(`Error checking for updates: ${message}`);
+		writeErr(`检查更新时出错: ${message}`);
 		return 1;
 	}
 }

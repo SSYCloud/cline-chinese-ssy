@@ -16,14 +16,14 @@ describe("command palette", () => {
 		});
 		const labels = items.map((item) => item.label);
 
-		expect(labels).toContain("Change Provider");
-		expect(labels).toContain("Manage MCP Servers");
-		expect(labels).toContain("Manage Plugins");
-		expect(labels).toContain("Compact Context");
+		expect(labels).toContain("切换提供商");
+		expect(labels).toContain("管理 MCP 服务器");
+		expect(labels).toContain("管理插件");
+		expect(labels).toContain("压缩上下文");
 		expect(labels).not.toContain("/settings");
 		expect(labels).not.toContain("Toggle Plan/Act Mode");
 		expect(labels).not.toContain("Toggle Auto-Approve");
-		expect(labels).not.toContain("Create Session Fork");
+		expect(labels).not.toContain("创建会话分叉");
 		expect(items.every((item) => item.shortcut.startsWith("Opt+"))).toBe(true);
 		expect(items.map((item) => item.shortcut)).not.toContain("Opt+?");
 	});
@@ -33,7 +33,7 @@ describe("command palette", () => {
 			canForkSession: true,
 		});
 
-		expect(items.map((item) => item.label)).toContain("Create Session Fork");
+		expect(items.map((item) => item.label)).toContain("创建会话分叉");
 	});
 
 	it("covers visible local slash commands with palette wording", () => {
@@ -57,7 +57,7 @@ describe("command palette", () => {
 			expect(paletteByCommandName.has(command.name)).toBe(true);
 		}
 		expect(paletteByCommandName.get("settings")?.description).toBe(
-			"Review and edit CLI configuration",
+			"查看并编辑 CLI 配置",
 		);
 	});
 
@@ -67,16 +67,16 @@ describe("command palette", () => {
 		});
 
 		expect(filterCommandPaletteItems(items, "provider")[0]?.label).toBe(
-			"Change Provider",
+			"切换提供商",
 		);
 		expect(filterCommandPaletteItems(items, "mcp")[0]?.label).toBe(
-			"Manage MCP Servers",
+			"管理 MCP 服务器",
 		);
 		expect(filterCommandPaletteItems(items, "plugins")[0]?.label).toBe(
-			"Manage Plugins",
+			"管理插件",
 		);
 		expect(filterCommandPaletteItems(items, "opt m")[0]?.label).toBe(
-			"Change Model",
+			"切换模型",
 		);
 	});
 
@@ -92,7 +92,7 @@ describe("command palette", () => {
 				option: false,
 				shift: false,
 			})?.label,
-		).toBe("Change Model");
+		).toBe("切换模型");
 		expect(
 			findCommandPaletteShortcut(items, {
 				name: "m",
@@ -100,7 +100,7 @@ describe("command palette", () => {
 				option: true,
 				shift: false,
 			})?.label,
-		).toBe("Change Model");
+		).toBe("切换模型");
 		expect(
 			findCommandPaletteShortcut(items, {
 				name: "m",
@@ -116,7 +116,7 @@ describe("command palette", () => {
 				option: false,
 				shift: false,
 			})?.label,
-		).toBe("Open Help");
+		).toBe("打开帮助");
 	});
 
 	it("keeps option right available for word navigation", () => {

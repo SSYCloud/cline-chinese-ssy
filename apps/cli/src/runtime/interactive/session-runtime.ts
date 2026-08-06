@@ -172,7 +172,7 @@ export function createInteractiveSessionRuntime(input: {
 		});
 		if (shutdownRequested) {
 			await manager.dispose("cli_interactive_startup_cancelled");
-			throw new Error("interactive runtime shutdown requested");
+			throw new Error("交互式运行时已请求关闭");
 		}
 		sessionManager = manager;
 		runtimeHooks = createRuntimeHooks({
@@ -194,7 +194,7 @@ export function createInteractiveSessionRuntime(input: {
 
 	const buildSessionConfig = (): Config => {
 		if (!runtimeHooks) {
-			throw new Error("interactive runtime hooks are unavailable");
+			throw new Error("交互式运行时的钩子不可用");
 		}
 		const hooks = withInteractiveApprovalPolicyHook(
 			runtimeHooks.hooks,
@@ -334,7 +334,7 @@ export function createInteractiveSessionRuntime(input: {
 		try {
 			return await manager.readSessionCompactionState(sessionId);
 		} catch (error) {
-			input.config.logger?.log?.("Failed to read session compaction state", {
+			input.config.logger?.log?.("读取会话压缩状态失败", {
 				sessionId,
 				error,
 				severity: "warn",
@@ -358,7 +358,7 @@ export function createInteractiveSessionRuntime(input: {
 			const messages = await manager
 				.readMessages(missingSessionId)
 				.catch(() => []);
-			input.config.logger?.log("Recovering missing interactive session", {
+			input.config.logger?.log("正在恢复丢失的交互式会话", {
 				sessionId: missingSessionId,
 				messageCount: messages.length,
 				error,
@@ -540,7 +540,7 @@ export function createInteractiveSessionRuntime(input: {
 		if (!sessionManager) {
 			throw startupError instanceof Error
 				? startupError
-				: new Error("interactive session manager is unavailable");
+				: new Error("交互式会话管理器不可用");
 		}
 		const manager = sessionManager;
 		try {
@@ -575,7 +575,7 @@ export function createInteractiveSessionRuntime(input: {
 		if (!sessionManager) {
 			throw startupError instanceof Error
 				? startupError
-				: new Error("interactive session manager is unavailable");
+				: new Error("交互式会话管理器不可用");
 		}
 		const result = await sessionManager.pendingPrompts.update({
 			sessionId: activeSessionId,
@@ -617,7 +617,7 @@ export function createInteractiveSessionRuntime(input: {
 			return undefined;
 		}
 		if (messages.length === 0) {
-			throw new Error("Cannot fork an empty session.");
+			throw new Error("无法分叉空会话。");
 		}
 		const compactionState = await readCompactionState(forkedFromSessionId);
 		const projectedMessages = compactionState
@@ -663,11 +663,11 @@ export function createInteractiveSessionRuntime(input: {
 		const manager = await ensureSessionManager();
 		const sessionRecord = await manager.get(sessionId);
 		if (!sessionRecord) {
-			throw new Error(`Session ${sessionId} was not found.`);
+			throw new Error(`未找到会话 ${sessionId}。`);
 		}
 		const messages = await loadInteractiveResumeMessages(manager, sessionId);
 		if (!messages || messages.length === 0) {
-			throw new Error(`Session ${sessionId} has no messages to resume.`);
+			throw new Error(`会话 ${sessionId} 没有可恢复的消息。`);
 		}
 		await stopCurrentSession();
 		await startResumedSession(sessionId, messages);
@@ -682,7 +682,7 @@ export function createInteractiveSessionRuntime(input: {
 	}> => {
 		if (input.config.compaction?.enabled === false) {
 			throw new Error(
-				"Cannot compact because compaction is off for this session.",
+				"无法压缩，因为此会话已关闭压缩功能。",
 			);
 		}
 		const manager = sessionManager;
@@ -704,7 +704,7 @@ export function createInteractiveSessionRuntime(input: {
 		const sessionRecord = await manager.get(sourceSessionId);
 		if (sessionRecord?.status === "running") {
 			throw new Error(
-				"Cannot compact while the current turn is running. Wait for it to finish or abort it first.",
+				"当前回合运行中无法压缩。请等待其完成或先中止它。",
 			);
 		}
 		let result: Awaited<ReturnType<typeof compactInteractiveMessages>>;
@@ -742,7 +742,7 @@ export function createInteractiveSessionRuntime(input: {
 			result.compactionState,
 		);
 		if (!updated.updated) {
-			throw new Error("Compaction could not be saved. Try again.");
+			throw new Error("压缩无法保存。请重试。");
 		}
 		return {
 			messagesBefore,
@@ -803,7 +803,7 @@ export function createInteractiveSessionRuntime(input: {
 			},
 		});
 		if (!restored.startResult || !restored.sessionId) {
-			throw new Error("Checkpoint restore did not return a new session");
+			throw new Error("检查点恢复未返回新会话");
 		}
 		applyStartedSession(restored.startResult);
 		if (restored.sessionId !== sourceSessionId) {
@@ -811,7 +811,7 @@ export function createInteractiveSessionRuntime(input: {
 				await manager.stop(sourceSessionId);
 			} catch (error) {
 				input.config.logger?.log(
-					"Failed to stop source session after restore",
+					"恢复后停止源会话失败",
 					{
 						sessionId: sourceSessionId,
 						error,

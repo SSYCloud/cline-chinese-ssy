@@ -81,7 +81,7 @@ export function assertHistorySessionIsDeletable(
 ): void {
 	if (activeSessionId && sessionId === activeSessionId) {
 		throw new Error(
-			"Cannot delete the active session. Start or resume another session first.",
+			"无法删除当前活动会话。请先开始或恢复另一个会话。",
 		);
 	}
 }
@@ -221,7 +221,7 @@ export async function runInteractive(
 				pluginChatSlashCommands = pluginSlashCommands.map((cmd) => ({
 					name: cmd.name,
 					instructions: "",
-					description: cmd.description ?? "Plugin command",
+					description: cmd.description ?? "插件命令",
 				}));
 				return pluginChatSlashCommands;
 			})
@@ -694,7 +694,7 @@ export async function runInteractive(
 					}
 					const errorText = result.text.trim();
 					throw new Error(
-						errorText || `Turn finished with ${result.finishReason}`,
+						errorText || `回合以 ${result.finishReason} 结束`,
 					);
 				}
 				const usage = zeroCliUsageCost(

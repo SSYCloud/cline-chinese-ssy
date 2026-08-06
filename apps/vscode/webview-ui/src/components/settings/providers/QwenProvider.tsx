@@ -55,7 +55,7 @@ export const QwenProvider = ({ showModelOptions, isPopup, currentMode }: QwenPro
 		<div>
 			<DropdownContainer className="dropdown-container" style={{ position: "inherit" }}>
 				<label htmlFor="qwen-line-provider">
-					<span style={{ fontWeight: 500, marginTop: 5 }}>Alibaba API Line</span>
+					<span style={{ fontWeight: 500, marginTop: 5 }}>阿里云 API 线路</span>
 				</label>
 				<VSCodeDropdown
 					id="qwen-line-provider"
@@ -67,7 +67,7 @@ export const QwenProvider = ({ showModelOptions, isPopup, currentMode }: QwenPro
 					value={selectedApiLine}>
 					{qwenApiOptions.map((line) => (
 						<VSCodeOption key={line} value={line}>
-							{line.charAt(0).toUpperCase() + line.slice(1)} API
+							{line === "china" ? "中国" : "国际"} API
 						</VSCodeOption>
 					))}
 				</VSCodeDropdown>
@@ -78,8 +78,7 @@ export const QwenProvider = ({ showModelOptions, isPopup, currentMode }: QwenPro
 					marginTop: 3,
 					color: "var(--vscode-descriptionForeground)",
 				}}>
-				Please select the appropriate API interface based on your location. If you are in China, choose the China API
-				interface. Otherwise, choose the International API interface.
+				请根据你的所在地选择合适的 API 接口。如果你在中国，请选择中国 API 接口；否则请选择国际 API 接口。
 			</p>
 
 			<ApiKeyField
@@ -92,7 +91,7 @@ export const QwenProvider = ({ showModelOptions, isPopup, currentMode }: QwenPro
 			{showModelOptions && (
 				<>
 					<ModelSelector
-						label="Model"
+						label="模型"
 						models={models}
 						onChange={(e: any) =>
 							handleModeFieldChange(
@@ -109,7 +108,7 @@ export const QwenProvider = ({ showModelOptions, isPopup, currentMode }: QwenPro
 						<ReasoningEffortSelector
 							currentMode={currentMode}
 							defaultEffort="none"
-							description="Use None to disable extended thinking. Higher effort improves depth, but uses more tokens."
+							description="选择“无”可禁用扩展思考。更高的努力程度会提升思考深度，但会消耗更多 tokens。"
 							onEffortChange={(effort) => {
 								void write({
 									reasoning: { enabled: effort !== "none", effort: effort !== "none" ? effort : undefined },

@@ -16,18 +16,18 @@ const UnsafeImage: React.FC<UnsafeImageProps> = ({ src = "", alt = "", ...imgPro
 	if (!isApproved && !src.startsWith("data:")) {
 		return (
 			<span className="my-2 block flex flex-col rounded-md border border-input-border bg-code p-3">
-				<span className="block m-0 text-sm font-medium">External image blocked pending consent</span>
+				<span className="block m-0 text-sm font-medium">外部图片已被阻止，等待同意</span>
 				<span className="block mt-2 mb-0 break-all text-xs text-muted-foreground">
-					Source: <code>{src}</code>
+					来源： <code>{src}</code>
 					{alt && (
 						<>
 							<br />
-							Alt: <code>{alt}</code>
+							Alt： <code>{alt}</code>
 						</>
 					)}
 				</span>
 				<Button className="mt-3" onClick={() => setApprovedSrc(src)} type="button" variant="outline">
-					Load image
+					加载图片
 				</Button>
 			</span>
 		)

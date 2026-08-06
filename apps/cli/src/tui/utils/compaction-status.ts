@@ -3,7 +3,7 @@ import type { ChatEntry, InteractiveCompactionResult } from "../types";
 export type CompactionDividerEntry = Extract<ChatEntry, { kind: "compaction" }>;
 
 function formatMessageCount(count: number): string {
-	return `${count} ${count === 1 ? "message" : "messages"}`;
+	return `${count} 条消息`;
 }
 
 function asFiniteNumber(value: unknown): number | undefined {
@@ -65,24 +65,24 @@ export function formatCompactionDividerLabel(
 ): string {
 	if (entry.status === "started") {
 		return entry.compactionMode === "manual"
-			? "Compacting messages"
-			: "Auto compacting messages";
+			? "正在压缩消息"
+			: "正在自动压缩消息";
 	}
 	if (entry.status === "failed") {
-		return "Compaction failed";
+		return "压缩失败";
 	}
 	if (entry.status === "cancelled") {
-		return "Compaction cancelled";
+		return "压缩已取消";
 	}
 	if (entry.status === "skipped") {
-		return "Compaction skipped";
+		return "压缩已跳过";
 	}
 	const parts: string[] = [
 		entry.compactionMode === "manual"
-			? "Context compacted (manual)"
+			? "上下文已压缩（手动）"
 			: entry.compactionMode === "inherited"
-				? "Compacted working context carried over"
-				: "Context compacted",
+				? "工作上下文已延续压缩"
+				: "上下文已压缩",
 	];
 	if (
 		typeof entry.tokensBefore === "number" &&
@@ -105,16 +105,16 @@ export function formatCompactionStatus(
 	result: InteractiveCompactionResult,
 ): string {
 	if (result.messagesBefore === 0) {
-		return "No messages to compact.";
+		return "没有可压缩的消息。";
 	}
 	if (!result.compacted) {
-		return "No compaction needed.";
+		return "无需压缩。";
 	}
 	if (typeof result.workingContextMessagesAfter === "number") {
-		return `Compacted working context to ${formatMessageCount(result.workingContextMessagesAfter)}; saved history remains ${formatMessageCount(result.messagesAfter)}.`;
+		return `工作上下文已压缩到 ${formatMessageCount(result.workingContextMessagesAfter)}；保存的历史记录仍为 ${formatMessageCount(result.messagesAfter)}。`;
 	}
 	if (result.messagesBefore === result.messagesAfter) {
-		return `Compacted context; message count stayed at ${formatMessageCount(result.messagesAfter)}.`;
+		return `上下文已压缩；消息数保持在 ${formatMessageCount(result.messagesAfter)}。`;
 	}
-	return `Compacted ${formatMessageCount(result.messagesBefore)} to ${formatMessageCount(result.messagesAfter)}.`;
+	return `已从 ${formatMessageCount(result.messagesBefore)} 压缩为 ${formatMessageCount(result.messagesAfter)}。`;
 }

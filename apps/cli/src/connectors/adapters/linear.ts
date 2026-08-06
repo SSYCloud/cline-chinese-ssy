@@ -64,9 +64,9 @@ const LINEAR_SYSTEM_RULES = [
 ].join("\n");
 
 const LINEAR_FIRST_CONTACT_MESSAGE = [
-	"Connected.",
-	"Your chat history is isolated to this Linear identity.",
-	"Ask for /whereami if you need the delivery thread details.",
+	"连接成功。",
+	"你的聊天记录已隔离到此 Linear 身份。",
+	"如需投递线程详情，请使用 /whereami 查询。",
 ].join("\n");
 
 type LinearThreadState = ConnectorThreadState;
@@ -88,7 +88,7 @@ async function importLinearAdapterModule(): Promise<LinearAdapterModule> {
 	)) as Partial<LinearAdapterModule>;
 	if (typeof mod.createLinearAdapter !== "function") {
 		throw new Error(
-			"@chat-adapter/linear does not export createLinearAdapter()",
+			"@chat-adapter/linear 未导出 createLinearAdapter()",
 		);
 	}
 	return { createLinearAdapter: mod.createLinearAdapter };
@@ -275,9 +275,9 @@ async function deliverScheduledResult(input: {
 		const text = await readSessionReplyText(input.client, input.sessionId);
 		body = text?.trim()
 			? text
-			: `Schedule "${schedule?.name ?? input.scheduleId}" completed, but no assistant reply text was found.`;
+			: `计划 "${schedule?.name ?? input.scheduleId}" 已完成，但未找到助手回复文本。`;
 	} else {
-		body = `Schedule "${schedule?.name ?? input.scheduleId}" ${input.status}.${input.errorMessage ? `\n\n${input.errorMessage}` : ""}`;
+		body = `计划 "${schedule?.name ?? input.scheduleId}" ${input.status}。${input.errorMessage ? `\n\n${input.errorMessage}` : ""}`;
 	}
 	await thread.post(body);
 }
@@ -287,7 +287,7 @@ class LinearConnector extends ConnectorBase<
 	LinearConnectorState
 > {
 	constructor() {
-		super("linear", "Linear webhook bridge backed by RPC runtime sessions");
+		super("linear", "基于 RPC 运行时会话的 Linear webhook 桥接器");
 	}
 
 	protected override createCommand(): Command {
@@ -295,47 +295,47 @@ class LinearConnector extends ConnectorBase<
 			super
 				.createCommand()
 				.usage("--base-url <PUBLIC_BASE_URL> [options]")
-				.option("--user-name <name>", "Linear bot display name")
-				.option("--api-key <key>", "Linear personal API key")
-				.option("--client-id <id>", "Linear OAuth client id")
-				.option("--client-secret <secret>", "Linear OAuth client secret")
-				.option("--access-token <token>", "Pre-obtained Linear access token")
-				.option("--webhook-secret <secret>", "Linear webhook signing secret")
-				.option("--provider <id>", "Provider override")
-				.option("--model <id>", "Model override")
-				.option("--provider-api-key <key>", "Provider API key override")
-				.option("--system <prompt>", "System prompt override")
-				.option("--cwd <path>", "Workspace / cwd for runtime")
-				.option("--mode <act|plan>", "Agent mode", "act")
-				.option("-i, --interactive", "Keep connector in foreground")
-				.option("--no-tools", "Disable tools for Linear sessions")
+				.option("--user-name <name>", "Linear 机器人显示名称")
+				.option("--api-key <key>", "Linear 个人 API 密钥")
+				.option("--client-id <id>", "Linear OAuth 客户端 ID")
+				.option("--client-secret <secret>", "Linear OAuth 客户端密钥")
+				.option("--access-token <token>", "预先获取的 Linear 访问令牌")
+				.option("--webhook-secret <secret>", "Linear webhook 签名密钥")
+				.option("--provider <id>", "覆盖提供商")
+				.option("--model <id>", "覆盖模型")
+				.option("--provider-api-key <key>", "覆盖提供商 API 密钥")
+				.option("--system <prompt>", "覆盖系统提示词")
+				.option("--cwd <path>", "运行时的工作区 / 工作目录")
+				.option("--mode <act|plan>", "代理模式", "act")
+				.option("-i, --interactive", "在前台保持连接器运行")
+				.option("--no-tools", "为 Linear 会话禁用工具")
 				// Retained so existing invocations and persisted autostart arguments
 				// keep parsing; tools are on unless --no-tools is passed.
-				.option("--enable-tools", "Enable tools (default)")
+				.option("--enable-tools", "启用工具（默认）")
 				.option(
 					"--hook-command <command>",
-					"Run a shell command for connector events",
+					"为连接器事件运行 shell 命令",
 				)
 				.option(
 					"--rpc-address <host:port>",
-					"RPC address",
+					"RPC 地址",
 					process.env.CLINE_RPC_ADDRESS?.trim() ||
 						resolveDefaultCliRpcAddress(),
 				)
-				.option("--host <host>", "Webhook listen host")
-				.option("--port <port>", "Webhook listen port")
-				.option("--base-url <url>", "Public base URL for webhook configuration")
+				.option("--host <host>", "Webhook 监听主机")
+				.option("--port <port>", "Webhook 监听端口")
+				.option("--base-url <url>", "用于 webhook 配置的公共基础 URL")
 				.addHelpText(
 					"after",
 					[
 						"",
-						"Environment:",
-						"  LINEAR_API_KEY             Personal API key",
-						"  LINEAR_CLIENT_ID           OAuth client id",
-						"  LINEAR_CLIENT_SECRET       OAuth client secret",
-						"  LINEAR_ACCESS_TOKEN        Pre-obtained access token",
-						"  LINEAR_WEBHOOK_SECRET      Webhook signing secret",
-						"  LINEAR_BOT_USERNAME        Bot display name (default: linear-bot)",
+						"环境变量：",
+						"  LINEAR_API_KEY             个人 API 密钥",
+						"  LINEAR_CLIENT_ID           OAuth 客户端 ID",
+						"  LINEAR_CLIENT_SECRET       OAuth 客户端密钥",
+						"  LINEAR_ACCESS_TOKEN        预先获取的访问令牌",
+						"  LINEAR_WEBHOOK_SECRET      Webhook 签名密钥",
+						"  LINEAR_BOT_USERNAME        机器人显示名称（默认：linear-bot）",
 					].join("\n"),
 				)
 		);
@@ -375,12 +375,12 @@ class LinearConnector extends ConnectorBase<
 			opts.webhookSecret?.trim() || process.env.LINEAR_WEBHOOK_SECRET?.trim();
 		if (!webhookSecret) {
 			throw new Error(
-				"connect linear requires --webhook-secret <secret> or LINEAR_WEBHOOK_SECRET",
+				"connect linear 需要 --webhook-secret <secret> 或 LINEAR_WEBHOOK_SECRET",
 			);
 		}
 		if (!apiKey && !accessToken && !(clientId && clientSecret)) {
 			throw new Error(
-				"connect linear requires LINEAR_API_KEY, LINEAR_ACCESS_TOKEN, or both LINEAR_CLIENT_ID and LINEAR_CLIENT_SECRET",
+				"connect linear 需要 LINEAR_API_KEY、LINEAR_ACCESS_TOKEN，或同时提供 LINEAR_CLIENT_ID 和 LINEAR_CLIENT_SECRET",
 			);
 		}
 		const parsedPort =
@@ -466,7 +466,7 @@ class LinearConnector extends ConnectorBase<
 			statePath,
 			readState: (path) => this.readConnectorState(path),
 			describeStoppedProcess: (state) =>
-				`[linear] stopped pid=${state.pid} user=${state.userName}`,
+				`[linear] 已停止 pid=${state.pid} user=${state.userName}`,
 			getPid: (state) => state.pid,
 			stopSessions: stopSessionsForUser,
 			clearBindings: (state) => {
@@ -528,12 +528,12 @@ class LinearConnector extends ConnectorBase<
 			readState: (path) => this.readConnectorState(path),
 			isRunning: (state) => isProcessRunning(state.pid),
 			formatAlreadyRunningMessage: (state) =>
-				`[linear] connector already running pid=${state.pid} rpc=${state.rpcAddress} url=${state.baseUrl}`,
+				`[linear] 连接器已在运行 pid=${state.pid} rpc=${state.rpcAddress} url=${state.baseUrl}`,
 			formatBackgroundStartMessage: (pid) =>
-				`[linear] starting background connector pid=${pid} user=${options.userName}`,
+				`[linear] 正在后台启动连接器 pid=${pid} user=${options.userName}`,
 			foregroundHint:
-				"[linear] use `cline connect linear -i ...` to run in the foreground",
-			launchFailureMessage: "failed to launch Linear connector in background",
+				"[linear] 使用 `cline connect linear -i ...` 在前台运行",
+			launchFailureMessage: "无法在后台启动 Linear 连接器",
 		});
 		if (backgroundExitCode !== undefined) {
 			return backgroundExitCode;
@@ -568,7 +568,7 @@ class LinearConnector extends ConnectorBase<
 			linearAdapter = createLinearAdapter(linearConfig);
 		} catch (error) {
 			io.writeErr(
-				`failed to load @chat-adapter/linear: ${error instanceof Error ? error.message : String(error)}`,
+				`加载 @chat-adapter/linear 失败：${error instanceof Error ? error.message : String(error)}`,
 			);
 			return 1;
 		}
@@ -616,7 +616,7 @@ class LinearConnector extends ConnectorBase<
 			authToken: rpcAuthToken,
 			clientId,
 			clientType: "cli",
-			displayName: "linear connector",
+			displayName: "linear 连接器",
 			workspaceRoot: startRequest.workspaceRoot || startRequest.cwd,
 			cwd: startRequest.cwd,
 			metadata: {
@@ -691,7 +691,7 @@ class LinearConnector extends ConnectorBase<
 								? { linearParticipantLabel: currentState.participantLabel }
 								: {}),
 						}),
-						reusedLogMessage: "Linear thread reusing RPC session",
+						reusedLogMessage: "Linear 线程正在复用 RPC 会话",
 						onReplyCompleted: async (result) => {
 							await dispatchConnectorHook(
 								options.hookCommand,
@@ -733,7 +733,7 @@ class LinearConnector extends ConnectorBase<
 				} catch (error) {
 					const message =
 						error instanceof Error ? error.message : String(error);
-					await thread.post(`Linear bridge error: ${message}`);
+					await thread.post(`Linear 桥接器错误：${message}`);
 				}
 			};
 			if (activeTurns.has(queueKey)) {
@@ -759,7 +759,7 @@ class LinearConnector extends ConnectorBase<
 					client,
 					clientId,
 					pendingApprovals,
-					deniedReason: "Denied by Linear user",
+					deniedReason: "已被 Linear 用户拒绝",
 				})
 			) {
 				return;
@@ -782,7 +782,7 @@ class LinearConnector extends ConnectorBase<
 					client,
 					clientId,
 					pendingApprovals,
-					deniedReason: "Denied by Linear user",
+					deniedReason: "已被 Linear 用户拒绝",
 				})
 			) {
 				return;
@@ -810,7 +810,7 @@ class LinearConnector extends ConnectorBase<
 				"/health": () => new Response("ok"),
 				"/": () =>
 					new Response(
-						["Linear connector is running.", `Webhook URL: ${webhookUrl}`].join(
+						["Linear 连接器正在运行。", `Webhook URL: ${webhookUrl}`].join(
 							"\n",
 						),
 					),
@@ -877,8 +877,8 @@ class LinearConnector extends ConnectorBase<
 		process.once("SIGINT", () => requestStop("sigint"));
 		process.once("SIGTERM", () => requestStop("sigterm"));
 
-		io.writeln(`[linear] listening on ${options.host}:${options.port}`);
-		io.writeln(`[linear] configure Linear webhook URL: ${webhookUrl}`);
+		io.writeln(`[linear] 正在监听 ${options.host}:${options.port}`);
+		io.writeln(`[linear] 配置 Linear webhook URL：${webhookUrl}`);
 
 		await stopPromise;
 		clearBindingSessionIds<LinearThreadState>(bindingsPath);

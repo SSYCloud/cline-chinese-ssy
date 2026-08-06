@@ -22,26 +22,26 @@ function transportLabel(t: McpTransport): string {
 }
 
 function statusLabel(entry: McpServerEntry): string {
-	return entry.disabled ? "disabled" : "enabled";
+	return entry.disabled ? "已禁用" : "已启用";
 }
 
 function authLabel(entry: McpServerEntry): string {
-	if (entry.transport.type === "stdio") return "local";
-	if (entry.oauth?.lastError) return "oauth error";
+	if (entry.transport.type === "stdio") return "本地";
+	if (entry.oauth?.lastError) return "OAuth 错误";
 	const accessToken = entry.oauth?.tokens?.access_token;
 	if (typeof accessToken === "string" && accessToken.trim().length > 0) {
-		return "oauth authorized";
+		return "OAuth 已授权";
 	}
 	if (entry.oauth && Object.keys(entry.oauth).length > 0) {
-		return "oauth pending";
+		return "OAuth 待处理";
 	}
 	if (
 		entry.transport.headers &&
 		Object.keys(entry.transport.headers).length > 0
 	) {
-		return "static headers";
+		return "静态标头";
 	}
-	return "no auth";
+	return "无身份验证";
 }
 
 type RemoteAuthMode = "none" | "headers" | "oauth";
@@ -112,14 +112,14 @@ export function parseStdioCommand(input: string): string[] {
 async function collectStdioTransport(
 	defaultCommand?: string,
 ): Promise<McpTransport | null> {
-	p.log.info("Quoted arguments and escaped spaces are supported");
+	p.log.info("支持带引号的参数和转义空格");
 
 	const command = await p.text({
-		message: "Command to run",
+		message: "要运行的命令",
 		placeholder: "npx -y @modelcontextprotocol/server-filesystem",
 		initialValue: defaultCommand,
 		validate: (v) => {
-			if (!v?.trim()) return "Command is required";
+			if (!v?.trim()) return "命令是必填项";
 			return undefined;
 		},
 	});
@@ -130,8 +130,8 @@ async function collectStdioTransport(
 	const args = parts.slice(1);
 
 	const envInput = await p.text({
-		message: "Environment variables (KEY=VALUE, comma-separated)",
-		placeholder: "leave empty for none",
+		message: "环境变量（KEY=VALUE，逗号分隔）",
+		placeholder: "留空表示无",
 	});
 	if (isCancel(envInput)) return null;
 
@@ -160,15 +160,15 @@ async function collectUrlTransport(
 	defaultUrl?: string,
 ): Promise<UrlServerConfig | null> {
 	const url = await p.text({
-		message: "Server URL",
+		message: "服务器网址",
 		placeholder: "https://example.com/mcp",
 		initialValue: defaultUrl,
 		validate: (v) => {
-			if (!v?.trim()) return "URL is required";
+			if (!v?.trim()) return "网址是必填项";
 			try {
 				new URL(v.trim());
 			} catch {
-				return "Must be a valid URL";
+				return "必须是有效的网址";
 			}
 			return undefined;
 		},
@@ -176,21 +176,21 @@ async function collectUrlTransport(
 	if (isCancel(url)) return null;
 
 	const authMode = await p.select({
-		message: "Authentication",
+		message: "身份验证",
 		options: [
 			{
 				value: "oauth",
 				label: "OAuth",
-				hint: "open a browser and save tokens in MCP settings",
+				hint: "打开浏览器并将令牌保存在 MCP 设置中",
 			},
 			{
 				value: "headers",
-				label: "Static headers",
-				hint: "manually configure request headers",
+				label: "静态标头",
+				hint: "手动配置请求标头",
 			},
 			{
 				value: "none",
-				label: "No auth",
+				label: "无身份验证",
 			},
 		],
 	});
@@ -204,8 +204,8 @@ async function collectUrlTransport(
 	}
 
 	const headersInput = await p.text({
-		message: "Headers (KEY:VALUE, comma-separated)",
-		placeholder: "leave empty for none",
+		message: "标头（KEY:VALUE，逗号分隔）",
+		placeholder: "留空表示无",
 	});
 	if (isCancel(headersInput)) return null;
 
@@ -231,14 +231,14 @@ async function collectUrlTransport(
 
 async function actionAdd(defaults?: McpAddDefaults): Promise<void> {
 	const name = await p.text({
-		message: "Server name",
+		message: "服务器名称",
 		placeholder: "my-mcp-server",
 		initialValue: defaults?.name,
 		validate: (v) => {
-			if (!v?.trim()) return "Name is required";
+			if (!v?.trim()) return "名称是必填项";
 			const existing = loadServers();
 			if (existing.some((s) => s.name === v.trim())) {
-				return "A server with this name already exists";
+				return "已存在同名服务器";
 			}
 			return undefined;
 		},
@@ -246,23 +246,23 @@ async function actionAdd(defaults?: McpAddDefaults): Promise<void> {
 	if (isCancel(name)) return;
 
 	const type = await p.select({
-		message: "Server type",
+		message: "服务器类型",
 		initialValue: defaults?.type,
 		options: [
 			{
 				value: "stdio",
-				label: "Local",
-				hint: "run a command on this machine",
+				label: "本地",
+				hint: "在本机运行命令",
 			},
 			{
 				value: "sse",
-				label: "Remote (SSE)",
-				hint: "connect to a URL via Server-Sent Events",
+				label: "远程（SSE）",
+				hint: "通过 Server-Sent Events 连接网址",
 			},
 			{
 				value: "streamableHttp",
-				label: "Remote (HTTP)",
-				hint: "connect to a URL via streamable HTTP",
+				label: "远程（HTTP）",
+				hint: "通过可流式 HTTP 连接网址",
 			},
 		],
 	});
@@ -287,7 +287,7 @@ async function actionAdd(defaults?: McpAddDefaults): Promise<void> {
 	if (authMode !== "oauth") {
 		clearServerOAuth(serverName);
 	}
-	p.log.success(`Added "${serverName}" to ${getSettingsPath()}`);
+	p.log.success(`已将 "${serverName}" 添加到 ${getSettingsPath()}`);
 	if (authMode === "oauth") {
 		await authorizeOAuth(serverName);
 	}
@@ -296,20 +296,20 @@ async function actionAdd(defaults?: McpAddDefaults): Promise<void> {
 async function actionList(): Promise<void> {
 	const servers = loadServers();
 	if (servers.length === 0) {
-		p.log.info("No MCP servers configured");
-		p.log.info(`Settings file: ${getSettingsPath()}`);
+		p.log.info("未配置任何 MCP 服务器");
+		p.log.info(`设置文件：${getSettingsPath()}`);
 		return;
 	}
 	for (const s of servers) {
-		const status = s.disabled ? " (disabled)" : "";
+		const status = s.disabled ? "（已禁用）" : "";
 		p.log.info(`${s.name}${status}`);
 		p.log.message(`  ${transportLabel(s.transport)}`);
-		p.log.message(`  auth: ${authLabel(s)}`);
+		p.log.message(`  身份验证：${authLabel(s)}`);
 		if (s.oauth?.lastError) {
-			p.log.message(`  last OAuth error: ${s.oauth.lastError}`);
+			p.log.message(`  上次 OAuth 错误：${s.oauth.lastError}`);
 		}
 	}
-	p.log.message(`\nSettings file: ${getSettingsPath()}`);
+	p.log.message(`\n设置文件：${getSettingsPath()}`);
 }
 
 function pickServer(
@@ -317,7 +317,7 @@ function pickServer(
 	message: string,
 ): Promise<string | null> {
 	if (servers.length === 0) {
-		p.log.warn("No MCP servers configured");
+		p.log.warn("未配置任何 MCP 服务器");
 		return Promise.resolve(null);
 	}
 	return p
@@ -341,32 +341,32 @@ async function pickRemoteServer(message: string): Promise<string | null> {
 
 async function actionEdit(): Promise<void> {
 	const servers = loadServers();
-	const name = await pickServer(servers, "Select server to edit");
+	const name = await pickServer(servers, "选择要编辑的服务器");
 	if (!name) return;
 
 	const current = servers.find((s) => s.name === name);
 	if (!current) return;
 
-	p.log.step(`Editing ${name} (${current.transport.type})`);
+	p.log.step(`正在编辑 ${name} (${current.transport.type})`);
 
 	const type = await p.select({
-		message: "Server type",
+		message: "服务器类型",
 		initialValue: current.transport.type,
 		options: [
 			{
 				value: "stdio",
-				label: "Local",
-				hint: "run a command",
+				label: "本地",
+				hint: "运行命令",
 			},
 			{
 				value: "sse",
-				label: "Remote (SSE)",
+				label: "远程（SSE）",
 				hint: "Server-Sent Events",
 			},
 			{
 				value: "streamableHttp",
-				label: "Remote (HTTP)",
-				hint: "streamable HTTP",
+				label: "远程（HTTP）",
+				hint: "可流式 HTTP",
 			},
 		],
 	});
@@ -387,7 +387,7 @@ async function actionEdit(): Promise<void> {
 	if (type === "stdio" || authMode !== "oauth") {
 		clearServerOAuth(name);
 	}
-	p.log.success(`Updated "${name}"`);
+	p.log.success(`已更新 "${name}"`);
 	if (authMode === "oauth") {
 		await authorizeOAuth(name);
 	}
@@ -395,25 +395,25 @@ async function actionEdit(): Promise<void> {
 
 async function actionDelete(): Promise<void> {
 	const servers = loadServers();
-	const name = await pickServer(servers, "Select server to delete");
+	const name = await pickServer(servers, "选择要删除的服务器");
 	if (!name) return;
 
 	const confirm = await p.confirm({
-		message: `Delete "${name}"?`,
+		message: `删除 "${name}"？`,
 		initialValue: false,
 	});
 	if (isCancel(confirm) || !confirm) return;
 
 	if (removeServer(name)) {
-		p.log.success(`Deleted "${name}"`);
+		p.log.success(`已删除 "${name}"`);
 	} else {
-		p.log.error("Failed to delete server");
+		p.log.error("删除服务器失败");
 	}
 }
 
 async function actionToggle(): Promise<void> {
 	const servers = loadServers();
-	const name = await pickServer(servers, "Select server to enable/disable");
+	const name = await pickServer(servers, "选择要启用/禁用的服务器");
 	if (!name) return;
 
 	const current = servers.find((s) => s.name === name);
@@ -421,11 +421,11 @@ async function actionToggle(): Promise<void> {
 
 	const newDisabled = !current.disabled;
 	toggleServer(name, newDisabled);
-	p.log.success(`${name} is now ${newDisabled ? "disabled" : "enabled"}`);
+	p.log.success(`${name} 现在${newDisabled ? "已禁用" : "已启用"}`);
 }
 
 async function actionAuthorizeOAuth(): Promise<void> {
-	const name = await pickRemoteServer("Select remote server to authorize");
+	const name = await pickRemoteServer("选择要授权的远程服务器");
 	if (!name) return;
 	await authorizeOAuth(name);
 }
@@ -433,7 +433,7 @@ async function actionAuthorizeOAuth(): Promise<void> {
 export async function runMcpWizard(
 	options: RunMcpWizardOptions = {},
 ): Promise<number> {
-	p.intro("MCP Servers");
+	p.intro("MCP 服务器");
 
 	if (options.initialAction === "add") {
 		let initialActionExitCode = 0;
@@ -444,7 +444,7 @@ export async function runMcpWizard(
 			p.log.error(err instanceof Error ? err.message : String(err));
 		}
 		if (options.exitAfterInitialAction === true) {
-			p.outro("Done");
+			p.outro("完成");
 			return initialActionExitCode;
 		}
 	}
@@ -452,39 +452,39 @@ export async function runMcpWizard(
 	let keepGoing = true;
 	while (keepGoing) {
 		const action = await p.select({
-			message: "What would you like to do?",
+			message: "你想做什么？",
 			options: [
 				{
 					value: "list",
-					label: "List servers",
-					hint: "view configured MCP servers",
+					label: "列出服务器",
+					hint: "查看已配置的 MCP 服务器",
 				},
 				{
 					value: "add",
-					label: "Add server",
-					hint: "configure a new MCP server",
+					label: "添加服务器",
+					hint: "配置新的 MCP 服务器",
 				},
 				{
 					value: "edit",
-					label: "Edit server",
-					hint: "change server configuration",
+					label: "编辑服务器",
+					hint: "更改服务器配置",
 				},
 				{
 					value: "toggle",
-					label: "Enable/disable server",
+					label: "启用/禁用服务器",
 				},
 				{
 					value: "authorize",
-					label: "Authorize OAuth",
-					hint: "run or rerun browser authorization for a remote server",
+					label: "授权 OAuth",
+					hint: "为远程服务器运行或重新运行浏览器授权",
 				},
 				{
 					value: "delete",
-					label: "Delete server",
+					label: "删除服务器",
 				},
 				{
 					value: "exit",
-					label: "Exit",
+					label: "退出",
 				},
 			],
 		});
@@ -520,6 +520,6 @@ export async function runMcpWizard(
 		}
 	}
 
-	p.outro("Done");
+	p.outro("完成");
 	return 0;
 }

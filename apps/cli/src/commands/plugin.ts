@@ -63,21 +63,21 @@ async function selectMcpOAuthCandidatesWithClack(
 ): Promise<PluginMcpOAuthCandidate[]> {
 	const p = await import("@clack/prompts");
 	const action = await p.select({
-		message: "Authorize plugin MCP servers now?",
+		message: "现在授权插件 MCP 服务器吗？",
 		options: [
 			{
 				value: "all",
-				label: "Authorize all",
-				hint: "open browser authorization for each server",
+				label: "全部授权",
+				hint: "为每个服务器打开浏览器授权",
 			},
 			{
 				value: "choose",
-				label: "Choose servers",
-				hint: "select which servers to authorize",
+				label: "选择服务器",
+				hint: "选择要授权的服务器",
 			},
 			{
 				value: "skip",
-				label: "Skip",
+				label: "跳过",
 			},
 		],
 	});
@@ -89,7 +89,7 @@ async function selectMcpOAuthCandidatesWithClack(
 	}
 
 	const selectedNames = await p.multiselect({
-		message: "Select MCP servers to authorize",
+		message: "选择要授权的 MCP 服务器",
 		options: candidates.map((candidate) => ({
 			value: candidate.name,
 			label: candidate.name,
@@ -124,14 +124,14 @@ async function runPluginMcpOAuthFollowup(
 	}
 
 	if (!isInteractivePluginInstall(options)) {
-		options.io?.writeln("Plugin MCP servers may require OAuth authorization:");
+		options.io?.writeln("插件 MCP 服务器可能需要 OAuth 授权：");
 		for (const candidate of candidates) {
 			options.io?.writeln(
-				`  ${candidate.name} (${candidate.transportType}, plugin: ${candidate.pluginName})`,
+				`  ${candidate.name} (${candidate.transportType}, 插件: ${candidate.pluginName})`,
 			);
 		}
 		options.io?.writeln(
-			'Run "cline mcp" and choose "Authorize OAuth" to authorize them.',
+			'运行 "cline mcp" 并选择 "Authorize OAuth" 来授权它们。',
 		);
 		return;
 	}
@@ -147,7 +147,7 @@ async function runPluginMcpOAuthFollowup(
 		} catch (error) {
 			const message = error instanceof Error ? error.message : String(error);
 			options.io?.writeErr(
-				`Warning: failed to authorize MCP server ${candidate.name}: ${message}. Run "cline mcp" and choose "Authorize OAuth" to retry.`,
+				`警告：无法授权 MCP 服务器 ${candidate.name}: ${message}。运行 "cline mcp" 并选择 "Authorize OAuth" 重试。`,
 			);
 		}
 	}
@@ -164,11 +164,11 @@ export async function runPluginInstallCommand(
 			);
 			return 0;
 		}
-		options.io?.writeln(`Installed plugin from ${result.source}`);
-		options.io?.writeln(`  Path: ${result.installPath}`);
+		options.io?.writeln(`已从 ${result.source} 安装插件`);
+		options.io?.writeln(`  路径: ${result.installPath}`);
 		for (const failure of result.mcpSyncFailures) {
 			options.io?.writeErr(
-				`Warning: failed to sync plugin MCP servers for ${failure.pluginName ?? failure.pluginPath}: ${failure.message}`,
+				`警告：无法同步 ${failure.pluginName ?? failure.pluginPath} 的插件 MCP 服务器: ${failure.message}`,
 			);
 		}
 		await runPluginMcpOAuthFollowup(result.mcpOAuthCandidates, options);
@@ -189,8 +189,8 @@ export async function runPluginUninstallCommand(
 			process.stdout.write(JSON.stringify(result));
 			return 0;
 		}
-		options.io?.writeln(`Uninstalled plugin ${result.name}`);
-		options.io?.writeln(`  Removed: ${result.installPath}`);
+		options.io?.writeln(`已卸载插件 ${result.name}`);
+		options.io?.writeln(`  已移除: ${result.installPath}`);
 		return 0;
 	} catch (error) {
 		const message = error instanceof Error ? error.message : String(error);

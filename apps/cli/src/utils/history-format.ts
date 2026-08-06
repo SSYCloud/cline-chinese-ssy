@@ -6,7 +6,7 @@ import { shouldShowCliUsageCost } from "./usage-cost-display";
 export function formatSessionStatusLabel(
 	status: SessionHistoryRecord["status"] | undefined,
 ): string {
-	return status?.trim() || "unknown";
+	return status?.trim() || "未知";
 }
 
 export function mergeHistoryStatusRows(
@@ -73,9 +73,9 @@ export function formatCheckpointDetail(
 			: "unknown";
 	const latestRun =
 		typeof latest.runCount === "number" && Number.isFinite(latest.runCount)
-			? ` run ${latest.runCount}`
+			? ` 运行 ${latest.runCount}`
 			: "";
-	return `Checkpoint ${shortRef}${latestRun} created ${created}. ${count} total. Restore with: cline checkpoint restore latest --session-id ${row.sessionId}`;
+	return `检查点 ${shortRef}${latestRun} 创建于 ${created}。共 ${count} 个。使用以下命令恢复: cline checkpoint restore latest --session-id ${row.sessionId}`;
 }
 
 function formatUtcDate(date: Date): string {
@@ -93,7 +93,7 @@ export function formatHistoryListLine(row: SessionHistoryRecord): string {
 	const cost = shouldShowCliUsageCost(row.provider)
 		? formatUsd(row.metadata?.totalCost ?? 0, 2)
 		: undefined;
-	const provider = truncateStr(row.provider?.trim() || "unknown", 20);
+	const provider = truncateStr(row.provider?.trim() || "未知", 20);
 	const model = truncateStr(row.model?.trim() || "", 28);
 
 	const checkpointCreatedAt = row.metadata?.checkpoint?.latest?.createdAt;

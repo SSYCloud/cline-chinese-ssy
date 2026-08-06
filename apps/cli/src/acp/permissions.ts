@@ -15,17 +15,17 @@ import { buildToolTitle, mapToolKind } from "./tool-utils";
 const PERMISSION_OPTIONS: PermissionOption[] = [
 	{
 		optionId: "allow_once",
-		name: "Allow once",
+		name: "允许一次",
 		kind: "allow_once" as PermissionOptionKind,
 	},
 	{
 		optionId: "allow_always",
-		name: "Allow always",
+		name: "始终允许",
 		kind: "allow_always" as PermissionOptionKind,
 	},
 	{
 		optionId: "reject_once",
-		name: "Reject",
+		name: "拒绝",
 		kind: "reject_once" as PermissionOptionKind,
 	},
 ];
@@ -68,7 +68,7 @@ export function handlePermissionResponse(
 		  },
 ): ToolApprovalResult {
 	if (outcome.outcome === "cancelled") {
-		return { approved: false, reason: "Permission request was cancelled" };
+		return { approved: false, reason: "权限请求已取消" };
 	}
 
 	const optionId = outcome.optionId;
@@ -78,11 +78,11 @@ export function handlePermissionResponse(
 			return { approved: true };
 		case "reject_once":
 		case "reject_always":
-			return { approved: false, reason: "User rejected the tool call" };
+			return { approved: false, reason: "用户拒绝了工具调用" };
 		default:
 			return {
 				approved: false,
-				reason: `Unknown permission option: ${optionId}`,
+				reason: `未知权限选项: ${optionId}`,
 			};
 	}
 }
@@ -114,7 +114,7 @@ export async function requestAcpToolApproval(
 	try {
 		response = await conn.requestPermission(permissionRequest);
 	} catch {
-		return { approved: false, reason: "Permission request failed" };
+		return { approved: false, reason: "权限请求失败" };
 	}
 
 	const result = handlePermissionResponse(response.outcome);

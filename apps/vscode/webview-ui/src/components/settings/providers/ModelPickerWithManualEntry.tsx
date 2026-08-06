@@ -74,17 +74,17 @@ export function ModelPickerWithManualEntry({
 	return (
 		<div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
 			<label htmlFor="provider-model-picker">
-				<span className="font-medium">Model</span>
+				<span className="font-medium">模型</span>
 			</label>
 
-			{isStale && <div role="status">Model list may be stale for the current provider configuration.</div>}
-			{isLoading && <div role="status">Loading models…</div>}
+			{isStale && <div role="status">当前提供商配置下的模型列表可能已过期。</div>}
+			{isLoading && <div role="status">正在加载模型…</div>}
 			{error && <div role="alert">{error}</div>}
 
 			{hasModels && (
 				<DropdownContainer className="dropdown-container">
 					<VSCodeDropdown
-						aria-label="Model"
+						aria-label="模型"
 						className="w-full"
 						id="provider-model-picker"
 						key={dropdownKey}
@@ -102,20 +102,20 @@ export function ModelPickerWithManualEntry({
 						}}
 						value={selectedModelInList ? selectedModel.modelId : ""}>
 						{!selectedModelInList && allowsCustomIds && selectedModel.modelId && (
-							<VSCodeOption value="">{selectedModel.modelId} (not in current list)</VSCodeOption>
+							<VSCodeOption value="">{selectedModel.modelId}（不在当前列表中）</VSCodeOption>
 						)}
 						{modelIds.map((modelId) => (
 							<VSCodeOption className="break-words whitespace-normal max-w-full" key={modelId} value={modelId}>
 								{modelId}
 							</VSCodeOption>
 						))}
-						{allowsCustomIds && <VSCodeOption value="__custom__">Use custom model ID…</VSCodeOption>}
+						{allowsCustomIds && <VSCodeOption value="__custom__">使用自定义模型 ID…</VSCodeOption>}
 					</VSCodeDropdown>
 				</DropdownContainer>
 			)}
 
 			{!selectedModelInList && selectedModel.modelId && hasModels && (
-				<div role="status">Selected model “{selectedModel.modelId}” is not in the current list.</div>
+				<div role="status">所选模型“{selectedModel.modelId}”不在当前列表中。</div>
 			)}
 
 			{showManualEntry && (
@@ -130,13 +130,13 @@ export function ModelPickerWithManualEntry({
 								commitCustomModel(customModelId)
 							}
 						}}
-						placeholder="Enter custom model ID"
+						placeholder="输入自定义模型 ID"
 						style={{ flexGrow: 1 }}
 						value={customModelId}>
-						<span className="font-medium">Custom model ID</span>
+						<span className="font-medium">自定义模型 ID</span>
 					</VSCodeTextField>
 					<VSCodeButton appearance="secondary" onClick={() => commitCustomModel(customModelId)}>
-						Use custom model
+						使用自定义模型
 					</VSCodeButton>
 				</div>
 			)}

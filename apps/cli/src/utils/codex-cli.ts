@@ -40,13 +40,13 @@ export async function checkCodexCliInstalled(): Promise<CodexCliStatus> {
 		if (code === "ENOENT") {
 			return {
 				installed: false,
-				reason: "The codex executable was not found on PATH.",
+				reason: "在 PATH 中未找到 codex 可执行文件。",
 			};
 		}
 		const message =
 			typeof details?.message === "string"
 				? details.message
-				: "Could not run codex --version.";
+				: "无法运行 codex --version。";
 		return {
 			installed: false,
 			reason: message,

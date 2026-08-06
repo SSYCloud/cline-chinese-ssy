@@ -54,7 +54,7 @@ const AccountView = ({ onDone, clineUser, organizations, activeOrganization }: A
 	return (
 		<div className="fixed inset-0 flex flex-col overflow-hidden">
 			{clineUser?.uid ? (
-				<ViewHeader environment={environment} onDone={onDone} showEnvironmentSuffix title="Account" />
+				<ViewHeader environment={environment} onDone={onDone} showEnvironmentSuffix title="账户" />
 			) : (
 				<div className="flex items-center justify-between px-5 py-2.5 mb-[17px]">
 					<div className="flex border-b border-(--vscode-panel-border) px-5">
@@ -328,7 +328,7 @@ const ClineAccountView = ({ clineUser, userOrganizations, activeOrganization, cl
 				<div className="flex flex-col w-full gap-1 mb-6">
 					<div className="flex items-center flex-wrap gap-y-4">
 						{/* {user.photoUrl ? (
-								<img src={user.photoUrl} alt="Profile" className="size-16 rounded-full mr-4" />
+								<img src={user.photoUrl} alt="头像" className="size-16 rounded-full mr-4" />
 							) : ( */}
 						<div className="size-16 rounded-full bg-button-background flex items-center justify-center text-2xl text-button-foreground mr-4">
 							{displayName?.[0] || email?.[0] || "?"}
@@ -424,7 +424,7 @@ const ClineAccountView = ({ clineUser, userOrganizations, activeOrganization, cl
 							}}>
 							{ClineEnvOptions.map((env) => (
 								<VSCodeOption key={env} value={env}>
-									{env}
+									{env === "Production" ? "生产环境" : env === "Staging" ? "预发布环境" : "本地环境"}
 								</VSCodeOption>
 							))}
 						</VSCodeDropdown>

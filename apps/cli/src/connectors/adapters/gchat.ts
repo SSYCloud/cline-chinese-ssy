@@ -220,9 +220,9 @@ async function deliverScheduledResult(input: {
 		const text = await readSessionReplyText(input.client, input.sessionId);
 		body = text?.trim()
 			? text
-			: `Schedule "${schedule?.name ?? input.scheduleId}" completed, but no assistant reply text was found.`;
+			: `计划 "${schedule?.name ?? input.scheduleId}" 已完成，但未找到助手回复文本。`;
 	} else {
-		body = `Schedule "${schedule?.name ?? input.scheduleId}" ${input.status}.${input.errorMessage ? `\n\n${input.errorMessage}` : ""}`;
+		body = `计划 "${schedule?.name ?? input.scheduleId}" ${input.status}.${input.errorMessage ? `\n\n${input.errorMessage}` : ""}`;
 	}
 	await thread.post(body);
 }
@@ -232,7 +232,7 @@ class GoogleChatConnector extends ConnectorBase<
 	GoogleChatConnectorState
 > {
 	constructor() {
-		super("gchat", "Google Chat webhook bridge backed by RPC runtime sessions");
+		super("gchat", "由 RPC 运行时会话支撑的 Google Chat webhook 桥接");
 	}
 
 	protected override createCommand(): Command {
@@ -240,47 +240,47 @@ class GoogleChatConnector extends ConnectorBase<
 			super
 				.createCommand()
 				.usage("--base-url <PUBLIC_BASE_URL> [options]")
-				.option("--user-name <name>", "Google Chat bot username label")
-				.option("--provider <id>", "Provider override")
-				.option("--model <id>", "Model override")
-				.option("--api-key <key>", "Provider API key override")
-				.option("--system <prompt>", "System prompt override")
-				.option("--cwd <path>", "Workspace / cwd for runtime")
-				.option("--mode <act|plan>", "Agent mode", "act")
-				.option("-i, --interactive", "Keep connector in foreground")
-				.option("--no-tools", "Disable tools for Google Chat sessions")
-				// Retained so existing invocations and persisted autostart arguments
-				// keep parsing; tools are on unless --no-tools is passed.
-				.option("--enable-tools", "Enable tools (default)")
+				.option("--user-name <name>", "Google Chat 机器人用户名标签")
+				.option("--provider <id>", "覆盖提供商")
+				.option("--model <id>", "覆盖模型")
+				.option("--api-key <key>", "覆盖提供商 API 密钥")
+				.option("--system <prompt>", "覆盖系统提示词")
+				.option("--cwd <path>", "运行时的工作目录")
+				.option("--mode <act|plan>", "智能体模式", "act")
+				.option("-i, --interactive", "保持连接器在前台运行")
+				.option("--no-tools", "禁用 Google Chat 会话的工具")
+				// 保留这些选项，以便现有调用和持久化的自动启动参数
+				// 继续被解析；除非传入 --no-tools，否则工具默认开启。
+				.option("--enable-tools", "启用工具（默认）")
 				.option(
 					"--hook-command <command>",
-					"Run a shell command for connector events",
+					"为连接器事件运行 shell 命令",
 				)
 				.option(
 					"--rpc-address <host:port>",
-					"RPC address",
+					"RPC 地址",
 					process.env.CLINE_RPC_ADDRESS?.trim() ||
 						resolveDefaultCliRpcAddress(),
 				)
-				.option("--host <host>", "Webhook listen host")
-				.option("--port <port>", "Webhook listen port")
-				.option("--base-url <url>", "Public base URL for webhook configuration")
+				.option("--host <host>", "Webhook 监听主机")
+				.option("--port <port>", "Webhook 监听端口")
+				.option("--base-url <url>", "用于 Webhook 配置的公共基础 URL")
 				.option(
 					"--pubsub-topic <topic>",
-					"Optional Pub/Sub topic for all-message events",
+					"处理所有消息事件的可选 Pub/Sub 主题",
 				)
-				.option("--impersonate-user <email>", "Optional delegation user email")
-				.option("--use-adc", "Use Google Application Default Credentials")
-				.option("--credentials-json <json>", "Service account credentials JSON")
+				.option("--impersonate-user <email>", "可选的委派用户邮箱")
+				.option("--use-adc", "使用 Google Application Default Credentials")
+				.option("--credentials-json <json>", "服务账号凭据 JSON")
 				.addHelpText(
 					"after",
 					[
 						"",
-						"Environment:",
-						"  GOOGLE_CHAT_CREDENTIALS      Service account JSON",
-						"  GOOGLE_CHAT_USE_ADC=true     Use Application Default Credentials",
-						"  GOOGLE_CHAT_PUBSUB_TOPIC     Optional Pub/Sub topic",
-						"  GOOGLE_CHAT_IMPERSONATE_USER Optional delegation user",
+						"环境变量：",
+						"  GOOGLE_CHAT_CREDENTIALS      服务账号 JSON",
+						"  GOOGLE_CHAT_USE_ADC=true     使用 Application Default Credentials",
+						"  GOOGLE_CHAT_PUBSUB_TOPIC     可选 Pub/Sub 主题",
+						"  GOOGLE_CHAT_IMPERSONATE_USER 可选的委派用户",
 					].join("\n"),
 				)
 		);
@@ -398,7 +398,7 @@ class GoogleChatConnector extends ConnectorBase<
 			statePath,
 			readState: (path) => this.readConnectorState(path),
 			describeStoppedProcess: (state) =>
-				`[gchat] stopped pid=${state.pid} user=${state.userName}`,
+				`[gchat] 已停止 pid=${state.pid} user=${state.userName}`,
 			getPid: (state) => state.pid,
 			stopSessions: stopSessionsForUser,
 			clearBindings: (state) => {
@@ -445,7 +445,7 @@ class GoogleChatConnector extends ConnectorBase<
 			typeof parsed.private_key !== "string"
 		) {
 			throw new Error(
-				"credentials JSON must include string client_email and private_key fields",
+				"凭据 JSON 必须包含字符串类型的 client_email 和 private_key 字段",
 			);
 		}
 		return {
@@ -465,7 +465,7 @@ class GoogleChatConnector extends ConnectorBase<
 			return 0;
 		} catch (error) {
 			io.writeErr(
-				`invalid GOOGLE_CHAT_CREDENTIALS JSON: ${error instanceof Error ? error.message : String(error)}`,
+				`GOOGLE_CHAT_CREDENTIALS JSON 无效：${error instanceof Error ? error.message : String(error)}`,
 			);
 			return 1;
 		}
@@ -503,13 +503,13 @@ class GoogleChatConnector extends ConnectorBase<
 			readState: (path) => this.readConnectorState(path),
 			isRunning: (state) => isProcessRunning(state.pid),
 			formatAlreadyRunningMessage: (state) =>
-				`[gchat] connector already running pid=${state.pid} rpc=${state.rpcAddress} url=${state.baseUrl}`,
+				`[gchat] 连接器已在运行 pid=${state.pid} rpc=${state.rpcAddress} url=${state.baseUrl}`,
 			formatBackgroundStartMessage: (pid) =>
-				`[gchat] starting background connector pid=${pid} user=${options.userName}`,
+				`[gchat] 正在后台启动连接器 pid=${pid} user=${options.userName}`,
 			foregroundHint:
-				"[gchat] use `cline connect gchat -i ...` to run in the foreground",
+				"[gchat] 使用 `cline connect gchat -i ...` 在前台运行",
 			launchFailureMessage:
-				"failed to launch Google Chat connector in background",
+				"无法在后台启动 Google Chat 连接器",
 		});
 		if (backgroundExitCode !== undefined) {
 			return backgroundExitCode;
@@ -666,7 +666,7 @@ class GoogleChatConnector extends ConnectorBase<
 								? { gchatParticipantLabel: currentState.participantLabel }
 								: {}),
 						}),
-						reusedLogMessage: "Google Chat thread reusing RPC session",
+						reusedLogMessage: "Google Chat 线程正在复用 RPC 会话",
 						onReplyCompleted: async (result) => {
 							await dispatchConnectorHook(
 								options.hookCommand,
@@ -708,7 +708,7 @@ class GoogleChatConnector extends ConnectorBase<
 				} catch (error) {
 					const message =
 						error instanceof Error ? error.message : String(error);
-					await thread.post(`Google Chat bridge error: ${message}`);
+					await thread.post(`Google Chat 桥接错误：${message}`);
 				}
 			};
 			if (activeTurns.has(queueKey)) {
@@ -734,7 +734,7 @@ class GoogleChatConnector extends ConnectorBase<
 					client,
 					clientId,
 					pendingApprovals,
-					deniedReason: "Denied by Google Chat user",
+					deniedReason: "用户已拒绝（Google Chat）",
 				})
 			) {
 				return;
@@ -757,7 +757,7 @@ class GoogleChatConnector extends ConnectorBase<
 					client,
 					clientId,
 					pendingApprovals,
-					deniedReason: "Denied by Google Chat user",
+					deniedReason: "用户已拒绝（Google Chat）",
 				})
 			) {
 				return;
@@ -785,8 +785,8 @@ class GoogleChatConnector extends ConnectorBase<
 				"/": () =>
 					new Response(
 						[
-							"Google Chat connector is running.",
-							`Webhook URL: ${endpointUrl}`,
+							"Google Chat 连接器正在运行。",
+							`Webhook URL：${endpointUrl}`,
 						].join("\n"),
 					),
 			},
@@ -852,8 +852,8 @@ class GoogleChatConnector extends ConnectorBase<
 		process.once("SIGINT", () => requestStop("sigint"));
 		process.once("SIGTERM", () => requestStop("sigterm"));
 
-		io.writeln(`[gchat] listening on ${options.host}:${options.port}`);
-		io.writeln(`[gchat] configure Google Chat App URL: ${endpointUrl}`);
+		io.writeln(`[gchat] 正在监听 ${options.host}:${options.port}`);
+		io.writeln(`[gchat] 配置 Google Chat 应用 URL：${endpointUrl}`);
 
 		await stopPromise;
 		clearBindingSessionIds<GoogleChatThreadState>(bindingsPath);

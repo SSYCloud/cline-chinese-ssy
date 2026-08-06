@@ -136,20 +136,20 @@ const SlashCommandMenu: React.FC<SlashCommandMenuProps> = ({
 			<ScreenReaderAnnounce message={announcement} />
 			<div
 				aria-activedescendant={filteredCommands.length > 0 ? `slash-command-menu-item-${selectedIndex}` : undefined}
-				aria-label="Slash commands"
+				aria-label="斜杠命令"
 				className="bg-(--vscode-dropdown-background) border border-(--vscode-editorGroup-border) rounded-[3px] shadow-[0_4px_10px_rgba(0,0,0,0.25)] flex flex-col overflow-y-auto"
 				ref={menuRef}
 				role="listbox"
 				style={{ maxHeight: "min(200px, calc(50vh))", overscrollBehavior: "contain" }}>
 				{filteredCommands.length > 0 ? (
 					<>
-						{renderCommandSection(defaultCommands, "Default Commands", 0, true)}
-						{renderCommandSection(workflowCommands, "Workflow Commands", defaultCommands.length, false)}
-						{renderCommandSection(mcpCommands, "MCP Prompts", defaultCommands.length + workflowCommands.length, true)}
+						{renderCommandSection(defaultCommands, "默认命令", 0, true)}
+						{renderCommandSection(workflowCommands, "工作流命令", defaultCommands.length, false)}
+						{renderCommandSection(mcpCommands, "MCP 提示词", defaultCommands.length + workflowCommands.length, true)}
 					</>
 				) : (
 					<div aria-selected="false" className="py-2 px-3 cursor-default flex flex-col" role="option">
-						<div className="text-[0.85em] text-(--vscode-descriptionForeground)">No matching commands found</div>
+						<div className="text-[0.85em] text-(--vscode-descriptionForeground)">未找到匹配的命令</div>
 					</div>
 				)}
 			</div>

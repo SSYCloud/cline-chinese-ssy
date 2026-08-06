@@ -242,7 +242,7 @@ function parseFlagValues(tokens: string[]): {
 
 function scheduleUsage(): string {
 	return [
-		"Usage:",
+		"用法:",
 		'/schedule create "<name>" --cron "<pattern>" --prompt "<text>"',
 		"/schedule list",
 		"/schedule trigger <schedule-id>",
@@ -271,30 +271,30 @@ function parseBooleanValue(
 }
 
 function usage(text: string): string {
-	return `Usage: ${text}`;
+	return `用法: ${text}`;
 }
 
 function formatHelp(state: ChatCommandState): string {
 	return [
-		"Cline connector commands:",
-		"/help or /start - show this help",
-		"/new or /clear - start a fresh session",
-		"/whereami - show thread, cwd, tools, and yolo state",
-		"/tools [on|off|toggle] - allow repo/file/shell tools",
-		"/yolo [on|off|toggle] - auto-approve tool use",
-		"/cwd <path> - change working directory",
-		"/schedule create/list/trigger/delete - manage scheduled workflows",
-		"/abort - stop the current task",
-		"/mute [target] - ignore this thread or target until /unmute",
-		"/unmute [target] - resume processing this thread or target",
-		"/exit - stop this connector",
+		"Cline 连接器命令:",
+		"/help 或 /start - 显示此帮助",
+		"/new 或 /clear - 开始新会话",
+		"/whereami - 显示线程、cwd、工具和 yolo 状态",
+		"/tools [on|off|toggle] - 允许仓库/文件/shell 工具",
+		"/yolo [on|off|toggle] - 自动批准工具使用",
+		"/cwd <path> - 更改工作目录",
+		"/schedule create/list/trigger/delete - 管理定时工作流",
+		"/abort - 停止当前任务",
+		"/mute [target] - 忽略此线程或目标，直到 /unmute",
+		"/unmute [target] - 恢复处理此线程或目标",
+		"/exit - 停止此连接器",
 		"",
-		`Current state: tools=${state.enableTools ? "on" : "off"}, yolo=${state.autoApproveTools ? "on" : "off"}, muted=${state.threadMuted ? "true" : "false"}`,
+		`当前状态: tools=${state.enableTools ? "on" : "off"}, yolo=${state.autoApproveTools ? "on" : "off"}, muted=${state.threadMuted ? "true" : "false"}`,
 		state.toolsLocked
-			? "Tool controls are locked because this connector was started with --no-tools."
+			? "工具控制已被锁定，因为此连接器以 --no-tools 启动。"
 			: undefined,
-		"Send normal text to ask a question or assign a task.",
-		"When tools are on, I can inspect files, edit code, run commands/tests, and help prepare PRs.",
+		"发送普通文本以提问或分配任务。",
+		"当工具开启时，我可以检查文件、编辑代码、运行命令/测试，并帮助准备 PR。",
 	]
 		.filter((line): line is string => line !== undefined)
 		.join("\n");
@@ -317,7 +317,7 @@ function createDefaultChatCommandHost(): ChatCommandHost {
 			isAvailable: (context) => typeof context.reset === "function",
 			run: async (_parsed, context) => {
 				await context.reset?.();
-				await context.reply("Started a fresh session.");
+				await context.reply("已开始新会话。");
 			},
 		})
 		.register("command", {
@@ -334,7 +334,7 @@ function createDefaultChatCommandHost(): ChatCommandHost {
 				const target = args.join(" ").trim() || undefined;
 				const reply = await context.mute?.({ target });
 				await context.reply(
-					reply ?? "Thread muted. I will ignore messages here until /unmute.",
+					reply ?? "线程已静音。在 /unmute 之前我会忽略这里的消息。",
 				);
 			},
 		})
@@ -344,14 +344,14 @@ function createDefaultChatCommandHost(): ChatCommandHost {
 			run: async ({ args }, context) => {
 				const target = args.join(" ").trim() || undefined;
 				const reply = await context.unmute?.({ target });
-				await context.reply(reply ?? "Thread unmuted.");
+				await context.reply(reply ?? "线程已取消静音。");
 			},
 		})
 		.register("command", {
 			names: ["/exit"],
 			isAvailable: (context) => typeof context.stop === "function",
 			run: async (_parsed, context) => {
-				await context.reply("Stopping session.");
+				await context.reply("正在停止会话。");
 				await context.stop?.();
 			},
 		})
@@ -410,7 +410,7 @@ function createDefaultChatCommandHost(): ChatCommandHost {
 				const nextCwd = resolve(state.cwd, rawPath);
 				const fileStat = await stat(nextCwd).catch(() => undefined);
 				if (!fileStat?.isDirectory()) {
-					await context.reply(`invalid directory: ${nextCwd}`);
+					await context.reply(`无效目录: ${nextCwd}`);
 					return;
 				}
 				const workspaceRoot = resolveWorkspaceRoot(nextCwd);
@@ -428,7 +428,7 @@ function createDefaultChatCommandHost(): ChatCommandHost {
 				const taskBody = args.join(" ").trim();
 				if (!taskBody) {
 					await context.reply(
-						"Usage: /team <task description>\nStarts a team of agents for the given task.",
+						"用法: /team <任务描述>\n为给定任务启动一个代理团队。",
 					);
 					return;
 				}
@@ -436,7 +436,7 @@ function createDefaultChatCommandHost(): ChatCommandHost {
 				// The interactive runtime handles input transformation and
 				// session-level enableTeams toggling before this host runs.
 				await context.reply(
-					"The /team command must be entered directly as a prompt, not via a chat command.",
+					"/team 命令必须直接作为提示输入，而不是通过聊天命令。",
 				);
 			},
 		})
@@ -451,18 +451,18 @@ function createDefaultChatCommandHost(): ChatCommandHost {
 					await context.reply(
 						error instanceof Error
 							? error.message
-							: "Fork failed: could not read messages from the current session.",
+							: "分叉失败: 无法从当前会话读取消息。",
 					);
 					return;
 				}
 				if (!result) {
 					await context.reply(
-						"Fork failed: could not read messages from the current session.",
+						"分叉失败: 无法从当前会话读取消息。",
 					);
 					return;
 				}
 				await context.reply(
-					`Forked session ${result.forkedFromSessionId} into new session ${result.newSessionId}. This is now the active session. Use /history to switch sessions.`,
+					`已将会话 ${result.forkedFromSessionId} 分叉到新会话 ${result.newSessionId}。这现在是活动会话。使用 /history 切换会话。`,
 				);
 			},
 		})
@@ -470,7 +470,7 @@ function createDefaultChatCommandHost(): ChatCommandHost {
 			names: ["/schedule"],
 			run: async ({ args }, context) => {
 				if (!context.schedule) {
-					await context.reply("Scheduling is not available in this chat.");
+					await context.reply("此聊天中不支持计划任务。");
 					return;
 				}
 				const subcommand = args[0]?.trim().toLowerCase();
@@ -480,7 +480,7 @@ function createDefaultChatCommandHost(): ChatCommandHost {
 				}
 				if (subcommand === "list") {
 					if (!context.schedule.list) {
-						await context.reply("Schedule listing is not available here.");
+						await context.reply("此处不支持计划任务列表。");
 						return;
 					}
 					await context.reply(await context.schedule.list());
@@ -493,7 +493,7 @@ function createDefaultChatCommandHost(): ChatCommandHost {
 						return;
 					}
 					if (!context.schedule.trigger) {
-						await context.reply("Schedule triggering is not available here.");
+						await context.reply("此处不支持计划任务触发。");
 						return;
 					}
 					await context.reply(await context.schedule.trigger(scheduleId));
@@ -506,7 +506,7 @@ function createDefaultChatCommandHost(): ChatCommandHost {
 						return;
 					}
 					if (!context.schedule.delete) {
-						await context.reply("Schedule deletion is not available here.");
+						await context.reply("此处不支持计划任务删除。");
 						return;
 					}
 					await context.reply(await context.schedule.delete(scheduleId));
@@ -514,7 +514,7 @@ function createDefaultChatCommandHost(): ChatCommandHost {
 				}
 				if (subcommand === "create") {
 					if (!context.schedule.create) {
-						await context.reply("Schedule creation is not available here.");
+						await context.reply("此处不支持计划任务创建。");
 						return;
 					}
 					const parsed = parseFlagValues(tokenizeArgs(args.slice(1).join(" ")));

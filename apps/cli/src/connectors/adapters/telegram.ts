@@ -95,7 +95,7 @@ function normalizeAllowedTelegramUserId(value: string): string {
 	const userId = value.trim();
 	if (!/^\d+$/.test(userId)) {
 		throw new Error(
-			"connect telegram --allowed-user-id must contain digits only",
+			"connect telegram --allowed-user-id 只能包含数字",
 		);
 	}
 	return userId;
@@ -112,8 +112,8 @@ function describeTelegramGetMeFailure(
 ): string {
 	const detail = parsed?.description || body.trim().slice(0, 240);
 	return detail
-		? `Telegram getMe failed (${response.status} ${response.statusText}): ${detail}`
-		: `Telegram getMe failed (${response.status} ${response.statusText})`;
+		? `Telegram getMe 失败（${response.status} ${response.statusText}）：${detail}`
+		: `Telegram getMe 失败（${response.status} ${response.statusText}）`;
 }
 
 async function readTelegramGetMeResponse(
@@ -142,7 +142,7 @@ async function fetchTelegramBotUsername(
 	const username = normalizeTelegramBotUsername(payload.result?.username ?? "");
 	if (!username) {
 		throw new Error(
-			"Telegram getMe did not return a bot username; pass --bot-username explicitly",
+			"Telegram getMe 未返回机器人用户名；请显式传入 --bot-username",
 		);
 	}
 	return username;
@@ -362,7 +362,7 @@ async function deliverScheduledResult(input: {
 	const deliveryThreadId = match?.key || threadId;
 	if (!binding?.serializedThread) {
 		input.logger.core.log(
-			"Scheduled Telegram delivery skipped: missing thread binding",
+			"计划中的 Telegram 投递已跳过：缺少线程绑定",
 			{
 				severity: "warn",
 				transport: "telegram",
@@ -400,13 +400,13 @@ async function deliverScheduledResult(input: {
 		const text = await readSessionReplyText(input.client, input.sessionId);
 		body = text?.trim()
 			? text
-			: `Schedule "${schedule?.name ?? input.scheduleId}" completed, but no assistant reply text was found.`;
+			: `计划“${schedule?.name ?? input.scheduleId}”已完成，但未找到助手回复文本。`;
 	} else {
-		body = `Schedule "${schedule?.name ?? input.scheduleId}" ${input.status}.${input.errorMessage ? `\n\n${input.errorMessage}` : ""}`;
+		body = `计划“${schedule?.name ?? input.scheduleId}”${input.status}。${input.errorMessage ? `\n\n${input.errorMessage}` : ""}`;
 	}
 	try {
 		await thread.post({ raw: body.trim() ? body : " " });
-		input.logger.core.log("Scheduled Telegram delivery sent", {
+		input.logger.core.log("计划中的 Telegram 投递已发送", {
 			transport: "telegram",
 			threadId: deliveryThreadId,
 			scheduleId: input.scheduleId,
@@ -432,7 +432,7 @@ async function deliverScheduledResult(input: {
 			input.logger,
 		);
 	} catch (error) {
-		input.logger.core.error?.("Scheduled Telegram delivery failed", {
+		input.logger.core.error?.("计划中的 Telegram 投递失败", {
 			transport: "telegram",
 			threadId: deliveryThreadId,
 			scheduleId: input.scheduleId,
@@ -463,7 +463,7 @@ class TelegramConnector extends ConnectorBase<
 	TelegramConnectorState
 > {
 	constructor() {
-		super("telegram", "Bridge Telegram bot messages into RPC chat sessions");
+		super("telegram", "将 Telegram 机器人消息桥接进 RPC 聊天会话");
 	}
 
 	protected override createCommand(): Command {
@@ -473,31 +473,31 @@ class TelegramConnector extends ConnectorBase<
 				.usage("-k <TELEGRAM_BOT_TOKEN> [options]")
 				.option(
 					"-m, --bot-username <name>",
-					"Telegram bot username; fetched from token if omitted",
+					"Telegram 机器人用户名；省略时从令牌获取",
 				)
-				.option("-k, --bot-token <token>", "Telegram bot token")
-				.option("--provider <id>", "Provider override")
-				.option("--model <id>", "Model override")
-				.option("--api-key <key>", "Provider API key override")
-				.option("--system <prompt>", "System prompt override")
-				.option("--cwd <path>", "Workspace / cwd for runtime")
-				.option("--mode <act|plan>", "Agent mode", "act")
-				.option("-i, --interactive", "Keep connector in foreground")
-				.option("--no-tools", "Disable tools for Telegram sessions")
+				.option("-k, --bot-token <token>", "Telegram 机器人令牌")
+				.option("--provider <id>", "覆盖提供商")
+				.option("--model <id>", "覆盖模型")
+				.option("--api-key <key>", "覆盖提供商 API 密钥")
+				.option("--system <prompt>", "覆盖系统提示词")
+				.option("--cwd <path>", "运行时的工作区 / cwd")
+				.option("--mode <act|plan>", "代理模式", "act")
+				.option("-i, --interactive", "在前台运行连接器")
+				.option("--no-tools", "为 Telegram 会话禁用工具")
 				// Retained so existing invocations and persisted autostart arguments
 				// keep parsing; tools are on unless --no-tools is passed.
-				.option("--enable-tools", "Enable tools (default)")
+				.option("--enable-tools", "启用工具（默认）")
 				.option(
 					"--allowed-user-id <id>",
-					"Only allow this Telegram user ID to use the bot",
+					"仅允许此 Telegram 用户 ID 使用机器人",
 				)
 				.option(
 					"--hook-command <command>",
-					"Run a shell command for connector events",
+					"为连接器事件运行 shell 命令",
 				)
 				.option(
 					"--rpc-address <host:port>",
-					"RPC address",
+					"RPC 地址",
 					process.env.CLINE_RPC_ADDRESS?.trim() ||
 						resolveDefaultCliRpcAddress(),
 				)
@@ -505,12 +505,12 @@ class TelegramConnector extends ConnectorBase<
 					"after",
 					[
 						"",
-						"Notes:",
-						"  - Without -i, the connector is launched in the background.",
-						"  - Tools are enabled by default for Telegram sessions.",
-						"  - Use --allowed-user-id or `cline connect` to restrict Telegram access.",
-						"  - Bot username is discovered from the Telegram bot token when omitted.",
-						"  - Provider/model default to the CLI's last-used provider settings.",
+						"说明：",
+						"  - 不带 -i 时，连接器将在后台启动。",
+						"  - Telegram 会话默认启用工具。",
+						"  - 使用 --allowed-user-id 或 `cline connect` 来限制 Telegram 访问。",
+						"  - 省略时通过 Telegram 机器人令牌发现机器人用户名。",
+						"  - 提供商/模型默认使用 CLI 上次使用的提供商设置。",
 					].join("\n"),
 				)
 		);
@@ -540,7 +540,7 @@ class TelegramConnector extends ConnectorBase<
 		const botToken =
 			opts.botToken?.trim() || process.env.TELEGRAM_BOT_TOKEN?.trim();
 		if (!botToken) {
-			throw new Error("connect telegram requires -k/--bot-token <token>");
+			throw new Error("connect telegram 需要 -k/--bot-token <token>");
 		}
 		const hookCommand =
 			opts.hookCommand?.trim() ||
@@ -548,7 +548,7 @@ class TelegramConnector extends ConnectorBase<
 		const allowedUserId = opts.allowedUserId?.trim();
 		if (hookCommand && allowedUserId) {
 			throw new Error(
-				"connect telegram accepts either --allowed-user-id or --hook-command, not both",
+				"connect telegram 只能传入 --allowed-user-id 或 --hook-command 之一，不能同时传入",
 			);
 		}
 		return {
@@ -641,7 +641,7 @@ class TelegramConnector extends ConnectorBase<
 			statePath,
 			readState: (path) => this.readConnectorState(path),
 			describeStoppedProcess: (state) =>
-				`[telegram] stopped pid=${state.pid} bot=@${state.botUsername}`,
+				`[telegram] 已停止 pid=${state.pid} bot=@${state.botUsername}`,
 			getPid: (state) => state.pid,
 			stopSessions: stopSessionsForBot,
 			clearBindings: (state) => {
@@ -714,7 +714,7 @@ class TelegramConnector extends ConnectorBase<
 			);
 			if (runningState) {
 				io.writeln(
-					`[telegram] connector already running pid=${runningState.pid} rpc=${runningState.rpcAddress}`,
+					`[telegram] 连接器已在运行 pid=${runningState.pid} rpc=${runningState.rpcAddress}`,
 				);
 				return CONNECT_ALREADY_RUNNING_EXIT_CODE;
 			}
@@ -754,12 +754,12 @@ class TelegramConnector extends ConnectorBase<
 			readState: (path) => this.readConnectorState(path),
 			isRunning: (state) => isProcessRunning(state.pid),
 			formatAlreadyRunningMessage: (state) =>
-				`[telegram] connector already running pid=${state.pid} rpc=${state.rpcAddress}`,
+				`[telegram] 连接器已在运行 pid=${state.pid} rpc=${state.rpcAddress}`,
 			formatBackgroundStartMessage: (pid) =>
-				`[telegram] starting background connector pid=${pid} bot=@${options.botUsername}`,
+				`[telegram] 正在后台启动连接器 pid=${pid} bot=@${options.botUsername}`,
 			foregroundHint:
-				"[telegram] use `cline connect telegram -i ...` to run in the foreground",
-			launchFailureMessage: "failed to launch Telegram connector in background",
+				"[telegram] 使用 `cline connect telegram -i ...` 在前台运行",
+			launchFailureMessage: "无法在后台启动 Telegram 连接器",
 		});
 		if (backgroundExitCode !== undefined) {
 			return backgroundExitCode;
@@ -820,7 +820,7 @@ class TelegramConnector extends ConnectorBase<
 			authToken: rpcAuthToken,
 			clientId,
 			clientType: "cli",
-			displayName: "telegram connector",
+			displayName: "Telegram 连接器",
 			workspaceRoot: startRequest.workspaceRoot || startRequest.cwd,
 			cwd: startRequest.cwd,
 			metadata: {
@@ -836,7 +836,7 @@ class TelegramConnector extends ConnectorBase<
 			rpcAddress,
 			startedAt: new Date().toISOString(),
 		});
-		loggerAdapter.core.log("Telegram connector started", {
+		loggerAdapter.core.log("Telegram 连接器已启动", {
 			transport: "telegram",
 			botUserName: options.botUsername,
 			pid: process.pid,
@@ -870,7 +870,7 @@ class TelegramConnector extends ConnectorBase<
 				return;
 			}
 			stopping = true;
-			loggerAdapter.core.log("Telegram connector stopping", {
+			loggerAdapter.core.log("Telegram 连接器正在停止", {
 				severity: "warn",
 				transport: "telegram",
 				reason,
@@ -935,12 +935,12 @@ class TelegramConnector extends ConnectorBase<
 								? { telegramParticipantLabel: currentState.participantLabel }
 								: {}),
 						}),
-						reusedLogMessage: "Telegram thread reusing RPC session",
-						startedLogMessage: "Telegram thread started RPC session",
-						messageReceivedLogMessage: "Telegram message received",
-						threadResetLogMessage: "Telegram thread reset",
+						reusedLogMessage: "Telegram 线程重用 RPC 会话",
+						startedLogMessage: "Telegram 线程已启动 RPC 会话",
+						messageReceivedLogMessage: "已收到 Telegram 消息",
+						threadResetLogMessage: "Telegram 线程已重置",
 						connectorStopLogMessage:
-							"Telegram connector stop requested from chat",
+							"已从聊天中请求停止 Telegram 连接器",
 						onMessageReceived: async (details) => {
 							await dispatchConnectorHook(
 								options.hookCommand,
@@ -955,7 +955,7 @@ class TelegramConnector extends ConnectorBase<
 							);
 						},
 						onReplyCompleted: async (result) => {
-							loggerAdapter.core.log("Telegram reply completed", {
+							loggerAdapter.core.log("Telegram 回复已完成", {
 								transport: "telegram",
 								threadId: result.threadId,
 								sessionId: result.sessionId,
@@ -984,7 +984,7 @@ class TelegramConnector extends ConnectorBase<
 							);
 						},
 						onReplyFailed: async (details) => {
-							loggerAdapter.core.error?.("Telegram reply failed", {
+							loggerAdapter.core.error?.("Telegram 回复失败", {
 								transport: "telegram",
 								threadId: details.threadId,
 								sessionId: details.sessionId,
@@ -1010,12 +1010,12 @@ class TelegramConnector extends ConnectorBase<
 				} catch (error) {
 					const message =
 						error instanceof Error ? error.message : String(error);
-					loggerAdapter.core.error?.("Telegram turn handling failed", {
+					loggerAdapter.core.error?.("Telegram 轮次处理失败", {
 						transport: "telegram",
 						threadId: thread.id,
 						error,
 					});
-					await thread.post({ raw: `Telegram bridge error: ${message}` });
+					await thread.post({ raw: `Telegram 桥接错误：${message}` });
 				}
 			};
 			if (activeTurns.has(queueKey)) {
@@ -1041,7 +1041,7 @@ class TelegramConnector extends ConnectorBase<
 					client,
 					clientId,
 					pendingApprovals,
-					deniedReason: "Denied by Telegram user",
+					deniedReason: "Telegram 用户拒绝",
 					transport: "telegram",
 				})
 			) {
@@ -1065,7 +1065,7 @@ class TelegramConnector extends ConnectorBase<
 					client,
 					clientId,
 					pendingApprovals,
-					deniedReason: "Denied by Telegram user",
+					deniedReason: "Telegram 用户拒绝",
 					transport: "telegram",
 				})
 			) {
@@ -1103,7 +1103,7 @@ class TelegramConnector extends ConnectorBase<
 				onEvent: (event) => {
 					if (event.eventType === "rpc.server.shutting_down") {
 						loggerAdapter.core.log(
-							"Telegram connector stopping because the RPC server is shutting down",
+							"由于 RPC 服务器正在关闭，Telegram 连接器正在停止",
 							{
 								severity: "warn",
 								transport: "telegram",
@@ -1158,7 +1158,7 @@ class TelegramConnector extends ConnectorBase<
 				},
 				onError: (error) => {
 					loggerAdapter.core.log(
-						"Telegram connector server event stream failed",
+						"Telegram 连接器服务器事件流失败",
 						{
 							severity: "warn",
 							transport: "telegram",
@@ -1170,21 +1170,21 @@ class TelegramConnector extends ConnectorBase<
 			},
 		);
 
-		consoleLogger.info("Telegram connector ready", {
+		consoleLogger.info("Telegram 连接器已就绪", {
 			rpcAddress,
 			mode: telegram.runtimeMode,
 		});
 		io.writeln(
-			`[telegram] connected as @${options.botUsername} mode=${telegram.runtimeMode} rpc=${rpcAddress} provider=${startRequest.provider} model=${startRequest.model} tools=${startRequest.enableTools ? "on" : "off"}`,
+			`[telegram] 已连接为 @${options.botUsername} mode=${telegram.runtimeMode} rpc=${rpcAddress} provider=${startRequest.provider} model=${startRequest.model} tools=${startRequest.enableTools ? "on" : "off"}`,
 		);
-		io.writeln("[telegram] send /clear in a chat to start a fresh RPC session");
+		io.writeln("[telegram] 在聊天中发送 /clear 以启动新的 RPC 会话");
 		io.writeln(
-			"[telegram] send /whereami in a chat to get its delivery thread id",
+			"[telegram] 在聊天中发送 /whereami 以获取其投递线程 ID",
 		);
 		io.writeln(
-			"[telegram] use /tools, /yolo, or /cwd <path> to update runtime settings",
+			"[telegram] 使用 /tools、/yolo 或 /cwd <path> 更新运行时设置",
 		);
-		io.writeln("[telegram] send /exit in a chat or press Ctrl+C to stop");
+		io.writeln("[telegram] 在聊天中发送 /exit 或按 Ctrl+C 停止");
 
 		const shutdown = () => {
 			process.off("SIGINT", shutdown);
@@ -1215,7 +1215,7 @@ class TelegramConnector extends ConnectorBase<
 		await bot.shutdown().catch(() => undefined);
 		client.close();
 		this.removeStateFile(statePath);
-		loggerAdapter.core.log("Telegram connector stopped", {
+		loggerAdapter.core.log("Telegram 连接器已停止", {
 			transport: "telegram",
 			pid: process.pid,
 		});

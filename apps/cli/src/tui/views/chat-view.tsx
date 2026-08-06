@@ -78,7 +78,7 @@ export function ChatView(props: {
 	const inputForeground = getModeInputForeground(session.uiMode, terminalBg);
 	const inputPlaceholder = getModeInputPlaceholder(session.uiMode, terminalBg);
 	const placeholder =
-		session.uiMode === "plan" ? "Plan something..." : "Ask anything...";
+		session.uiMode === "plan" ? "计划些什么..." : "随便问些什么...";
 	const modelDisplayName = resolveModelDisplayName(config);
 	const maxInputTokens = resolveModelMaxInputTokens(config);
 	const runtimeInteraction = props.runtimeInteraction ?? null;

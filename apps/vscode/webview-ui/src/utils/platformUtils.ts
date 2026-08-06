@@ -1,4 +1,4 @@
-export const unknown = "Unknown"
+export const unknown = "未知"
 
 const platforms = {
 	windows: /win32/,

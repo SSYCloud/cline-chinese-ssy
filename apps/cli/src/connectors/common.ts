@@ -282,7 +282,7 @@ export function spawnDetachedConnector(
 				runtime: "cli",
 				component: options?.component ?? "connectors",
 			});
-			logger.core.error?.("Unable to resolve detached connector command", {
+			logger.core.error?.("无法解析分离的连接器命令", {
 				commandPrefixArgs,
 				rawArgs,
 				childEnvKey,
@@ -331,7 +331,7 @@ export function spawnDetachedConnector(
 				runtime: "cli",
 				component: options?.component ?? "connectors",
 			});
-			logger.core.error?.("Failed to spawn detached connector", {
+			logger.core.error?.("生成分离的连接器失败", {
 				error,
 				command: [command.launcher, ...command.childArgs].join(" "),
 				commandArgs: command.childArgs,

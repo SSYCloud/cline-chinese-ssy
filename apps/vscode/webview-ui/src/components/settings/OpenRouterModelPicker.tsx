@@ -252,7 +252,7 @@ const OpenRouterModelPicker: React.FC<OpenRouterModelPickerProps> = ({ isPopup, 
 			</style>
 			<div style={{ display: "flex", flexDirection: "column" }}>
 				<label htmlFor="model-search">
-					<span style={{ fontWeight: 500 }}>Model</span>
+					<span style={{ fontWeight: 500 }}>模型</span>
 				</label>
 
 				<DropdownWrapper ref={dropdownRef}>
@@ -269,7 +269,7 @@ const OpenRouterModelPicker: React.FC<OpenRouterModelPickerProps> = ({ isPopup, 
 							setIsDropdownVisible(true)
 						}}
 						onKeyDown={handleKeyDown}
-						placeholder="Search and select a model..."
+						placeholder="搜索并选择模型..."
 						role="combobox"
 						style={{
 							width: "100%",
@@ -279,7 +279,7 @@ const OpenRouterModelPicker: React.FC<OpenRouterModelPickerProps> = ({ isPopup, 
 						value={searchTerm}>
 						{searchTerm && (
 							<div
-								aria-label="Clear search"
+								aria-label="清除搜索"
 								className="input-icon-button codicon codicon-close"
 								onClick={() => {
 									setSearchTerm("")
@@ -338,10 +338,10 @@ const OpenRouterModelPicker: React.FC<OpenRouterModelPickerProps> = ({ isPopup, 
 							defaultEffort={showAdaptiveThinkingEffort ? adaptiveThinkingDefaultEffort : "none"}
 							description={
 								showAdaptiveThinkingEffort
-									? "Use None to disable adaptive thinking. Higher effort increases response detail and token usage."
-									: "Use None to disable extended thinking. Higher effort improves depth, but uses more tokens."
+									? "选择“无”可禁用自适应思考。更高的努力程度会增加响应细节和 token 消耗。"
+									: "选择“无”可禁用扩展思考。更高的努力程度会提升思考深度，但会消耗更多 tokens。"
 							}
-							label={showAdaptiveThinkingEffort ? "Adaptive Thinking" : undefined}
+							label={showAdaptiveThinkingEffort ? "自适应思考" : undefined}
 							onEffortChange={handleReasoningEffortChange}
 						/>
 					)}
@@ -362,12 +362,12 @@ const OpenRouterModelPicker: React.FC<OpenRouterModelPickerProps> = ({ isPopup, 
 						marginTop: 0,
 						color: "var(--vscode-descriptionForeground)",
 					}}>
-					The extension automatically fetches the latest list of models available on{" "}
+					扩展会自动获取{" "}
 					<VSCodeLink href="https://openrouter.ai/models" style={{ display: "inline", fontSize: "inherit" }}>
-						OpenRouter.
+						OpenRouter
 					</VSCodeLink>
-					If you're unsure which model to choose, compare available models by context window, pricing, and capabilities.
-					You can also try searching "free" for no-cost options currently available.
+					上可用的最新模型列表。如果你不确定选择哪个模型，可以按上下文窗口、定价和能力比较可用模型。你还可以尝试搜索
+					"free" 以查看当前可用的免费选项。
 				</p>
 			)}
 		</div>

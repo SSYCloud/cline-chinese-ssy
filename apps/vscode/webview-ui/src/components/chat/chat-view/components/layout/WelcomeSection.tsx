@@ -276,12 +276,11 @@ export const WelcomeSection: React.FC<WelcomeSectionProps> = ({
 											onClick={() => setShowCreateWorktreeModal(true)}
 											type="button">
 											<span className="codicon codicon-empty-window"></span>
-											New Worktree Window
+											新 Worktree 窗口
 										</button>
 									</TooltipTrigger>
 									<TooltipContent side="top">
-										Create a new git worktree and open it in a separate window. Great for running parallel
-										Cline tasks.
+										创建新的 git worktree 并在单独窗口中打开。非常适合并行运行 Cline 任务。
 									</TooltipContent>
 								</Tooltip>
 								*/}

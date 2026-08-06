@@ -23,11 +23,11 @@ export const THINKING_LEVELS: {
 	label: string;
 	desc: string;
 }[] = [
-	{ value: "none", label: "Off", desc: "No extended thinking" },
-	{ value: "low", label: "Low", desc: "Minimal reasoning" },
-	{ value: "medium", label: "Medium", desc: "Balanced reasoning" },
-	{ value: "high", label: "High", desc: "Deep reasoning" },
-	{ value: "xhigh", label: "Extra High", desc: "Maximum reasoning" },
+	{ value: "none", label: "关闭", desc: "无扩展思考" },
+	{ value: "low", label: "低", desc: "最少推理" },
+	{ value: "medium", label: "中", desc: "平衡推理" },
+	{ value: "high", label: "高", desc: "深度推理" },
+	{ value: "xhigh", label: "极高", desc: "最大推理" },
 ];
 
 export const DEFAULT_THINKING_LEVEL_INDEX = THINKING_LEVELS.findIndex(
@@ -54,27 +54,27 @@ export interface ClinePassSubscriptionOption {
 
 export const MAIN_MENU: MenuOption[] = [
 	{
-		label: "Sign in with Cline",
+		label: "\u4f7f\u7528 Cline \u767b\u5f55",
 		value: "cline",
-		detail: "Latest models with regular free promos",
+		detail: "\u6700\u65b0\u6a21\u578b\uff0c\u5b9a\u671f\u514d\u8d39\u4fc3\u9500",
 		icon: "\u263a",
 	},
 	{
-		label: "Sign in with ClinePass",
+		label: "\u4f7f\u7528 ClinePass \u767b\u5f55",
 		value: "cline-pass",
-		detail: "Low cost subscription for everyone",
+		detail: "\u9762\u5411\u6240\u6709\u4eba\u7684\u4f4e\u6210\u672c\u8ba2\u9605",
 		icon: "\u2726",
 	},
 	{
-		label: "Sign in with ChatGPT",
+		label: "\u4f7f\u7528 ChatGPT \u767b\u5f55",
 		value: "openai-codex",
-		detail: "Use your ChatGPT Plus subscription",
+		detail: "\u4f7f\u7528\u4f60\u7684 ChatGPT Plus \u8ba2\u9605",
 		icon: "\u2726",
 	},
 	{
-		label: "Bring your own provider",
+		label: "\u81ea\u5e26\u63d0\u4f9b\u5546",
 		value: "byo",
-		detail: "API key or local server (e.g. Ollama)",
+		detail: "API \u5bc6\u94a5\u6216\u672c\u5730\u670d\u52a1\u5668\uff08\u4f8b\u5982 Ollama\uff09",
 		icon: "\u26b7",
 	},
 ];
@@ -90,19 +90,19 @@ export function getMainMenuOptions(options?: {
 export const CLINE_PASS_SUBSCRIPTION_OPTIONS: ClinePassSubscriptionOption[] = [
 	{
 		value: "subscribe",
-		label: "Subscribe to ClinePass",
+		label: "订阅 ClinePass",
 	},
 	{
 		value: "refresh",
-		label: "Re-check subscription status",
+		label: "重新检查订阅状态",
 	},
 	{
 		value: "skip",
-		label: "Skip for now",
+		label: "暂时跳过",
 	},
 	{
 		value: "back",
-		label: "Go back",
+		label: "返回",
 	},
 ];
 

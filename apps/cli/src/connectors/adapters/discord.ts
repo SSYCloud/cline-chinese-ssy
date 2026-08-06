@@ -73,11 +73,11 @@ import {
 const DISCORD_SYSTEM_RULES = getConnectorSystemRules(
 	"Discord",
 	[
-		"You can respond in Discord threads, channels, and DMs, and you can use tools according to the user's requests and your capabilities.",
-		"When asked to mention a Discord user or bot by name, write the mention as @display-name or @username. The connector resolves unique guild names to Discord mention IDs before sending. Do not ask the user for a Discord ID unless the name cannot be resolved.",
-		"Discord subscribed thread messages may arrive even when they are not addressed to you. Check <discord_message_context>: when isDirectMention is false and the message is part of another user or bot conversation that does not require your action, reply exactly /idle and nothing else. The connector treats /idle as a private no-op and will not post it to Discord.",
-		"If this Discord thread is caught in a bot loop or the user wants the connector to stop processing this thread, tell them to send /mute@BotName in shared channels or /mute in DMs. Tell them to send /unmute@BotName in shared channels or /unmute in DMs when they want this connector to resume processing the thread.",
-		"If the user wants to mute only one Discord user or bot in the current thread, tell them to send /mute@BotName @user-or-bot in shared channels or /mute @user-or-bot in DMs. Tell them to send /unmute@BotName @user-or-bot in shared channels or /unmute @user-or-bot in DMs to resume processing that participant.",
+		"你可以在 Discord 线程、频道和私信中回复，并且可以根据用户的请求和你的能力使用工具。",
+		"当被要求按名称提及某个 Discord 用户或机器人时，请将提及写为 @display-name 或 @username。连接器会在发送前将唯一的服务器名称解析为 Discord 提及 ID。除非名称无法解析，否则不要向用户索要 Discord ID。",
+		"即使消息并非针对你，Discord 订阅线程的消息也可能到达。请检查 <discord_message_context>：当 isDirectMention 为 false 且消息属于不需要你参与的其他用户或机器人对话时，请仅回复 /idle，不要回复其他内容。连接器会将 /idle 视为私有空操作，不会将其发布到 Discord。",
+		"如果此 Discord 线程陷入机器人循环，或用户希望连接器停止处理此线程，请告诉他们：在共享频道中发送 /mute@BotName，或在私信中发送 /mute。当用户希望连接器恢复处理此线程时，请告诉他们在共享频道中发送 /unmute@BotName，或在私信中发送 /unmute。",
+		"如果用户只想在当前线程中屏蔽单个 Discord 用户或机器人，请告诉他们在共享频道中发送 /mute@BotName @user-or-bot，或在私信中发送 /mute @user-or-bot。要恢复处理该参与者，请告诉他们在共享频道中发送 /unmute@BotName @user-or-bot，或在私信中发送 /unmute @user-or-bot。",
 	].join("\n"),
 );
 
@@ -407,7 +407,7 @@ async function logDiscordForwardedGatewayMessage(input: {
 				.filter(Boolean)
 		: [];
 	const mentionRoleIds = readStringArray(data?.mention_roles);
-	input.logger.info("Discord forwarded Gateway message received", {
+	input.logger.info("收到 Discord 转发的 Gateway 消息", {
 		channelId: readIdentifier(data?.channel_id),
 		guildId: readIdentifier(data?.guild_id) ?? null,
 		authorId: readIdentifier(author?.id),
@@ -438,7 +438,7 @@ async function fetchDiscordJson(input: {
 		...(input.body ? { body: JSON.stringify(input.body) } : {}),
 	});
 	if (!response.ok) {
-		throw new Error(`Discord API ${response.status}: ${await response.text()}`);
+		throw new Error(`Discord API ${response.status}：${await response.text()}`);
 	}
 	return response.json();
 }
@@ -668,9 +668,9 @@ async function deliverScheduledResult(input: {
 		const text = await readSessionReplyText(input.client, input.sessionId);
 		body = text?.trim()
 			? text
-			: `Schedule "${schedule?.name ?? input.scheduleId}" completed, but no assistant reply text was found.`;
+			: `计划 "${schedule?.name ?? input.scheduleId}" 已完成，但未找到助手回复文本。`;
 	} else {
-		body = `Schedule "${schedule?.name ?? input.scheduleId}" ${input.status}.${input.errorMessage ? `\n\n${input.errorMessage}` : ""}`;
+		body = `计划 "${schedule?.name ?? input.scheduleId}" ${input.status}。${input.errorMessage ? `\n\n${input.errorMessage}` : ""}`;
 	}
 	await thread.post(body);
 }
@@ -708,7 +708,7 @@ async function restoreDiscordThreadSubscriptions(input: {
 			await thread.subscribe();
 			restoredThreadIds.add(thread.id);
 		} catch (error) {
-			input.logger.core.log("Failed to restore Discord thread subscription", {
+			input.logger.core.log("恢复 Discord 线程订阅失败", {
 				severity: "warn",
 				error: error instanceof Error ? error.message : String(error),
 				channelId: binding.channelId,
@@ -726,7 +726,7 @@ class DiscordConnector extends ConnectorBase<
 	constructor() {
 		super(
 			"discord",
-			"Discord interactions and gateway bridge backed by RPC runtime sessions",
+			"由 RPC 运行时会话支持的 Discord 交互与网关桥接",
 		);
 	}
 
@@ -735,62 +735,62 @@ class DiscordConnector extends ConnectorBase<
 			super
 				.createCommand()
 				.usage("--base-url <PUBLIC_BASE_URL> [options]")
-				.option("--user-name <name>", "Discord bot username label")
-				.option("--application-id <id>", "Discord application id")
-				.option("--app-id <id>", "Alias for --application-id")
-				.option("--bot-token <token>", "Discord bot token")
-				.option("--token <token>", "Alias for --bot-token")
-				.option("--public-key <key>", "Discord application public key")
+				.option("--user-name <name>", "Discord 机器人用户名标签")
+				.option("--application-id <id>", "Discord 应用 ID")
+				.option("--app-id <id>", "--application-id 的别名")
+				.option("--bot-token <token>", "Discord 机器人令牌")
+				.option("--token <token>", "--bot-token 的别名")
+				.option("--public-key <key>", "Discord 应用公钥")
 				.option(
 					"--owner-user-id <id>",
-					"Discord user id that should be marked as connector owner",
+					"应标记为连接器所有者的 Discord 用户 ID",
 				)
 				.option(
 					"--ignore-bot-authors",
-					"Ignore messages from other Discord bots",
+					"忽略来自其他 Discord 机器人的消息",
 				)
 				.option(
 					"--mention-role-ids <ids>",
-					"Comma-separated role IDs that should trigger mention handlers",
+					"应触发提及处理程序的逗号分隔的角色 ID",
 				)
-				.option("--provider <id>", "Provider override")
-				.option("--model <id>", "Model override")
-				.option("--api-key <key>", "Provider API key override")
-				.option("--system <prompt>", "System prompt override")
-				.option("--cwd <path>", "Workspace / cwd for runtime")
-				.option("--mode <act|plan>", "Agent mode", "act")
-				.option("-i, --interactive", "Keep connector in foreground")
-				.option("--no-tools", "Disable tools for Discord sessions")
-				// Retained so existing invocations and persisted autostart arguments
-				// keep parsing; tools are on unless --no-tools is passed.
-				.option("--enable-tools", "Enable tools (default)")
+				.option("--provider <id>", "覆盖提供商")
+				.option("--model <id>", "覆盖模型")
+				.option("--api-key <key>", "覆盖提供商 API 密钥")
+				.option("--system <prompt>", "覆盖系统提示词")
+				.option("--cwd <path>", "运行时的工作区 / 工作目录")
+				.option("--mode <act|plan>", "代理模式", "act")
+				.option("-i, --interactive", "保持连接器在前台运行")
+				.option("--no-tools", "为 Discord 会话禁用工具")
+				// 保留这些选项是为了让现有的调用和持久化的自动启动参数
+				// 继续解析；除非传入 --no-tools，否则默认启用工具。
+				.option("--enable-tools", "启用工具（默认）")
 				.option(
 					"--hook-command <command>",
-					"Run a shell command for connector events",
+					"为连接器事件运行 shell 命令",
 				)
 				.option(
 					"--rpc-address <host:port>",
-					"RPC address",
+					"RPC 地址",
 					process.env.CLINE_RPC_ADDRESS?.trim() ||
 						resolveDefaultCliRpcAddress(),
 				)
-				.option("--host <host>", "Webhook listen host")
-				.option("--port <port>", "Webhook listen port")
+				.option("--host <host>", "Webhook 监听主机")
+				.option("--port <port>", "Webhook 监听端口")
 				.option(
 					"--base-url <url>",
-					"Public base URL for Discord interactions webhook",
+					"Discord 交互 Webhook 的公共基础 URL",
 				)
 				.addHelpText(
 					"after",
 					[
 						"",
-						"Environment:",
-						"  DISCORD_APPLICATION_ID      Discord application id",
-						"  DISCORD_BOT_TOKEN           Discord bot token",
-						"  DISCORD_PUBLIC_KEY          Discord application public key",
-						"  DISCORD_OWNER_USER_ID       Optional connector owner user id",
-						"  DISCORD_IGNORE_BOT_AUTHORS  Set to 1 to ignore messages from other bots",
-						"  DISCORD_MENTION_ROLE_IDS    Optional comma-separated role ids",
+						"环境变量：",
+						"  DISCORD_APPLICATION_ID      Discord 应用 ID",
+						"  DISCORD_BOT_TOKEN           Discord 机器人令牌",
+						"  DISCORD_PUBLIC_KEY          Discord 应用公钥",
+						"  DISCORD_OWNER_USER_ID       可选的连接器所有者用户 ID",
+						"  DISCORD_IGNORE_BOT_AUTHORS  设为 1 以忽略来自其他机器人的消息",
+						"  DISCORD_MENTION_ROLE_IDS    可选的逗号分隔的角色 ID",
 					].join("\n"),
 				)
 		);
@@ -966,19 +966,19 @@ class DiscordConnector extends ConnectorBase<
 	): Promise<number> {
 		if (!options.applicationId) {
 			io.writeErr(
-				"connect discord requires --application-id <id> or DISCORD_APPLICATION_ID",
+				"connect discord 需要 --application-id <id> 或 DISCORD_APPLICATION_ID",
 			);
 			return 1;
 		}
 		if (!options.botToken) {
 			io.writeErr(
-				"connect discord requires --bot-token <token> or DISCORD_BOT_TOKEN",
+				"connect discord 需要 --bot-token <token> 或 DISCORD_BOT_TOKEN",
 			);
 			return 1;
 		}
 		if (!options.publicKey) {
 			io.writeErr(
-				"connect discord requires --public-key <key> or DISCORD_PUBLIC_KEY",
+				"connect discord 需要 --public-key <key> 或 DISCORD_PUBLIC_KEY",
 			);
 			return 1;
 		}
@@ -1017,12 +1017,12 @@ class DiscordConnector extends ConnectorBase<
 			readState: (path) => this.readConnectorState(path),
 			isRunning: (state) => isProcessRunning(state.pid),
 			formatAlreadyRunningMessage: (state) =>
-				`[discord] connector already running pid=${state.pid} rpc=${state.rpcAddress} url=${state.baseUrl}`,
+				`[discord] 连接器已在运行 pid=${state.pid} rpc=${state.rpcAddress} url=${state.baseUrl}`,
 			formatBackgroundStartMessage: (pid) =>
-				`[discord] starting background connector pid=${pid} application=${options.applicationId}`,
+				`[discord] 正在启动后台连接器 pid=${pid} application=${options.applicationId}`,
 			foregroundHint:
-				"[discord] use `cline connect discord -i ...` to run in the foreground",
-			launchFailureMessage: "failed to launch Discord connector in background",
+				"[discord] 使用 `cline connect discord -i ...` 在前台运行",
+			launchFailureMessage: "无法在后台启动 Discord 连接器",
 		});
 		if (backgroundExitCode !== undefined) {
 			return backgroundExitCode;
@@ -1192,8 +1192,8 @@ class DiscordConnector extends ConnectorBase<
 								? { discordParticipantLabel: currentState.participantLabel }
 								: {}),
 						}),
-						reusedLogMessage: "Discord thread reusing RPC session",
-						startedLogMessage: "Discord thread started RPC session",
+						reusedLogMessage: "Discord 线程正在复用 RPC 会话",
+						startedLogMessage: "Discord 线程已启动 RPC 会话",
 						postFinalReply: async ({
 							thread: replyThread,
 							text: replyText,
@@ -1271,7 +1271,7 @@ class DiscordConnector extends ConnectorBase<
 							firstSeen: now,
 							lastSeen: now,
 						});
-						await thread.post(`Discord bridge error: ${message}`);
+						await thread.post(`Discord 桥接错误：${message}`);
 					} else if (now - tracked.firstSeen > ERROR_WINDOW_MS) {
 						// Outside fixed window, reset counter
 						errorTracker.set(errorKey, {
@@ -1279,7 +1279,7 @@ class DiscordConnector extends ConnectorBase<
 							firstSeen: now,
 							lastSeen: now,
 						});
-						await thread.post(`Discord bridge error: ${message}`);
+						await thread.post(`Discord 桥接错误：${message}`);
 					} else {
 						// Within fixed window, increment counter
 						tracked.count++;
@@ -1288,7 +1288,7 @@ class DiscordConnector extends ConnectorBase<
 						if (tracked.count >= MAX_REPEATED_ERRORS) {
 							// Too many repeated errors in this thread, kill the connector
 							loggerAdapter.core.error?.(
-								"Discord connector stopping due to repeated errors",
+								"由于重复错误，Discord 连接器正在停止",
 								{
 									transport: "discord",
 									threadId: thread.id,
@@ -1298,12 +1298,12 @@ class DiscordConnector extends ConnectorBase<
 								},
 							);
 							await thread.post(
-								`Discord bridge error (repeated ${tracked.count} times in ${Math.round((now - tracked.firstSeen) / 1000)}s): ${message}\n\nConnector shutting down due to repeated errors.`,
+								`Discord 桥接错误（在 ${Math.round((now - tracked.firstSeen) / 1000)}s 内重复 ${tracked.count} 次）：${message}\n\n由于重复错误，连接器正在关闭。`,
 							);
 							requestStop("repeated_discord_errors");
 						} else {
 							// Still within threshold, post error
-							await thread.post(`Discord bridge error: ${message}`);
+							await thread.post(`Discord 桥接错误：${message}`);
 						}
 					}
 				}
@@ -1316,7 +1316,7 @@ class DiscordConnector extends ConnectorBase<
 		};
 
 		bot.onNewMention(async (thread, message) => {
-			loggerAdapter.core.log("Discord mention handler invoked", {
+			loggerAdapter.core.log("已调用 Discord 提及处理程序", {
 				transport: "discord",
 				threadId: thread.id,
 				channelId: thread.channelId,
@@ -1341,7 +1341,7 @@ class DiscordConnector extends ConnectorBase<
 					client,
 					clientId,
 					pendingApprovals,
-					deniedReason: "Denied by Discord user",
+					deniedReason: "被 Discord 用户拒绝",
 				})
 			) {
 				return;
@@ -1354,7 +1354,7 @@ class DiscordConnector extends ConnectorBase<
 		});
 
 		bot.onSubscribedMessage(async (thread, message) => {
-			loggerAdapter.core.log("Discord subscribed message handler invoked", {
+			loggerAdapter.core.log("已调用 Discord 订阅消息处理程序", {
 				transport: "discord",
 				threadId: thread.id,
 				channelId: thread.channelId,
@@ -1378,7 +1378,7 @@ class DiscordConnector extends ConnectorBase<
 					client,
 					clientId,
 					pendingApprovals,
-					deniedReason: "Denied by Discord user",
+					deniedReason: "被 Discord 用户拒绝",
 				})
 			) {
 				return;
@@ -1397,7 +1397,7 @@ class DiscordConnector extends ConnectorBase<
 			const displayName =
 				event.user.fullName || event.user.userName || event.user.userId;
 			const rootMessage = await event.channel.post(
-				`${displayName} invoked ${commandText}`,
+				`${displayName} 调用了 ${commandText}`,
 			);
 			const thread = new ThreadImpl<DiscordThreadState>({
 				adapterName: "discord",
@@ -1463,9 +1463,9 @@ class DiscordConnector extends ConnectorBase<
 				"/": () =>
 					new Response(
 						[
-							"Discord connector is running.",
-							`Interactions endpoint: ${webhookUrl}`,
-							`Gateway mode: ${options.allowBotAuthors ? "forwarded WebSocket listener" : "direct WebSocket listener"}`,
+							"Discord 连接器正在运行。",
+							`交互端点：${webhookUrl}`,
+							`网关模式：${options.allowBotAuthors ? "转发式 WebSocket 监听器" : "直接 WebSocket 监听器"}`,
 						].join("\n"),
 					),
 			},
@@ -1477,7 +1477,7 @@ class DiscordConnector extends ConnectorBase<
 			{
 				waitUntil: (task) => {
 					gatewayTask = Promise.resolve(task).catch((error) => {
-						loggerAdapter.core.error?.("Discord gateway listener failed", {
+						loggerAdapter.core.error?.("Discord 网关监听器失败", {
 							transport: "discord",
 							error: error instanceof Error ? error.message : String(error),
 						});
@@ -1496,7 +1496,7 @@ class DiscordConnector extends ConnectorBase<
 			client.close();
 			this.removeStateFile(statePath);
 			io.writeErr(
-				`failed to start Discord gateway listener: ${await gatewayStartResponse.text()}`,
+				`启动 Discord 网关监听器失败：${await gatewayStartResponse.text()}`,
 			);
 			return 1;
 		}
@@ -1554,16 +1554,16 @@ class DiscordConnector extends ConnectorBase<
 		process.once("SIGINT", () => requestStop("sigint"));
 		process.once("SIGTERM", () => requestStop("sigterm"));
 
-		io.writeln(`[discord] listening on ${options.host}:${options.port}`);
+		io.writeln(`[discord] 正在监听 ${options.host}:${options.port}`);
 		io.writeln(
-			`[discord] configure Discord interactions endpoint: ${webhookUrl}`,
+			`[discord] 配置 Discord 交互端点：${webhookUrl}`,
 		);
 		io.writeln(
-			`[discord] gateway listener started for mentions, replies, reactions, and DMs${options.allowBotAuthors ? " (bot authors allowed)" : ""}`,
+			`[discord] 已为提及、回复、回应和私信启动网关监听器${options.allowBotAuthors ? "（允许机器人作者）" : ""}`,
 		);
 		if (restoredSubscriptionCount > 0) {
 			io.writeln(
-				`[discord] restored ${restoredSubscriptionCount} thread subscription${restoredSubscriptionCount === 1 ? "" : "s"}`,
+				`[discord] 已恢复 ${restoredSubscriptionCount} 个线程订阅${restoredSubscriptionCount === 1 ? "" : ""}`,
 			);
 		}
 

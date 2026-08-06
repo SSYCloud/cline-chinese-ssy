@@ -73,7 +73,7 @@ export function getCliFeatureFlagsService(options?: {
 export function refreshCliFeatureFlagsInBackground(logger?: BasicLogger): void {
 	const service = getCliFeatureFlagsService({ logger });
 	void service.poll().catch((error) => {
-		logger?.error?.("Error refreshing CLI feature flags", { error });
+		logger?.error?.("刷新 CLI 功能开关时出错", { error });
 	});
 }
 
@@ -113,6 +113,6 @@ export async function identifyFeatureFlagsAccount(
 	try {
 		await cliFeatureFlagsService.poll();
 	} catch (error) {
-		logger?.error?.("Error polling CLI feature flags", { error });
+		logger?.error?.("轮询 CLI 功能开关时出错", { error });
 	}
 }

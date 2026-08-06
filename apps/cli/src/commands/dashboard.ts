@@ -191,10 +191,10 @@ export async function runDashboardCommand(
 		const dashboardUrl =
 			server.inviteUrl || server.publicUrl || server.listenUrl;
 		options.io.writeln(
-			`${c.green}Cline dashboard listening at${c.reset} ${dashboardUrl}`,
+			`${c.green}Cline 仪表板正在监听${c.reset} ${dashboardUrl}`,
 		);
 		if (server.hubUrl) {
-			options.io.writeln(`${c.dim}Hub endpoint: ${server.hubUrl}${c.reset}`);
+			options.io.writeln(`${c.dim}Hub 端点: ${server.hubUrl}${c.reset}`);
 		}
 
 		if (options.openBrowser !== false) {
@@ -202,7 +202,7 @@ export async function runDashboardCommand(
 				await (options.openUrl ?? openDefaultUrl)(dashboardUrl);
 			} catch (error) {
 				const message = error instanceof Error ? error.message : String(error);
-				options.io.writeErr(`Failed to open browser: ${message}`);
+				options.io.writeErr(`打开浏览器失败: ${message}`);
 			}
 		}
 

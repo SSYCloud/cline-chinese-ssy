@@ -140,7 +140,7 @@ function providerToExistingProviderOptions(input: {
 	return [
 		{
 			value: "open_subscription_page",
-			label: "Manage subscription & see usage",
+			label: "管理订阅并查看用量",
 			onSelect: async () => {
 				await input.dialog.choice<boolean>({
 					style: { maxHeight: input.termHeight - 2 },
@@ -174,7 +174,7 @@ async function runProviderChange(
 	const manager = new ProviderSettingsManager();
 	const displayName = await withLoadingDialog(
 		dialog,
-		"Loading provider...",
+		"正在加载提供商...",
 		async () => await getProviderDisplayName(newProviderId),
 	);
 	const existingSettings = manager.getProviderSettings(newProviderId);
@@ -280,7 +280,7 @@ async function runProviderChange(
 	}
 	await withLoadingDialog(
 		dialog,
-		`Loading ${displayName} models...`,
+		`正在加载 ${displayName} 的模型...`,
 		async () => {
 			await refreshProviderModelsFromSource(manager, newProviderId).catch(
 				() => {},
@@ -370,7 +370,7 @@ export function useModelSelector(opts: {
 			};
 
 			if (!options?.startWithProviderChange) {
-				await withLoadingDialog(dialog, "Loading models...", async () => {
+				await withLoadingDialog(dialog, "正在加载模型...", async () => {
 					await refreshCurrentProviderModels(config);
 					await refreshProviderContext();
 				});
@@ -384,7 +384,7 @@ export function useModelSelector(opts: {
 					onModelChange,
 				);
 				if (changed) {
-					await withLoadingDialog(dialog, "Loading models...", async () => {
+					await withLoadingDialog(dialog, "正在加载模型...", async () => {
 						await refreshProviderContext();
 					});
 				}
@@ -617,7 +617,7 @@ export function useModelSelector(opts: {
 				pickingModel = false;
 			}
 
-			await withLoadingDialog(dialog, "Applying model...", async () => {
+			await withLoadingDialog(dialog, "正在应用模型...", async () => {
 				await onModelChange();
 			});
 			refocusTextarea();

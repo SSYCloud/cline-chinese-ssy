@@ -67,7 +67,7 @@ function BashOutput(props: { fullText: string; theme: ResolvedTheme }) {
 				</text>
 				{hasMore && (
 					<text fg="gray">
-						{"   "}... {lines.length - 1} more lines
+						{"   "}... 还有 {lines.length - 1} 行
 					</text>
 				)}
 			</box>
@@ -80,7 +80,7 @@ function BashOutput(props: { fullText: string; theme: ResolvedTheme }) {
 			paddingLeft={2}
 			onMouseDown={() => setExpanded(false)}
 		>
-			<text fg="gray">{RESULT} output:</text>
+			<text fg="gray">{RESULT} 输出:</text>
 			<box marginLeft={2} marginTop={1} marginBottom={1}>
 				<code
 					content={fullText}
@@ -104,7 +104,7 @@ function ReadOutput(props: { fullText: string; rawInput?: unknown }) {
 	return (
 		<box paddingLeft={2}>
 			<text fg="gray">
-				{RESULT} {lines.length} lines
+				{RESULT} {lines.length} 行
 				{language ? ` | ${language}` : ""}
 			</text>
 		</box>
@@ -124,10 +124,10 @@ function DiffStats(props: {
 			{removed > 0 ? (
 				<>
 					<span fg={theme.accents.success}>+{added}</span>{" "}
-					<span fg={theme.accents.error}>-{removed}</span> lines
+					<span fg={theme.accents.error}>-{removed}</span> 行
 				</>
 			) : (
-				<span fg={theme.accents.success}>+{added} lines (new)</span>
+				<span fg={theme.accents.success}>+{added} 行（新）</span>
 			)}
 			{language ? ` | ${language}` : ""}
 		</text>
@@ -146,7 +146,7 @@ function EditOutput(props: {
 		return (
 			<box paddingLeft={2}>
 				<text fg="gray">
-					{"  "} {props.outputSummary || "done"}
+					{"  "} {props.outputSummary || "完成"}
 				</text>
 			</box>
 		);
@@ -205,7 +205,7 @@ function ApplyPatchOutput(props: {
 		return (
 			<box paddingLeft={2}>
 				<text fg="gray">
-					{"  "} {props.outputSummary || "done"}
+					{"  "} {props.outputSummary || "完成"}
 				</text>
 			</box>
 		);
@@ -259,7 +259,7 @@ function GenericOutput(props: { outputSummary: string; fullText?: string }) {
 
 	if (!expanded) {
 		const collapsedText = isLong
-			? `${lines.slice(0, MAX_COLLAPSED_LINES).join("\n")}\n... ${lines.length - MAX_COLLAPSED_LINES} more lines`
+			? `${lines.slice(0, MAX_COLLAPSED_LINES).join("\n")}\n... 还有 ${lines.length - MAX_COLLAPSED_LINES} 行`
 			: displayText;
 
 		return (
@@ -310,7 +310,7 @@ export function ToolOutput(props: ToolOutputProps) {
 				onMouseDown={() => setErrorExpanded(!errorExpanded)}
 			>
 				<text fg={isWarning ? "yellow" : "red"} selectable>
-					{"  "} {isWarning ? "!" : "Error:"} {presentation.summary}
+					{"  "} {isWarning ? "!" : "错误："} {presentation.summary}
 				</text>
 				{showDetail && (
 					<box paddingLeft={3}>

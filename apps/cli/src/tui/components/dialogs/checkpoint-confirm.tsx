@@ -13,13 +13,13 @@ const OPTIONS: Array<{
 }> = [
 	{
 		value: "chat-only",
-		label: "Restore chat only",
-		detail: "Rewind conversation, keep current files",
+		label: "仅恢复聊天",
+		detail: "回退对话，保留当前文件",
 	},
 	{
 		value: "chat-and-workspace",
-		label: "Restore chat and workspace",
-		detail: "Rewind conversation and reset files",
+		label: "恢复聊天和工作区",
+		detail: "回退对话并重置文件",
 	},
 ];
 
@@ -65,7 +65,7 @@ export function CheckpointConfirmContent(
 	return (
 		<box flexDirection="column" paddingX={1} gap={1}>
 			<text>
-				Restore to: {'"'}
+				恢复到：{'"'}
 				{messagePreview}
 				{'"'}
 			</text>
@@ -102,12 +102,12 @@ export function CheckpointConfirmContent(
 
 			{selectedMode === "chat-and-workspace" && (
 				<text fg="yellow">
-					This runs git reset --hard and git clean -fd in the workspace.
+					这将在工作区中运行 git reset --hard 和 git clean -fd。
 				</text>
 			)}
 
 			<text fg="gray">
-				<em>{"↑/↓ navigate, Enter to confirm, Esc to cancel"}</em>
+				<em>{"↑/↓ 导航，Enter 确认，Esc 取消"}</em>
 			</text>
 		</box>
 	);

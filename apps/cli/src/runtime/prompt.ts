@@ -132,7 +132,7 @@ export async function buildUserInputMessage(
 			const resolvedPath = resolveMentionPath(mention.path);
 			const stats = statSync(resolvedPath);
 			if (!stats.isFile()) {
-				throw new Error(`Path is not a file: ${resolvedPath}`);
+				throw new Error(`路径不是文件：${resolvedPath}`);
 			}
 			const fileName = basename(resolvedPath);
 
@@ -161,7 +161,7 @@ export async function buildUserInputMessage(
 			);
 		} catch (error) {
 			const errorMsg = error instanceof Error ? error.message : String(error);
-			console.error(`[warning] ${errorMsg}`);
+			console.error(`[警告] ${errorMsg}`);
 		}
 	}
 

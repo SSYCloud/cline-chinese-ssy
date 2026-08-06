@@ -78,11 +78,11 @@ export const LiteLlmProvider = ({ showModelOptions, isPopup, currentMode }: Lite
 					disabled={remoteConfigSettings?.liteLlmBaseUrl !== undefined}
 					initialValue={config?.baseUrl || ""}
 					onChange={handleBaseUrlChange}
-					placeholder={"Default: http://localhost:4000"}
+					placeholder={"默认：http://localhost:4000"}
 					style={{ width: "100%" }}
 					type="text">
 					<div className="flex items-center gap-2 mb-1">
-						<span style={{ fontWeight: 500 }}>Base URL (optional)</span>
+						<span style={{ fontWeight: 500 }}>基础 URL（可选）</span>
 						{remoteConfigSettings?.liteLlmBaseUrl !== undefined && <LockIcon />}
 					</div>
 				</DebouncedTextField>
@@ -92,24 +92,24 @@ export const LiteLlmProvider = ({ showModelOptions, isPopup, currentMode }: Lite
 					disabled={remoteConfigSettings?.configuredApiKeys?.litellm}
 					initialValue={savedApiKeyMask}
 					onChange={handleApiKeyChange}
-					placeholder="Default: noop"
+					placeholder="默认：noop"
 					style={{ width: "100%" }}
 					type="password">
 					<div className="flex items-center gap-2 mb-1">
-						<span style={{ fontWeight: 500 }}>API Key</span>
+						<span style={{ fontWeight: 500 }}>API 密钥</span>
 						{remoteConfigSettings?.configuredApiKeys?.litellm && <LockIcon />}
 					</div>
 				</DebouncedTextField>
 			</RemotelyConfiguredInputWrapper>
 			{showModelOptions && (
 				<>
-					{isStale && <div role="status">Model list may be stale for the current LiteLLM configuration.</div>}
+					{isStale && <div role="status">当前 LiteLLM 配置下的模型列表可能已过期。</div>}
 					{error && <div role="alert">{error}</div>}
 					<ModelAutocomplete
-						label="Model"
+						label="模型"
 						models={models}
 						onChange={handleModelChange}
-						placeholder="Search or enter a custom model ID..."
+						placeholder="搜索或输入自定义模型 ID..."
 						selectedModelId={selectedModelId}
 					/>
 					<VSCodeButton
@@ -117,10 +117,10 @@ export const LiteLlmProvider = ({ showModelOptions, isPopup, currentMode }: Lite
 						disabled={isLoading}
 						onClick={onRefreshModels}>
 						{isLoading ? (
-							"Loading..."
+							"正在加载..."
 						) : (
 							<>
-								Refresh models <RefreshCwIcon className="ml-1" />
+								刷新模型 <RefreshCwIcon className="ml-1" />
 							</>
 						)}
 					</VSCodeButton>
@@ -129,7 +129,7 @@ export const LiteLlmProvider = ({ showModelOptions, isPopup, currentMode }: Lite
 						<ReasoningEffortSelector
 							currentMode={currentMode}
 							defaultEffort="none"
-							description="Use None to disable extended thinking. Higher effort improves depth, but uses more tokens."
+							description="选择“无”可禁用扩展思考。更高的努力程度会提升思考深度，但会消耗更多 tokens。"
 							onEffortChange={(effort) => {
 								void write({
 									reasoning: { enabled: effort !== "none", effort: effort !== "none" ? effort : undefined },
@@ -147,11 +147,11 @@ export const LiteLlmProvider = ({ showModelOptions, isPopup, currentMode }: Lite
 					marginTop: "5px",
 					color: "var(--vscode-descriptionForeground)",
 				}}>
-				Extended thinking is available for models such as Sonnet-4, o3-mini, Deepseek R1, etc. More info on{" "}
+				扩展思考适用于 Sonnet-4、o3-mini、Deepseek R1 等模型。更多信息请参阅{" "}
 				<VSCodeLink
 					href="https://docs.litellm.ai/docs/reasoning_content"
 					style={{ display: "inline", fontSize: "inherit" }}>
-					thinking mode configuration
+					思考模式配置
 				</VSCodeLink>
 			</p>
 
@@ -161,11 +161,11 @@ export const LiteLlmProvider = ({ showModelOptions, isPopup, currentMode }: Lite
 					marginTop: "5px",
 					color: "var(--vscode-descriptionForeground)",
 				}}>
-				LiteLLM provides a unified interface to access various LLM providers' models. See their{" "}
+				LiteLLM 提供统一的接口来访问各 LLM 提供商的模型。请参阅其{" "}
 				<VSCodeLink href="https://docs.litellm.ai/docs/" style={{ display: "inline", fontSize: "inherit" }}>
-					quickstart guide
+					快速入门指南
 				</VSCodeLink>{" "}
-				for more information.
+				了解更多信息。
 			</p>
 		</div>
 	)

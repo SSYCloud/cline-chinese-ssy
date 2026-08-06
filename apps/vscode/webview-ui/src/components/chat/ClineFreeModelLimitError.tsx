@@ -115,7 +115,7 @@ const ClineFreeModelLimitError = ({ message }: ClineFreeModelLimitErrorProps) =>
 			setDidSwitch(true)
 		} catch (error) {
 			console.error("Failed to switch to the paid model:", error)
-			setSwitchError(`Failed to switch model. Select ${paidModelId} in API Configuration settings.`)
+			setSwitchError(`切换模型失败。请在 API 配置设置中选择 ${paidModelId}。`)
 		} finally {
 			setIsSwitching(false)
 		}
@@ -125,34 +125,24 @@ const ClineFreeModelLimitError = ({ message }: ClineFreeModelLimitErrorProps) =>
 		<div
 			className="p-2 border-none rounded-md mb-2 bg-(--vscode-textBlockQuote-background)"
 			data-testid="cline-free-model-limit-error">
-			<div className="text-error mb-2">Daily free model limit reached</div>
-			<div className="text-(--vscode-descriptionForeground) text-xs wrap-anywhere">
-				You've reached today's free usage limit for this model.
-			</div>
+			<div className="text-error mb-2">今日免费模型限额已用尽</div>
+			<div className="text-(--vscode-descriptionForeground) text-xs wrap-anywhere">你已用完该模型今天的免费使用额度。</div>
 			<div className="text-(--vscode-descriptionForeground) text-xs mt-2">
-				{resetTime ? `Try again in ${resetTime}` : "Try again later"} or select another model.
+				{resetTime ? `${resetTime} 后重试` : "稍后重试"}或选择其他模型。
 			</div>
 			{paidModelId && (
 				<>
 					<div className="text-(--vscode-descriptionForeground) text-xs mt-2 wrap-anywhere">
-						Or switch to the paid version of this model ({paidModelId}) with usage-based billing.
+						或者切换到该模型的付费版本（{paidModelId}），按用量计费。
 					</div>
 					<VSCodeButton
 						appearance="primary"
 						className="w-full mt-3"
 						disabled={isSwitching || didSwitch}
 						onClick={handleSwitchToPaidModel}>
-						{isSwitching
-							? "Switching..."
-							: didSwitch
-								? "Switched to Usage-Based billing"
-								: "Switch to Usage-Based billing"}
+						{isSwitching ? "切换中..." : didSwitch ? "已切换到按用量计费" : "切换到按用量计费"}
 					</VSCodeButton>
-					{didSwitch && (
-						<div className="text-(--vscode-descriptionForeground) text-xs mt-2">
-							Retry the request after switching.
-						</div>
-					)}
+					{didSwitch && <div className="text-(--vscode-descriptionForeground) text-xs mt-2">切换后请重试该请求。</div>}
 					{switchError && <div className="text-error text-xs mt-2">{switchError}</div>}
 				</>
 			)}

@@ -25,15 +25,16 @@ import { useApiConfigurationHandlers } from "../settings/utils/useApiConfigurati
 import WelcomeView from "../welcome/WelcomeView"
 import { setPendingClinePassSubscribe } from "./clinePassSubscribe"
 import {
-	CLINEPASS_GROUP,
+	// CLINEPASS_GROUP,
 	getCapabilities,
 	getClineUIOnboardingGroups,
-	getOnboardingGroupDisplayName,
+	// getOnboardingGroupDisplayName,
 	getPriceRange,
 	getSpeedLabel,
 	type OnboardingModelsByGroup,
 } from "./data-models"
 import { getUserTypeSelections, NEW_USER_TYPE, STEP_CONFIG } from "./data-steps"
+import FreeCredit from "./FreeCredit"
 import OnboardingShengSuanYunModelPicker from "./OnboardingShengSuanYunModelPicker"
 import { useOnboardingModels } from "./useOnboardingModels"
 
@@ -161,15 +162,15 @@ const ModelSelection = ({
 	if (isClinePass && modelGroups.length === 0) {
 		return (
 			<div className="flex w-full max-w-lg flex-col items-center justify-center my-8 px-2 text-center">
-				<p className="text-foreground text-sm m-0">No ClinePass models are available right now.</p>
-				<p className="text-foreground/70 text-sm mt-1">Please choose another option or try again later.</p>
+				<p className="text-foreground text-sm m-0">当前没有可用的 ClinePass 模型。</p>
+				<p className="text-foreground/70 text-sm mt-1">请选择其他选项或稍后重试。</p>
 			</div>
 		)
 	}
 
 	return (
 		<div className="flex flex-col w-full items-center px-2">
-			<div className="flex w-full max-w-lg flex-col gap-6 my-4">
+			{/* <div className="flex w-full max-w-lg flex-col gap-6 my-4">
 				{modelGroups.map((group) => {
 					const isClinePassGroup = group.group === CLINEPASS_GROUP
 					return (
@@ -187,13 +188,14 @@ const ModelSelection = ({
 						</div>
 					)
 				})}
-			</div>
+			</div> */}
+			<FreeCredit />
 
 			{/* SEARCH MODEL — hidden for ClinePass, whose selection is constrained to the curated list. */}
-			{!isClinePass && (
+			{!isClinePass && false && (
 				<div className="flex w-full max-w-lg flex-col gap-6 my-4 border-t border-muted-foreground">
 					<div className="flex flex-col gap-3 mt-6" key="search-results">
-						<h4 className="text-sm font-bold text-foreground/70 uppercase mb-2">other options</h4>
+						<h4 className="text-sm font-bold text-foreground/70 uppercase mb-2">其他选项</h4>
 						<Input
 							autoFocus={false}
 							className="focus-visible:border-button-background"
@@ -204,7 +206,7 @@ const ModelSelection = ({
 								setSearchTerm(e.target.value)
 							}}
 							onClick={() => onSelectModel("")}
-							placeholder="Search model..."
+							placeholder="搜索模型..."
 							type="search"
 							value={searchTerm}
 						/>
@@ -245,7 +247,7 @@ const ModelSelection = ({
 									return <ModelItem id={id} isSelected={isSelected} key={id} model={onboardingModel} />
 								})}
 							{searchTerm.length > 0 && searchedModels.length === 0 && (
-								<p className="px-1 mt-1 text-sm text-foreground/70">No result found for "{searchTerm}"</p>
+								<p className="px-1 mt-1 text-sm text-foreground/70">未找到 "{searchTerm}" 的结果</p>
 							)}
 						</div>
 					</div>
@@ -734,10 +736,10 @@ const OnboardingViewContent = ({ onboardingModels }: { onboardingModels: Onboard
 					/>
 				</div>
 
-				<footer className="flex w-full max-w-lg flex-col gap-3 my-2 px-2 overflow-hidden flex-shrink-0">
+				<footer className="flex w-full max-w-lg flex-col gap-3 my-2 px-2 overflow-hidden shrink-0">
 					{stepDisplayInfo.buttons.map((btn) => {
 						// Block ClinePass signup when no ClinePass model is selected (e.g. empty list).
-						const isLoginAction = btn.action === "signin" || btn.action === "signin_ssy" || btn.action === "signup"
+						const isLoginAction = btn.action === "signin_ssy" || btn.action === "signup"
 						const showSpinner = isActionLoading && isLoginAction
 						const disabled =
 							isActionLoading ||

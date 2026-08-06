@@ -4,12 +4,12 @@ export const HISTORY_EXPORT_OPTIONS = [
 	{
 		format: "html",
 		label: "HTML",
-		description: "Standalone, readable conversation",
+		description: "独立、可读的对话",
 	},
 	{
 		format: "json",
 		label: "JSON",
-		description: "Structured session messages and metadata",
+		description: "结构化的会话消息与元数据",
 	},
 ] as const satisfies ReadonlyArray<{
 	format: HistoryExportFormat;
@@ -94,11 +94,11 @@ export function buildHistoryFooterText(input: {
 	canExport: boolean;
 }): string {
 	return [
-		"\u2191/\u2193 navigate",
-		"Enter to resume",
-		input.canDelete ? "\u2190 delete" : undefined,
-		input.canExport ? "\u2192 export" : undefined,
-		"Esc to close",
+		"\u2191/\u2193 导航",
+		"Enter 恢复",
+		input.canDelete ? "\u2190 删除" : undefined,
+		input.canExport ? "\u2192 导出" : undefined,
+		"Esc 关闭",
 	]
 		.filter((part): part is string => part !== undefined)
 		.join(", ");

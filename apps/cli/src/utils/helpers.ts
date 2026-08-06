@@ -114,14 +114,14 @@ function formatAskQuestionInput(input: Record<string, unknown>): string {
 		return "";
 	}
 
-	const lines = ["The agent is waiting for your input."];
+	const lines = ["代理正在等待你的输入。"];
 	if (question) {
 		lines.push(question);
 	}
 	for (const [index, option] of options.entries()) {
 		lines.push(`${index + 1}. ${option}`);
 	}
-	lines.push("> Reply with an option number or type your answer.");
+	lines.push("> 回复选项编号或输入你的答案。");
 	return lines.join("\n");
 }
 
@@ -236,7 +236,7 @@ export function formatToolInput(toolName: string, input: unknown): string {
 		case "team_await_run":
 			return truncate(String(obj.runId ?? ""), 60);
 		case "team_await_all_runs":
-			return "all runs";
+			return "所有运行";
 		case "team_message": {
 			const action = String(obj.action ?? "");
 			if (action === "send") {
@@ -283,7 +283,7 @@ export function formatToolInput(toolName: string, input: unknown): string {
 		case "team_finalize_outcome":
 			return truncate(String(obj.outcomeId ?? ""), 70);
 		case "team_list_outcomes":
-			return "list";
+			return "列出";
 	}
 
 	return truncate(JSON.stringify(input), 60);
@@ -329,7 +329,7 @@ export function formatToolOutput(output: unknown): string {
 											: "",
 								)
 								.filter(Boolean)
-								.join(" ") || "Successfully read image"
+								.join(" ") || "成功读取图片"
 						: String(result ?? "");
 					return truncate(resultStr, 80);
 				}
@@ -343,7 +343,7 @@ export function formatToolOutput(output: unknown): string {
 		if (results.length === 1) {
 			return results[0];
 		}
-		return `${results[0]} (+${results.length - 1} more)`;
+		return `${results[0]} (+${results.length - 1} 更多)`;
 	}
 
 	return truncate(JSON.stringify(output), 100);

@@ -81,15 +81,15 @@ type ParsedAuthCommandArgs = {
  */
 export function createAuthCommand(): Command {
 	const cmd = new Command("auth")
-		.description("Authenticate with an LLM provider")
+		.description("与 LLM 提供方进行身份验证")
 		.exitOverride()
 		.configureOutput({ writeOut: () => {}, writeErr: () => {} })
-		.argument("[provider]", "provider id (positional shorthand for -p)")
-		.option("-p, --provider <id>", "provider id")
-		.option("-k, --apikey <key>", "API key")
-		.option("-m, --modelid <id>", "model id")
-		.option("-b, --baseurl <url>", "base URL")
-		.option("--azure-api-version <version>", "Azure API version");
+		.argument("[provider]", "提供方 ID（-p 的位置参数简写）")
+		.option("-p, --provider <id>", "提供方 ID")
+		.option("-k, --apikey <key>", "API 密钥")
+		.option("-m, --modelid <id>", "模型 ID")
+		.option("-b, --baseurl <url>", "基础 URL")
+		.option("--azure-api-version <version>", "Azure API 版本");
 	return cmd;
 }
 
@@ -99,7 +99,7 @@ export function parseAuthCommandArgs(args: string[]): ParsedAuthCommandArgs {
 		cmd.parse(args, { from: "user" });
 	} catch {
 		// Commander throws on --help / --version / unknown flags via exitOverride
-		return { parseError: `unknown auth option in: ${args.join(" ")}` };
+		return { parseError: `未知的 auth 选项：${args.join(" ")}` };
 	}
 	const opts = cmd.opts<{
 		provider?: string;
@@ -139,26 +139,26 @@ async function ensureQuickSetupInputValid(
 	const normalizedProvider = normalizeProviderId(input.provider);
 	const providerCatalog = await loadProviderCatalog(providerSettingsManager);
 	if (!providerCatalog.some((provider) => provider.id === normalizedProvider)) {
-		return `invalid provider "${input.provider}"`;
+		return `无效的提供方 "${input.provider}"`;
 	}
 	if (!input.apikey.trim()) {
-		return "auth quick setup requires --apikey <key>";
+		return "auth 快速设置需要 --apikey <key>";
 	}
 	if (!input.modelid.trim()) {
-		return "auth quick setup requires --modelid <id>";
+		return "auth 快速设置需要 --modelid <id>";
 	}
 	if (
 		input.baseurl?.trim() &&
 		normalizedProvider !== BUILT_IN_PROVIDER.OPENAI_COMPATIBLE &&
 		normalizedProvider !== BUILT_IN_PROVIDER.OPENAI_NATIVE
 	) {
-		return "base URL is only supported for OpenAI and OpenAI-compatible providers";
+		return "基础 URL 仅支持 OpenAI 和兼容 OpenAI 的提供方";
 	}
 	if (
 		input.azureApiVersion?.trim() &&
 		normalizedProvider !== BUILT_IN_PROVIDER.OPENAI_COMPATIBLE
 	) {
-		return "Azure API version is only supported for OpenAI-compatible providers";
+		return "Azure API 版本仅支持兼容 OpenAI 的提供方";
 	}
 	return undefined;
 }
@@ -196,7 +196,7 @@ function saveQuickAuthProviderSettings(input: {
 
 async function askForInputInTerminal(question: string): Promise<string> {
 	if (!process.stdin.isTTY || !process.stdout.isTTY) {
-		throw new Error("OAuth login requires an interactive terminal session");
+		throw new Error("OAuth 登录需要交互式终端会话");
 	}
 
 	return new Promise<string>((resolve) => {
@@ -230,10 +230,10 @@ function createOAuthCallbacks(io: AuthIo): {
 		openUrl: (url) => open(url, { wait: false }).then(() => undefined),
 		onOpenUrlError: ({ error }) => {
 			io.writeln(
-				`${c.dim}[auth] Could not open browser automatically; open the URL above manually.${c.reset}`,
+				`${c.dim}[auth] 无法自动打开浏览器；请手动打开上面的 URL。${c.reset}`,
 			);
 			io.writeln(
-				`${c.dim}[auth] Browser open failed: ${error instanceof Error ? error.message : String(error)}${c.reset}`,
+				`${c.dim}[auth] 打开浏览器失败: ${error instanceof Error ? error.message : String(error)}${c.reset}`,
 			);
 		},
 	});
@@ -310,7 +310,7 @@ async function runQuickAuthSetup(input: AuthCommandInput): Promise<number> {
 		azureApiVersion,
 	});
 	input.io.writeln(
-		`${c.green}Provider configured:${c.reset} ${c.cyan}${providerId}${c.reset} (${modelid})`,
+		`${c.green}提供方已配置：${c.reset} ${c.cyan}${providerId}${c.reset} (${modelid})`,
 	);
 	return 0;
 }
@@ -326,7 +326,7 @@ export async function loadAuthTuiRuntime() {
 async function runInteractiveAuthTui(input: AuthCommandInput): Promise<number> {
 	if (!process.stdin.isTTY || !process.stdout.isTTY) {
 		input.io.writeErr(
-			"interactive auth setup requires a TTY (use --provider/--apikey/--modelid for non-interactive setup)",
+			"交互式 auth 设置需要 TTY（使用 --provider/--apikey/--modelid 进行非交互式设置）",
 		);
 		return 1;
 	}
@@ -398,7 +398,7 @@ export async function runAuthCommand(input: AuthCommandInput): Promise<number> {
 	if (hasQuickSetupFlags) {
 		if (!input.explicitProvider?.trim()) {
 			input.io.writeErr(
-				"auth quick setup requires --provider <id> when using --apikey/--modelid/--baseurl/--azure-api-version",
+				"使用 --apikey/--modelid/--baseurl/--azure-api-version 时，auth 快速设置需要 --provider <id>",
 			);
 			return 1;
 		}
@@ -415,7 +415,7 @@ export async function runAuthCommand(input: AuthCommandInput): Promise<number> {
 			);
 		}
 		input.io.writeErr(
-			`provider "${providerId}" requires API key setup (use subcommand: auth --provider ${providerId} --apikey <key> --modelid <id>)`,
+			`提供方 "${providerId}" 需要 API 密钥设置（使用子命令：auth --provider ${providerId} --apikey <key> --modelid <id>）`,
 		);
 		return 1;
 	}
@@ -430,7 +430,7 @@ export async function runAuthProviderCommand(
 ): Promise<number> {
 	if (!isOAuthProvider(providerId)) {
 		io.writeErr(
-			`provider "${providerId}" does not support OAuth login (supported: cline, openai-codex, oca)`,
+			`提供方 "${providerId}" 不支持 OAuth 登录（支持：cline、openai-codex、oca）`,
 		);
 		return 1;
 	}
@@ -445,7 +445,7 @@ export async function runAuthProviderCommand(
 			provider: providerId,
 		});
 		io.writeln(
-			`${c.green}You are now logged in to ${c.cyan}${providerId}${c.reset}`,
+			`${c.green}你现在已登录到 ${c.cyan}${providerId}${c.reset}`,
 		);
 		return 0;
 	} catch (error) {

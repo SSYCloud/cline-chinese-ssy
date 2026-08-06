@@ -24,8 +24,8 @@ export const BaseUrlField = ({
 	initialValue,
 	onChange,
 	onClear,
-	label = "Use custom base URL",
-	placeholder = "Default: https://api.example.com",
+	label = "使用自定义基础 URL",
+	placeholder = "默认：https://api.example.com",
 	disabled = false,
 	showLockIcon = false,
 }: BaseUrlFieldProps) => {

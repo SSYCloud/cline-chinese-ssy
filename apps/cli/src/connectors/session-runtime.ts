@@ -228,8 +228,8 @@ export async function getOrCreateSessionId<
 		);
 		input.logger.core.log(
 			existingSession
-				? "Connector thread session is terminal; starting a new session"
-				: "Connector thread session missing; starting a new session",
+				? "连接线程会话已终结；正在启动新会话"
+				: "连接线程会话缺失；正在启动新会话",
 			{
 				severity: "warn",
 				transport: input.transport,

@@ -27,16 +27,16 @@ export function QueuedPrompts(props: {
 		? props.items.find((item) => item.id === props.selectedId)
 		: undefined;
 	const selectedIsEditing = selected?.id === props.editingId;
-	const escapeHint = session.isRunning ? "Esc cancels turn" : "Esc back";
+	const escapeHint = session.isRunning ? "Esc 取消本轮" : "Esc 返回";
 	const hint = selected
 		? selectedIsEditing
-			? "Enter confirm, Esc cancel"
+			? "Enter 确认，Esc 取消"
 			: selected.steer
 				? session.isRunning
-					? "Waiting. ↑/↓ navigate, Tab edit, Esc cancels turn"
-					: `Steered next. ↑/↓ navigate, Tab edit, ${escapeHint}`
-				: `↑/↓ navigate, Enter steer, Tab edit, ${escapeHint}`
-		: "↑ steer or edit messages";
+					? "等待中。↑/↓ 导航，Tab 编辑，Esc 取消本轮"
+					: `已转向下一步。↑/↓ 导航，Tab 编辑，${escapeHint}`
+				: `↑/↓ 导航，Enter 转向，Tab 编辑，${escapeHint}`
+		: "↑ 转向或编辑消息";
 
 	return (
 		<box
@@ -47,7 +47,7 @@ export function QueuedPrompts(props: {
 			paddingX={1}
 		>
 			<text fg="gray">
-				<em>Queued messages:</em>
+				<em>已排队的消息：</em>
 			</text>
 			{props.items.map((item) => {
 				const isSelected = item.id === props.selectedId;
@@ -107,7 +107,7 @@ function QueuedPromptRow(props: {
 					value={editValue}
 					onInput={setEditValue}
 					onSubmit={() => props.onEditConfirm(editValue)}
-					placeholder="Edit message..."
+					placeholder="编辑消息..."
 					backgroundColor={theme.selection}
 					focusedBackgroundColor={theme.selection}
 					textColor={theme.textOnSelection}

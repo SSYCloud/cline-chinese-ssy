@@ -97,7 +97,7 @@ describe("formatCompactionDividerLabel", () => {
 				messagesBefore: 142,
 				messagesAfter: 9,
 			}),
-		).toBe("Context compacted · 25.1k → 6.3k tokens · 142 → 9 messages");
+		).toBe("上下文已压缩 · 25.1k → 6.3k tokens · 142 → 9 messages");
 	});
 
 	it("labels in-progress compaction", () => {
@@ -107,14 +107,14 @@ describe("formatCompactionDividerLabel", () => {
 				compactionMode: "auto",
 				status: "started",
 			}),
-		).toBe("Auto compacting messages");
+		).toBe("正在自动压缩消息");
 		expect(
 			formatCompactionDividerLabel({
 				kind: "compaction",
 				compactionMode: "manual",
 				status: "started",
 			}),
-		).toBe("Compacting messages");
+		).toBe("正在压缩消息");
 	});
 
 	it("labels failed and cancelled compaction", () => {
@@ -124,14 +124,14 @@ describe("formatCompactionDividerLabel", () => {
 				compactionMode: "auto",
 				status: "failed",
 			}),
-		).toBe("Compaction failed");
+		).toBe("压缩失败");
 		expect(
 			formatCompactionDividerLabel({
 				kind: "compaction",
 				compactionMode: "auto",
 				status: "cancelled",
 			}),
-		).toBe("Compaction cancelled");
+		).toBe("压缩已取消");
 	});
 
 	it("labels skipped compaction without calling it cancelled", () => {
@@ -141,7 +141,7 @@ describe("formatCompactionDividerLabel", () => {
 				compactionMode: "auto",
 				status: "skipped",
 			}),
-		).toBe("Compaction skipped");
+		).toBe("压缩已跳过");
 	});
 
 	it("labels inherited working context from forks and restarts", () => {
@@ -153,7 +153,7 @@ describe("formatCompactionDividerLabel", () => {
 				messagesBefore: 60,
 				messagesAfter: 15,
 			}),
-		).toBe("Compacted working context carried over · 60 → 15 messages");
+		).toBe("工作上下文已延续压缩 · 60 → 15 messages");
 	});
 
 	it("labels manual compaction and omits missing counters", () => {
@@ -163,6 +163,6 @@ describe("formatCompactionDividerLabel", () => {
 				compactionMode: "manual",
 				status: "completed",
 			}),
-		).toBe("Context compacted (manual)");
+		).toBe("上下文已压缩（手动）");
 	});
 });

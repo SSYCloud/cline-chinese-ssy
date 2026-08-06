@@ -26,7 +26,7 @@ interface ClinePassProviderProps {
 
 const CLINE_PASS_PROVIDER_ID = "cline-pass"
 const CLINE_PASS_MODEL_ID_PREFIX = "cline-pass/"
-const FREE_TAB_DESCRIPTION = "Try with limited usage, separate from ClinePass quota."
+const FREE_TAB_DESCRIPTION = "以有限用量试用，独立于 ClinePass 配额。"
 
 interface FeaturedTabEntry {
 	id: string
@@ -71,7 +71,7 @@ function toFreeEntry(model: Pick<ClineRecommendedModel, "id" | "name" | "descrip
 		id: model.id,
 		displayName: model.name || model.id,
 		description: model.description || "",
-		label: typeof firstTag === "string" && firstTag.length > 0 ? firstTag.toUpperCase() : "FREE",
+		label: typeof firstTag === "string" && firstTag.length > 0 ? firstTag.toUpperCase() : "免费",
 	}
 }
 
@@ -176,11 +176,11 @@ export const ClinePassProvider = ({ showModelOptions, isPopup, currentMode }: Cl
 					{/* Tabs */}
 					<TabsContainer style={{ marginTop: 4 }}>
 						<Tab active={activeTab === "subscribed"} onClick={() => setActiveTab("subscribed")}>
-							Subscribed
+							已订阅
 						</Tab>
 						{freeCards.length > 0 && (
 							<Tab active={activeTab === "free"} onClick={() => setActiveTab("free")}>
-								Free
+								免费
 							</Tab>
 						)}
 					</TabsContainer>

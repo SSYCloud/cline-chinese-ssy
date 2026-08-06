@@ -91,13 +91,13 @@ export function buildOrganizationConfigOption(
 	return {
 		type: "select",
 		id: ORGANIZATION_CONFIG_ID,
-		name: "Account",
+		name: "账户",
 		description:
-			"The Cline account usage is billed to — your personal account or an organization",
+			"Cline 账户使用量计费对象 — 你的个人账户或组织",
 		category: "account",
 		currentValue: state.activeOrganizationId ?? PERSONAL_ACCOUNT_VALUE,
 		options: [
-			{ value: PERSONAL_ACCOUNT_VALUE, name: "Personal" },
+			{ value: PERSONAL_ACCOUNT_VALUE, name: "个人" },
 			...state.organizations.map((org) => ({
 				value: org.organizationId,
 				name: org.name,
@@ -147,8 +147,8 @@ async function persistActiveOrganization(
 
 export function getAcpOrgSubscriptionMessage(): string {
 	return [
-		"Organization accounts cannot use ClinePass subscriptions.",
-		'Switch the "Account" session option to Personal to keep using ClinePass,',
-		'or switch the "Provider" option to Cline to bill your organization.',
+		"组织账户无法使用 ClinePass 订阅。",
+		'将 "账户" 会话选项切换为 "个人" 以继续使用 ClinePass，',
+		'或将 "提供商" 选项切换为 Cline 以向你的组织计费。',
 	].join(" ");
 }

@@ -119,13 +119,13 @@ export function AskQuestionContent(
 							onInput={(v: string) => {
 								customRef.current = v;
 							}}
-							placeholder="Type a response..."
+							placeholder="输入响应..."
 							flexGrow={1}
 							focused
 						/>
 					) : (
 						<text fg="gray">
-							<em>Type a response...</em>
+							<em>输入响应...</em>
 						</text>
 					)}
 				</box>
@@ -134,8 +134,8 @@ export function AskQuestionContent(
 			<text fg="gray">
 				<em>
 					{typing
-						? "Enter to submit, Esc to go back"
-						: `↑/↓ navigate, Enter to select, 1-${options.length} to pick`}
+						? "Enter 提交，Esc 返回"
+						: `↑/↓ 导航，Enter 选择，1-${options.length} 选择`}
 				</em>
 			</text>
 		</box>

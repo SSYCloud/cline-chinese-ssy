@@ -154,10 +154,10 @@ export default function MermaidBlock({ code }: MermaidBlockProps) {
 
 	return (
 		<MermaidBlockContainer>
-			{isLoading && <LoadingMessage>Generating mermaid diagram...</LoadingMessage>}
+			{isLoading && <LoadingMessage>正在生成 mermaid 图表...</LoadingMessage>}
 			<ButtonContainer>
-				<StyledVSCodeButton aria-label="Copy Code" onClick={handleCopyCode} title="Copy Code">
-					<span className="codicon codicon-copy"></span>
+				<StyledVSCodeButton aria-label="复制代码" onClick={handleCopyCode} title="复制代码">
+					<span className="codicon codicon-copy" />
 				</StyledVSCodeButton>
 			</ButtonContainer>
 			<SvgContainer $isLoading={isLoading} onClick={handleClick} ref={containerRef} />

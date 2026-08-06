@@ -53,23 +53,23 @@ export function getAdjacentConfigTab(
 export function toTabLabel(tab: InteractiveConfigTab): string {
 	switch (tab) {
 		case "general":
-			return "General";
+			return "常规";
 		case "tools":
-			return "Tools";
+			return "工具";
 		case "plugins":
-			return "Plugins";
+			return "插件";
 		case "agents":
-			return "Agents";
+			return "代理";
 		case "hooks":
-			return "Hooks";
+			return "钩子";
 		case "skills":
-			return "Skills";
+			return "技能";
 		case "rules":
-			return "Rules";
+			return "规则";
 		case "mcp":
 			return "MCP";
 		case "workflows":
-			return "Workflows";
+			return "工作流";
 	}
 }
 
@@ -216,14 +216,14 @@ export function getConfigFooterText({
 	canToggle?: boolean;
 	canDelete?: boolean;
 } = {}): string {
-	const actions = ["←/→ switch tabs", "↑/↓ navigate", "Tab/Enter select"];
+	const actions = ["←/→ 切换标签页", "↑/↓ 导航", "Tab/Enter 选择"];
 	if (canToggle) {
-		actions.push("Space toggle");
+		actions.push("空格 切换");
 	}
 	if (canDelete) {
-		actions.push("D delete");
+		actions.push("D 删除");
 	}
-	actions.push("Esc close");
+	actions.push("Esc 关闭");
 	return actions.join(", ");
 }
 
@@ -235,10 +235,10 @@ export function getPluginDiagnosticsLoadingText(
 	tab: InteractiveConfigTab,
 ): string | undefined {
 	if (tab === "tools") {
-		return "Loading plugin tools...";
+		return "正在加载插件工具...";
 	}
 	if (tab === "plugins") {
-		return "Loading plugin diagnostics...";
+		return "正在加载插件诊断...";
 	}
 	return undefined;
 }

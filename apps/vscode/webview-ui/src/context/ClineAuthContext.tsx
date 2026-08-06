@@ -121,18 +121,18 @@ export const useClineSignIn = () => {
 
 			AccountServiceClient.accountLoginClicked(EmptyRequest.create())
 				.then((response) => {
-					setAuthStatusMessage(response.value || "Complete sign-in in your browser.")
+					setAuthStatusMessage(response.value || "请在浏览器中完成登录。")
 				})
 				.catch((err) => {
 					console.error("Failed to start login:", err)
-					setAuthStatusMessage("Unable to start sign-in. Please try again.")
+					setAuthStatusMessage("无法启动登录，请重试。")
 				})
 				.finally(() => {
 					setIsLoading(false)
 				})
 		} catch (error) {
 			console.error("Error signing in:", error)
-			setAuthStatusMessage("Unable to start sign-in. Please try again.")
+			setAuthStatusMessage("无法启动登录，请重试。")
 			setIsLoading(false)
 		}
 	}, [])

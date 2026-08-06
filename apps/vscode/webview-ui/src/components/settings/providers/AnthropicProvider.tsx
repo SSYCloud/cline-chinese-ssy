@@ -101,10 +101,10 @@ export const AnthropicProvider = ({ showModelOptions, isPopup, currentMode }: An
 				<BaseUrlField
 					disabled={!!remoteConfigSettings?.anthropicBaseUrl}
 					initialValue={config?.baseUrl}
-					label="Use custom base URL"
+					label="使用自定义基础 URL"
 					onChange={handleBaseUrlChange}
 					onClear={handleBaseUrlClear}
-					placeholder="Default: https://api.anthropic.com"
+					placeholder="默认：https://api.anthropic.com"
 					showLockIcon={!!remoteConfigSettings?.anthropicBaseUrl}
 				/>
 			</RemotelyConfiguredInputWrapper>
@@ -112,7 +112,7 @@ export const AnthropicProvider = ({ showModelOptions, isPopup, currentMode }: An
 			{showModelOptions && (
 				<>
 					<ModelSelector
-						label="Model"
+						label="模型"
 						models={models}
 						onChange={(e) => handleModelChange(e.target.value)}
 						selectedModelId={selectedModelId}
@@ -123,15 +123,15 @@ export const AnthropicProvider = ({ showModelOptions, isPopup, currentMode }: An
 							allowedEfforts={["none", "low", "medium", "high", "xhigh"] as const}
 							currentMode={currentMode}
 							defaultEffort={adaptiveThinkingDefaultEffort}
-							description="Use None to disable adaptive thinking. Higher effort increases response detail and token usage."
-							label="Adaptive Thinking"
+							description="选择“无”可禁用自适应思考。更高的努力程度会增加响应细节和 token 消耗。"
+							label="自适应思考"
 							onEffortChange={handleReasoningEffortChange}
 						/>
 					) : selectedModelInfo.supportsReasoning === true ? (
 						<ReasoningEffortSelector
 							currentMode={currentMode}
 							defaultEffort="none"
-							description="Use None to disable extended thinking. Higher effort improves depth, but uses more tokens."
+							description="选择“无”可禁用扩展思考。更高的努力程度会提升思考深度，但会消耗更多 tokens。"
 							onEffortChange={handleReasoningEffortChange}
 						/>
 					) : null}

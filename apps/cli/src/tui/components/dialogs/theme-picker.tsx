@@ -80,7 +80,7 @@ export function ThemePickerContent(props: ChoiceContext<string>) {
 		<box flexDirection="column" gap={1}>
 			<box flexDirection="row" justifyContent="space-between">
 				<text fg="white">
-					<strong>Theme</strong>
+					<strong>主题</strong>
 				</text>
 				<text fg="gray">esc</text>
 			</box>

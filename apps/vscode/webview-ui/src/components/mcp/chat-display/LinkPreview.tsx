@@ -135,7 +135,7 @@ class LinkPreview extends React.Component<LinkPreviewProps, LinkPreviewState> {
 			} else {
 				this.setState({
 					error: "network",
-					errorMessage: "Failed to fetch Open Graph data",
+					errorMessage: "获取 Open Graph 数据失败",
 					loading: false,
 					hasCompletedFetch: true,
 				})
@@ -155,7 +155,7 @@ class LinkPreview extends React.Component<LinkPreviewProps, LinkPreviewState> {
 		} catch (err) {
 			this.setState({
 				error: "general",
-				errorMessage: err instanceof Error ? err.message : "Unknown error occurred",
+				errorMessage: err instanceof Error ? err.message : "发生未知错误",
 				loading: false,
 				hasCompletedFetch: true, // Mark as completed on error
 			})
@@ -205,13 +205,13 @@ class LinkPreview extends React.Component<LinkPreviewProps, LinkPreviewState> {
 								}
 							`}
 						</style>
-						Loading preview for {getSafeHostname(url)}...
+						正在加载 {getSafeHostname(url)} 的预览...
 					</div>
 					{elapsedSeconds > 5 && (
 						<div style={{ fontSize: "11px", color: "var(--vscode-descriptionForeground)" }}>
 							{elapsedSeconds > 60
-								? `Waiting for ${Math.floor(elapsedSeconds / 60)}m ${elapsedSeconds % 60}s...`
-								: `Waiting for ${elapsedSeconds}s...`}
+								? `正在等待 ${Math.floor(elapsedSeconds / 60)} 分 ${elapsedSeconds % 60} 秒...`
+								: `正在等待 ${elapsedSeconds} 秒...`}
 						</div>
 					)}
 				</div>
@@ -220,12 +220,12 @@ class LinkPreview extends React.Component<LinkPreviewProps, LinkPreviewState> {
 
 		// Handle different error states with specific messages
 		if (error) {
-			let errorDisplay = "Unable to load preview"
+			let errorDisplay = "无法加载预览"
 
 			if (error === "timeout") {
-				errorDisplay = "Preview request timed out"
+				errorDisplay = "预览请求超时"
 			} else if (error === "network") {
-				errorDisplay = "Network error loading preview"
+				errorDisplay = "加载预览时出现网络错误"
 			}
 
 			return (
@@ -255,7 +255,7 @@ class LinkPreview extends React.Component<LinkPreviewProps, LinkPreviewState> {
 					<div style={{ fontSize: "12px", marginTop: "4px" }}>{getSafeHostname(url)}</div>
 					{errorMessage && <div style={{ fontSize: "11px", marginTop: "4px", opacity: 0.8 }}>{errorMessage}</div>}
 					<div style={{ fontSize: "11px", marginTop: "8px", color: "var(--vscode-textLink-foreground)" }}>
-						Click to open in browser
+						点击在浏览器中打开
 					</div>
 				</div>
 			)
@@ -264,7 +264,7 @@ class LinkPreview extends React.Component<LinkPreviewProps, LinkPreviewState> {
 		// Create a fallback object if ogData is null
 		const data = ogData || {
 			title: getSafeHostname(url),
-			description: "No description available",
+			description: "无可用描述",
 			siteName: getSafeHostname(url),
 			url: url,
 		}
@@ -348,7 +348,7 @@ class LinkPreview extends React.Component<LinkPreviewProps, LinkPreviewState> {
 								overflow: "hidden",
 								textOverflow: "ellipsis",
 							}}>
-							{data.title || "No title"}
+							{data.title || "无标题"}
 						</div>
 
 						<div
@@ -385,7 +385,7 @@ class LinkPreview extends React.Component<LinkPreviewProps, LinkPreviewState> {
 								WebkitBoxOrient: "vertical",
 								textOverflow: "ellipsis",
 							}}>
-							{data.description || "No description available"}
+							{data.description || "无可用描述"}
 						</div>
 					</div>
 				</div>
@@ -403,7 +403,7 @@ const MemoizedLinkPreview = React.memo(
 // Wrap the LinkPreview component with an error boundary
 const LinkPreviewWithErrorBoundary: React.FC<LinkPreviewProps> = (props) => {
 	return (
-		<ChatErrorBoundary errorTitle="Something went wrong displaying this link preview">
+		<ChatErrorBoundary errorTitle="显示此链接预览时出现问题">
 			<MemoizedLinkPreview {...props} />
 		</ChatErrorBoundary>
 	)

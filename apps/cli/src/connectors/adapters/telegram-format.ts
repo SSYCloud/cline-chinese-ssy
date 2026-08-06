@@ -56,7 +56,7 @@ export function parseTelegramThreadId(threadId: string): TelegramThreadId {
 	}
 	const parts = threadId.split(":");
 	if (parts.length < 2 || parts.length > 3 || !parts[1]) {
-		throw new Error(`Invalid Telegram thread ID: ${threadId}`);
+		throw new Error(`无效的 Telegram 线程 ID: ${threadId}`);
 	}
 	const messageThreadPart = parts[2];
 	if (!messageThreadPart) {
@@ -64,7 +64,7 @@ export function parseTelegramThreadId(threadId: string): TelegramThreadId {
 	}
 	const messageThreadId = Number.parseInt(messageThreadPart, 10);
 	if (!Number.isFinite(messageThreadId)) {
-		throw new Error(`Invalid Telegram thread topic ID: ${threadId}`);
+		throw new Error(`无效的 Telegram 线程主题 ID: ${threadId}`);
 	}
 	return { chatId: parts[1], messageThreadId };
 }
@@ -183,8 +183,8 @@ function describeTelegramApiFailure(
 ): string {
 	const detail = parsed?.description || body.trim().slice(0, 240);
 	return detail
-		? `Telegram sendMessage failed (${response.status} ${response.statusText}): ${detail}`
-		: `Telegram sendMessage failed (${response.status} ${response.statusText})`;
+		? `Telegram sendMessage 发送失败（${response.status} ${response.statusText}）：${detail}`
+		: `Telegram sendMessage 发送失败（${response.status} ${response.statusText}）`;
 }
 
 async function readTelegramApiResponse(
@@ -236,7 +236,7 @@ export async function postTelegramFormattedReply<
 			sentPayloadCount += 1;
 		}
 	} catch (error) {
-		input.logger.core.log("Telegram formatted reply failed; falling back", {
+		input.logger.core.log("Telegram 格式化回复失败；正在降级处理", {
 			severity: "warn",
 			transport: "telegram",
 			threadId: input.thread.id,

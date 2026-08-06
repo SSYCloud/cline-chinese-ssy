@@ -52,11 +52,11 @@ export function resolveNonCompactionStatusLabel(
 	}
 	switch (event.reason) {
 		case "auto_compaction":
-			return "auto-compacting";
+			return "自动压缩中";
 		case "manual_compaction":
-			return "compacting";
+			return "压缩中";
 		case "compaction_budget_emergency":
-			return "context budget adjusted";
+			return "上下文预算已调整";
 	}
 	return event.message.trim() || undefined;
 }
@@ -90,7 +90,7 @@ function formatResultLines(text: string, maxLines = 5): string[] {
 	if (lines.length <= maxLines) return lines;
 	return [
 		...lines.slice(0, maxLines),
-		`... ${lines.length - maxLines} more lines`,
+		`... 还有 ${lines.length - maxLines} 行`,
 	];
 }
 
@@ -126,12 +126,12 @@ export function handleEvent(event: AgentEvent, config: Config): void {
 				case "reasoning":
 					if (activeInlineStream !== "reasoning") {
 						closeInlineStreamIfNeeded();
-						write(`${c.dim}[thinking] ${c.reset}`);
+						write(`${c.dim}[思考中] ${c.reset}`);
 						activeInlineStream = "reasoning";
 						inlineStreamHasOutput = true;
 					}
 					if (event.redacted && !event.reasoning) {
-						write(`${c.dim}[redacted]${c.reset}`);
+						write(`${c.dim}[已隐藏]${c.reset}`);
 						inlineStreamHasOutput = true;
 						break;
 					}
@@ -166,7 +166,7 @@ export function handleEvent(event: AgentEvent, config: Config): void {
 					}
 					if (event.error) {
 						write(
-							`   ${c.gray}${HOOK}${c.reset}${c.red}error: ${event.error}${c.reset}\n`,
+							`   ${c.gray}${HOOK}${c.reset}${c.red}错误: ${event.error}${c.reset}\n`,
 						);
 					} else {
 						const outputStr = formatToolOutput(event.output);
@@ -179,7 +179,7 @@ export function handleEvent(event: AgentEvent, config: Config): void {
 								);
 							}
 						} else {
-							write(`   ${c.gray}${HOOK}${c.reset}${c.green}ok${c.reset}\n`);
+							write(`   ${c.gray}${HOOK}${c.reset}${c.green}成功${c.reset}\n`);
 						}
 					}
 					shouldPrefixNextTextWithBlankLine = false;
@@ -191,9 +191,9 @@ export function handleEvent(event: AgentEvent, config: Config): void {
 			closeInlineStreamIfNeeded();
 			if (config.verbose) {
 				const iterations = event.iterations;
-				const label = event.reason === "aborted" ? "aborted" : "finished";
+				const label = event.reason === "aborted" ? "已中止" : "已完成";
 				write(
-					`\n${c.dim}── ${label} (${iterations} iterations) ──${c.reset}\n`,
+					`\n${c.dim}── ${label} (${iterations} 次迭代) ──${c.reset}\n`,
 				);
 			}
 			activeInlineStream = undefined;
@@ -214,7 +214,7 @@ export function handleEvent(event: AgentEvent, config: Config): void {
 				closeInlineStreamIfNeeded();
 				const label = resolveStatusNoticeLabel(event);
 				if (label) {
-					write(`\n${c.dim}[status]${c.reset} ${label}\n`);
+					write(`\n${c.dim}[状态]${c.reset} ${label}\n`);
 				}
 			}
 			break;
@@ -244,82 +244,82 @@ export function handleTeamEvent(event: TeamEvent): void {
 	switch (event.type) {
 		case "teammate_spawned":
 			write(
-				`${c.dim}[team] teammate spawned:${c.reset} ${c.cyan}${event.agentId}${c.reset}\n`,
+				`${c.dim}[团队] 团队成员已生成:${c.reset} ${c.cyan}${event.agentId}${c.reset}\n`,
 			);
 			break;
 		case "teammate_shutdown":
 			write(
-				`${c.dim}[team] teammate shutdown:${c.reset} ${c.cyan}${event.agentId}${c.reset}\n`,
+				`${c.dim}[团队] 团队成员已关闭:${c.reset} ${c.cyan}${event.agentId}${c.reset}\n`,
 			);
 			break;
 		case "team_task_updated":
 			write(
-				`${c.dim}[team task]${c.reset} ${c.cyan}${event.task.id}${c.reset} -> ${event.task.status}\n`,
+				`${c.dim}[团队任务]${c.reset} ${c.cyan}${event.task.id}${c.reset} -> ${event.task.status}\n`,
 			);
 			break;
 		case "team_message":
 			write(
-				`${c.dim}[mailbox]${c.reset} ${event.message.fromAgentId} -> ${event.message.toAgentId}: ${event.message.subject}\n`,
+				`${c.dim}[邮箱]${c.reset} ${event.message.fromAgentId} -> ${event.message.toAgentId}: ${event.message.subject}\n`,
 			);
 			break;
 		case "team_mission_log":
 			write(
-				`${c.dim}[mission]${c.reset} ${event.entry.agentId}: ${truncate(event.entry.summary, 90)}\n`,
+				`${c.dim}[任务]${c.reset} ${event.entry.agentId}: ${truncate(event.entry.summary, 90)}\n`,
 			);
 			break;
 		case "run_queued":
 			write(
-				`${c.dim}[team run]${c.reset} queued ${c.cyan}${event.run.id}${c.reset} -> ${event.run.agentId}${TEAM_RUN_ACTIVE_SUFFIX}\n`,
+				`${c.dim}[团队运行]${c.reset} 已排队 ${c.cyan}${event.run.id}${c.reset} -> ${event.run.agentId}${TEAM_RUN_ACTIVE_SUFFIX}\n`,
 			);
 			break;
 		case "run_started":
 			write(
-				`${c.dim}[team run]${c.reset} started ${c.cyan}${event.run.id}${c.reset} -> ${event.run.agentId}${TEAM_RUN_ACTIVE_SUFFIX}\n`,
+				`${c.dim}[团队运行]${c.reset} 已开始 ${c.cyan}${event.run.id}${c.reset} -> ${event.run.agentId}${TEAM_RUN_ACTIVE_SUFFIX}\n`,
 			);
 			break;
 		case "run_progress":
 			write(
-				`${c.dim}[team run]${c.reset} progress ${c.cyan}${event.run.id}${c.reset}: ${event.message}\n`,
+				`${c.dim}[团队运行]${c.reset} 进度 ${c.cyan}${event.run.id}${c.reset}: ${event.message}\n`,
 			);
 			break;
 		case "run_completed":
 			write(
-				`${c.dim}[team run]${c.reset} completed ${c.cyan}${event.run.id}${c.reset}\n`,
+				`${c.dim}[团队运行]${c.reset} 已完成 ${c.cyan}${event.run.id}${c.reset}\n`,
 			);
 			break;
 		case "run_failed":
 			write(
-				`${c.dim}[team run]${c.reset} failed ${c.cyan}${event.run.id}${c.reset}: ${event.run.error ?? "unknown error"}\n`,
+				`${c.dim}[团队运行]${c.reset} 失败 ${c.cyan}${event.run.id}${c.reset}: ${event.run.error ?? "未知错误"}\n`,
 			);
 			break;
 		case "run_cancelled":
 			write(
-				`${c.dim}[team run]${c.reset} cancelled ${c.cyan}${event.run.id}${c.reset}\n`,
+				`${c.dim}[团队运行]${c.reset} 已取消 ${c.cyan}${event.run.id}${c.reset}\n`,
 			);
 			break;
 		case "run_interrupted":
 			write(
-				`${c.dim}[team run]${c.reset} interrupted ${c.cyan}${event.run.id}${c.reset}\n`,
+				`${c.dim}[团队运行]${c.reset} 已中断 ${c.cyan}${event.run.id}${c.reset}\n`,
 			);
 			break;
 		case "outcome_created":
 			write(
-				`${c.dim}[team outcome]${c.reset} created ${c.cyan}${event.outcome.id}${c.reset}: ${event.outcome.title}\n`,
+				`${c.dim}[团队结果]${c.reset} 已创建 ${c.cyan}${event.outcome.id}${c.reset}: ${event.outcome.title}\n`,
 			);
 			break;
 		case "outcome_fragment_attached":
 			write(
-				`${c.dim}[team outcome]${c.reset} fragment ${c.cyan}${event.fragment.id}${c.reset} attached to ${event.fragment.section}\n`,
+				`${c.dim}[团队结果]${c.reset} 片段 ${c.cyan}${event.fragment.id}${c.reset} 已附加到 ${event.fragment.section}\n`,
 			);
 			break;
 		case "outcome_fragment_reviewed":
 			write(
-				`${c.dim}[team outcome]${c.reset} fragment ${c.cyan}${event.fragment.id}${c.reset} -> ${event.fragment.status}\n`,
+				`${c.dim}[团队结果]${c.reset} 片段 ${c.cyan}${event.fragment.id}${c.reset} -> ${event.fragment.status}\n`,
 			);
 			break;
 		case "outcome_finalized":
 			write(
-				`${c.dim}[team outcome]${c.reset} finalized ${c.cyan}${event.outcome.id}${c.reset}\n`,
+				`${c.dim}[团队结果]${c.reset} 已完成 ${c.cyan}${event.outcome.id}${c.reset}\n`,
 			);
 			break;
 		case "task_start":

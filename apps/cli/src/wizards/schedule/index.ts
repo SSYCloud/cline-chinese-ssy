@@ -44,9 +44,9 @@ interface UpcomingRun {
 }
 
 function formatSchedule(s: ScheduleRecord): string {
-	const status = s.enabled ? "enabled" : "paused";
+	const status = s.enabled ? "已启用" : "已暂停";
 	const next = s.nextRunAt
-		? `next: ${new Date(s.nextRunAt).toLocaleString()}`
+		? `下次：${new Date(s.nextRunAt).toLocaleString()}`
 		: "";
 	return `${s.name} (${s.cronPattern}) [${status}]${next ? ` ${next}` : ""}`;
 }
@@ -57,7 +57,7 @@ async function pickSchedule(
 ): Promise<string | null> {
 	const schedules = (await client.listSchedules({})) as ScheduleRecord[];
 	if (!schedules || schedules.length === 0) {
-		p.log.warn("No schedules found");
+		p.log.warn("未找到任何计划");
 		return null;
 	}
 
@@ -66,7 +66,7 @@ async function pickSchedule(
 		options: schedules.map((s) => ({
 			value: s.scheduleId,
 			label: s.name,
-			hint: `${s.cronPattern} [${s.enabled ? "enabled" : "paused"}]`,
+			hint: `${s.cronPattern} [${s.enabled ? "已启用" : "已暂停"}]`,
 		})),
 	});
 
@@ -76,17 +76,17 @@ async function pickSchedule(
 
 async function actionCreate(client: HubScheduleClient): Promise<void> {
 	const name = await p.text({
-		message: "Schedule name",
+		message: "计划名称",
 		placeholder: "nightly-cleanup",
 		validate: (v) => {
-			if (!v?.trim()) return "Name is required";
+			if (!v?.trim()) return "名称是必填项";
 			return undefined;
 		},
 	});
 	if (isCancel(name)) return;
 
 	const cronChoice = await p.select({
-		message: "How often should it run?",
+		message: "它应该多久运行一次？",
 		options: CRON_PRESETS.map((preset) => ({
 			value: preset.value,
 			label: preset.label,
@@ -98,13 +98,13 @@ async function actionCreate(client: HubScheduleClient): Promise<void> {
 	let cronPattern = cronChoice as string;
 	if (cronPattern === "__custom__") {
 		const custom = await p.text({
-			message: "Cron expression (minute hour day month weekday)",
+			message: "Cron 表达式（分 时 日 月 星期）",
 			placeholder: "0 */6 * * *",
 			validate: (v) => {
-				if (!v?.trim()) return "Cron expression is required";
+				if (!v?.trim()) return "Cron 表达式是必填项";
 				const parts = v.trim().split(/\s+/);
 				if (parts.length !== 5)
-					return "Must be 5 fields: minute hour day month weekday";
+					return "必须为 5 个字段：分 时 日 月 星期";
 				return undefined;
 			},
 		});
@@ -113,39 +113,39 @@ async function actionCreate(client: HubScheduleClient): Promise<void> {
 	}
 
 	const prompt = await p.text({
-		message: "What should Cline do?",
-		placeholder: "Review open PRs and post summaries",
+		message: "Cline 应该做什么？",
+		placeholder: "审查打开的 PR 并发布摘要",
 		validate: (v) => {
-			if (!v?.trim()) return "Prompt is required";
+			if (!v?.trim()) return "提示词是必填项";
 			return undefined;
 		},
 	});
 	if (isCancel(prompt)) return;
 
 	const workspace = await p.text({
-		message: "Workspace path",
+		message: "工作区路径",
 		placeholder: process.cwd(),
 		initialValue: process.cwd(),
 		validate: (v) => {
-			if (!v?.trim()) return "Workspace path is required";
+			if (!v?.trim()) return "工作区路径是必填项";
 			return undefined;
 		},
 	});
 	if (isCancel(workspace)) return;
 
 	const mode = await p.select({
-		message: "Agent mode",
+		message: "代理模式",
 		options: [
-			{ value: "yolo", label: "Yolo", hint: "execute without approvals" },
-			{ value: "act", label: "Act", hint: "execute tasks" },
-			{ value: "plan", label: "Plan", hint: "plan only" },
+			{ value: "yolo", label: "Yolo", hint: "无需批准直接执行" },
+			{ value: "act", label: "执行", hint: "执行任务" },
+			{ value: "plan", label: "规划", hint: "仅规划" },
 		],
 		initialValue: "yolo",
 	});
 	if (isCancel(mode)) return;
 
 	const wantAdvanced = await p.confirm({
-		message: "Configure advanced options?",
+		message: "是否配置高级选项？",
 		initialValue: false,
 	});
 	if (isCancel(wantAdvanced)) return;
@@ -161,32 +161,32 @@ async function actionCreate(client: HubScheduleClient): Promise<void> {
 		const advanced = await p.group({
 			provider: () =>
 				p.text({
-					message: "Provider",
-					placeholder: "leave empty for default",
+					message: "提供商",
+					placeholder: "留空使用默认值",
 				}),
 			model: () =>
 				p.text({
-					message: "Model",
-					placeholder: "leave empty for default",
+					message: "模型",
+					placeholder: "留空使用默认值",
 				}),
 			systemPrompt: () =>
 				p.text({
-					message: "System prompt override",
-					placeholder: "leave empty for default",
+					message: "系统提示词覆盖",
+					placeholder: "留空使用默认值",
 				}),
 			timeout: () =>
 				p.text({
-					message: "Timeout in seconds",
-					placeholder: "leave empty for no timeout",
+					message: "超时（秒）",
+					placeholder: "留空表示无超时",
 				}),
 			maxIterations: () =>
 				p.text({
-					message: "Max iterations",
-					placeholder: "leave empty for unlimited",
+					message: "最大迭代次数",
+					placeholder: "留空表示无限制",
 				}),
 			tags: () =>
 				p.text({
-					message: "Tags (comma-separated)",
+					message: "标签（逗号分隔）",
 					placeholder: "cleanup, nightly",
 				}),
 		});
@@ -228,91 +228,91 @@ async function actionCreate(client: HubScheduleClient): Promise<void> {
 	})) as ScheduleRecord | undefined;
 
 	if (!created) {
-		p.log.error("Failed to create schedule");
+		p.log.error("创建计划失败");
 		return;
 	}
 
-	p.log.success(`Created: ${created.name} (${created.scheduleId})`);
+	p.log.success(`已创建：${created.name} (${created.scheduleId})`);
 	if (created.nextRunAt) {
-		p.log.info(`Next run: ${new Date(created.nextRunAt).toLocaleString()}`);
+		p.log.info(`下次运行：${new Date(created.nextRunAt).toLocaleString()}`);
 	}
 }
 
 async function actionList(client: HubScheduleClient): Promise<void> {
 	const schedules = (await client.listSchedules({})) as ScheduleRecord[];
 	if (!schedules || schedules.length === 0) {
-		p.log.info("No schedules configured");
+		p.log.info("未配置任何计划");
 		return;
 	}
 	for (const s of schedules) {
 		p.log.info(formatSchedule(s));
-		p.log.message(`  ID: ${s.scheduleId}`);
+		p.log.message(`  ID：${s.scheduleId}`);
 		p.log.message(
-			`  Prompt: ${s.prompt.slice(0, 80)}${s.prompt.length > 80 ? "..." : ""}`,
+			`  提示词：${s.prompt.slice(0, 80)}${s.prompt.length > 80 ? "..." : ""}`,
 		);
 	}
 }
 
 async function actionPause(client: HubScheduleClient): Promise<void> {
-	const id = await pickSchedule(client, "Select schedule to pause");
+	const id = await pickSchedule(client, "选择要暂停的计划");
 	if (!id) return;
 	const result = (await client.pauseSchedule(id)) as ScheduleRecord | undefined;
 	if (result) {
-		p.log.success(`Paused: ${result.name}`);
+		p.log.success(`已暂停：${result.name}`);
 	} else {
-		p.log.error("Failed to pause schedule");
+		p.log.error("暂停计划失败");
 	}
 }
 
 async function actionResume(client: HubScheduleClient): Promise<void> {
-	const id = await pickSchedule(client, "Select schedule to resume");
+	const id = await pickSchedule(client, "选择要恢复的计划");
 	if (!id) return;
 	const result = (await client.resumeSchedule(id)) as
 		| ScheduleRecord
 		| undefined;
 	if (result) {
-		p.log.success(`Resumed: ${result.name}`);
+		p.log.success(`已恢复：${result.name}`);
 		if (result.nextRunAt) {
-			p.log.info(`Next run: ${new Date(result.nextRunAt).toLocaleString()}`);
+			p.log.info(`下次运行：${new Date(result.nextRunAt).toLocaleString()}`);
 		}
 	} else {
-		p.log.error("Failed to resume schedule");
+		p.log.error("恢复计划失败");
 	}
 }
 
 async function actionTrigger(client: HubScheduleClient): Promise<void> {
-	const id = await pickSchedule(client, "Select schedule to trigger now");
+	const id = await pickSchedule(client, "选择要立即触发的计划");
 	if (!id) return;
 	const execution = (await client.triggerScheduleNow(id)) as
 		| ExecutionRecord
 		| undefined;
 	if (execution) {
-		p.log.success(`Triggered: ${execution.executionId}`);
+		p.log.success(`已触发：${execution.executionId}`);
 	} else {
-		p.log.error("Failed to trigger schedule");
+		p.log.error("触发计划失败");
 	}
 }
 
 async function actionDelete(client: HubScheduleClient): Promise<void> {
-	const id = await pickSchedule(client, "Select schedule to delete");
+	const id = await pickSchedule(client, "选择要删除的计划");
 	if (!id) return;
 
 	const confirm = await p.confirm({
-		message: "Are you sure you want to delete this schedule?",
+		message: "确定要删除此计划吗？",
 		initialValue: false,
 	});
 	if (isCancel(confirm) || !confirm) return;
 
 	const deleted = await client.deleteSchedule(id);
 	if (deleted) {
-		p.log.success("Schedule deleted");
+		p.log.success("计划已删除");
 	} else {
-		p.log.error("Failed to delete schedule");
+		p.log.error("删除计划失败");
 	}
 }
 
 async function actionHistory(client: HubScheduleClient): Promise<void> {
-	const id = await pickSchedule(client, "Select schedule to view history");
+	const id = await pickSchedule(client, "选择要查看历史的计划");
 	if (!id) return;
 
 	const executions = (await client.listScheduleExecutions({
@@ -320,7 +320,7 @@ async function actionHistory(client: HubScheduleClient): Promise<void> {
 		limit: 20,
 	})) as ExecutionRecord[];
 	if (!executions || executions.length === 0) {
-		p.log.info("No execution history");
+		p.log.info("没有执行历史");
 		return;
 	}
 	for (const exec of executions) {
@@ -339,16 +339,16 @@ async function actionHistory(client: HubScheduleClient): Promise<void> {
 }
 
 async function actionStats(client: HubScheduleClient): Promise<void> {
-	const id = await pickSchedule(client, "Select schedule to view stats");
+	const id = await pickSchedule(client, "选择要查看统计信息的计划");
 	if (!id) return;
 
 	const stats = (await client.getScheduleStats(id)) as ScheduleStats;
-	p.log.info(`Total runs: ${stats.totalRuns}`);
-	p.log.info(`Success rate: ${(stats.successRate * 100).toFixed(1)}%`);
-	p.log.info(`Avg duration: ${stats.avgDurationSeconds.toFixed(0)}s`);
+	p.log.info(`总运行次数：${stats.totalRuns}`);
+	p.log.info(`成功率：${(stats.successRate * 100).toFixed(1)}%`);
+	p.log.info(`平均时长：${stats.avgDurationSeconds.toFixed(0)}s`);
 	if (stats.lastFailure) {
 		p.log.warn(
-			`Last failure: ${stats.lastFailure.errorMessage ?? "unknown error"}`,
+			`上次失败：${stats.lastFailure.errorMessage ?? "未知错误"}`,
 		);
 	}
 }
@@ -358,7 +358,7 @@ async function actionActive(client: HubScheduleClient): Promise<void> {
 		| ExecutionRecord[]
 		| undefined;
 	if (!active || active.length === 0) {
-		p.log.info("No active executions");
+		p.log.info("没有正在运行的执行");
 		return;
 	}
 	for (const exec of active) {
@@ -366,7 +366,7 @@ async function actionActive(client: HubScheduleClient): Promise<void> {
 			? new Date(exec.startedAt).toLocaleString()
 			: "";
 		p.log.info(
-			`${exec.executionId} (schedule: ${exec.scheduleId}) started ${started}`,
+			`${exec.executionId}（计划：${exec.scheduleId}）于 ${started} 开始`,
 		);
 	}
 }
@@ -376,7 +376,7 @@ async function actionUpcoming(client: HubScheduleClient): Promise<void> {
 		| UpcomingRun[]
 		| undefined;
 	if (!upcoming || upcoming.length === 0) {
-		p.log.info("No upcoming runs");
+		p.log.info("没有即将运行的计划");
 		return;
 	}
 	for (const run of upcoming) {
@@ -386,10 +386,10 @@ async function actionUpcoming(client: HubScheduleClient): Promise<void> {
 }
 
 export async function runScheduleWizard(): Promise<number> {
-	p.intro("Scheduled Tasks");
+	p.intro("计划任务");
 
 	const s = p.spinner();
-	s.start("Connecting to hub server...");
+	s.start("正在连接中心服务器...");
 
 	const address = resolveAddress(process.env.CLINE_HUB_ADDRESS);
 	const ensured = await ensureSchedulerHub(address, process.cwd(), {
@@ -401,14 +401,14 @@ export async function runScheduleWizard(): Promise<number> {
 		},
 	});
 	if (!ensured.ok) {
-		s.stop("Failed to connect to hub server");
+		s.stop("无法连接到中心服务器");
 		p.log.error(
-			"Schedules require the hub server. Start it with: cline hub start",
+			"计划需要中心服务器。使用以下命令启动：cline hub start",
 		);
-		p.outro("Failed");
+		p.outro("失败");
 		return 1;
 	}
-	s.stop("Connected");
+	s.stop("已连接");
 
 	const client = ensured.client;
 
@@ -416,58 +416,58 @@ export async function runScheduleWizard(): Promise<number> {
 		let keepGoing = true;
 		while (keepGoing) {
 			const action = await p.select({
-				message: "What would you like to do?",
+				message: "你想做什么？",
 				options: [
 					{
 						value: "create",
-						label: "Create new schedule",
-						hint: "set up a recurring task",
+						label: "创建新计划",
+						hint: "设置一个定期任务",
 					},
 					{
 						value: "list",
-						label: "List schedules",
-						hint: "view all configured schedules",
+						label: "列出计划",
+						hint: "查看所有已配置的计划",
 					},
 					{
 						value: "upcoming",
-						label: "Upcoming runs",
-						hint: "see what runs next",
+						label: "即将运行",
+						hint: "查看接下来运行什么",
 					},
 					{
 						value: "active",
-						label: "Active executions",
-						hint: "see what is running now",
+						label: "正在执行的运行",
+						hint: "查看当前正在运行什么",
 					},
 					{
 						value: "trigger",
-						label: "Trigger now",
-						hint: "run a schedule immediately",
+						label: "立即触发",
+						hint: "立即运行一个计划",
 					},
 					{
 						value: "pause",
-						label: "Pause schedule",
+						label: "暂停计划",
 					},
 					{
 						value: "resume",
-						label: "Resume schedule",
+						label: "恢复计划",
 					},
 					{
 						value: "history",
-						label: "Execution history",
-						hint: "view past runs",
+						label: "执行历史",
+						hint: "查看过去的运行",
 					},
 					{
 						value: "stats",
-						label: "Statistics",
-						hint: "success rate, duration, etc.",
+						label: "统计信息",
+						hint: "成功率、时长等。",
 					},
 					{
 						value: "delete",
-						label: "Delete schedule",
+						label: "删除计划",
 					},
 					{
 						value: "exit",
-						label: "Exit",
+						label: "退出",
 					},
 				],
 			});
@@ -515,7 +515,7 @@ export async function runScheduleWizard(): Promise<number> {
 			}
 		}
 
-		p.outro("Done");
+		p.outro("完成");
 		return 0;
 	} finally {
 		client.close();

@@ -14,17 +14,17 @@ export function ProviderRow({
 				{focused ? "❯" : " "}
 			</text>
 			<text fg={focused ? palette.selection : palette.act} flexShrink={0}>
-				Provider:
+				提供商：
 			</text>
 			<text fg="white">{providerName}</text>
 			{!focused && (
 				<text fg="gray" flexShrink={0}>
-					(tab to change provider)
+					（按 Tab 切换提供商）
 				</text>
 			)}
 			{focused && (
 				<text fg="gray" flexShrink={0}>
-					<em>Enter to change</em>
+					<em>按 Enter 切换</em>
 				</text>
 			)}
 		</box>

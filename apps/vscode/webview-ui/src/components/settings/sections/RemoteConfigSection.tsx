@@ -189,7 +189,7 @@ function OtelSettingsSection() {
 				)}
 				{remoteConfigSettings?.openTelemetryOtlpHeaders && (
 					<SettingRow
-						label="OTLP Headers"
+						label="OTLP 请求头"
 						value={`${Object.keys(remoteConfigSettings.openTelemetryOtlpHeaders).length} 个 header`}
 					/>
 				)}
@@ -197,7 +197,7 @@ function OtelSettingsSection() {
 					<SettingRow label="指标导出间隔" value={`${remoteConfigSettings.openTelemetryMetricExportInterval}ms`} />
 				)}
 				{remoteConfigSettings?.openTelemetryOtlpInsecure !== undefined && (
-					<SettingRow label="OTLP Insecure" value={remoteConfigSettings?.openTelemetryOtlpInsecure} />
+					<SettingRow label="OTLP 不安全连接" value={remoteConfigSettings?.openTelemetryOtlpInsecure} />
 				)}
 				{remoteConfigSettings?.openTelemetryLogBatchSize && (
 					<SettingRow label="日志批大小" value={remoteConfigSettings?.openTelemetryLogBatchSize} />
@@ -247,12 +247,12 @@ function PromptUploadingSection() {
 			</h4>
 			<div className="bg-vscode-textBlockQuote-background rounded p-3 mb-2">
 				<SettingRow label="存储类型" value={blobStoreConfig.adapterType?.toUpperCase()} />
-				<SettingRow label="Bucket" value={blobStoreConfig.bucket} />
+				<SettingRow label="存储桶" value={blobStoreConfig.bucket} />
 				<SettingRow label="区域" value={blobStoreConfig.region} />
 				{blobStoreConfig.endpoint && <SettingRow label="端点" value={blobStoreConfig.endpoint} />}
-				{blobStoreConfig.accountId && <SettingRow label="Account ID" value={blobStoreConfig.accountId} />}
-				<SettingRow isSecret label="Access Key ID" value={blobStoreConfig.accessKeyId} />
-				<SettingRow isSecret label="Secret Access Key" value={blobStoreConfig.secretAccessKey} />
+				{blobStoreConfig.accountId && <SettingRow label="账户 ID" value={blobStoreConfig.accountId} />}
+				<SettingRow isSecret label="访问密钥 ID" value={blobStoreConfig.accessKeyId} />
+				<SettingRow isSecret label="秘密访问密钥" value={blobStoreConfig.secretAccessKey} />
 				{blobStoreConfig.intervalMs && <SettingRow label="同步间隔" value={`${blobStoreConfig.intervalMs}ms`} />}
 				{blobStoreConfig.batchSize && <SettingRow label="批大小" value={blobStoreConfig.batchSize} />}
 				{blobStoreConfig.maxRetries && <SettingRow label="最大重试次数" value={blobStoreConfig.maxRetries} />}

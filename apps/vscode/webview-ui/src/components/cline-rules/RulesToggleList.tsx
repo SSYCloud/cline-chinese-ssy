@@ -52,7 +52,7 @@ const RulesToggleList = ({
 				<>
 					{showNoRules && (
 						<div className="flex flex-col items-center gap-3 my-3 text-(--vscode-descriptionForeground)">
-							{ruleType === "workflow" ? "No workflows found" : "No rules found"}
+							{ruleType === "workflow" ? "未找到工作流" : "未找到规则"}
 						</div>
 					)}
 					{showNewRule && <NewRuleRow isGlobal={isGlobal} ruleType={ruleType} />}

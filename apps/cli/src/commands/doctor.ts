@@ -548,39 +548,39 @@ export async function runDoctorCommand(
 			io.writeln(JSON.stringify(before));
 			return 0;
 		}
-		writeln(`cli version ${c.dim}${before.cliVersion}${c.reset}`);
-		writeln(`core version ${c.dim}${before.coreVersion ?? "n/a"}${c.reset}`);
-		writeln(`hub url ${c.dim}${before.hubUrl ?? "none"}${c.reset}`);
+		writeln(`cli 版本 ${c.dim}${before.cliVersion}${c.reset}`);
+		writeln(`core 版本 ${c.dim}${before.coreVersion ?? "n/a"}${c.reset}`);
+		writeln(`hub 地址 ${c.dim}${before.hubUrl ?? "无"}${c.reset}`);
 		writeln(
-			`hub healthy ${c.dim}${before.hubHealthy ? "yes" : "no"}${before.hubPid ? ` (pid=${before.hubPid})` : ""}${c.reset}`,
+			`hub 健康 ${c.dim}${before.hubHealthy ? "是" : "否"}${before.hubPid ? ` (pid=${before.hubPid})` : ""}${c.reset}`,
 		);
-		writeln(`hub uptime ${c.dim}${before.hubUptime ?? "n/a"}${c.reset}`);
-		writeln(formatPidList("hub listeners", before.listeningPids));
-		writeln(formatPidList("stale hub daemons", before.staleHubPids));
+		writeln(`hub 运行时长 ${c.dim}${before.hubUptime ?? "n/a"}${c.reset}`);
+		writeln(formatPidList("hub 监听进程", before.listeningPids));
+		writeln(formatPidList("过期的 hub 守护进程", before.staleHubPids));
 		writeln(
 			formatPidList(
-				"hub startup locks",
+				"hub 启动锁",
 				before.hubStartupLocks.map((a) => a.pid ?? -1).filter((pid) => pid > 0),
 			),
 		);
-		writeln(formatPidList("cli processes", before.staleCliPids));
-		writeln(formatPidList("sidecar processes", before.staleSidecarPids));
+		writeln(formatPidList("cli 进程", before.staleCliPids));
+		writeln(formatPidList("派生产品进程", before.staleSidecarPids));
 		if (before.activeConnectors.length === 0) {
-			writeln(`active connectors ${c.dim}0${c.reset}`);
+			writeln(`活动连接器 ${c.dim}0${c.reset}`);
 		} else {
-			writeln("active connectors:");
+			writeln("活动连接器:");
 			for (const record of before.activeConnectors) {
 				writeln(`- ${c.dim}${formatActiveConnector(record)}${c.reset}`);
 			}
 		}
 		if (before.supervisedConnectors?.length) {
-			writeln("hub-supervised connectors:");
+			writeln("hub 监管的连接器:");
 			for (const record of before.supervisedConnectors) {
 				writeln(`- ${c.dim}${formatSupervisedConnector(record)}${c.reset}`);
 			}
 		}
 		if (verbose && before.recentSpawnedProcesses.length > 0) {
-			writeln("recent spawned processes:");
+			writeln("最近派生的进程:");
 			for (const record of before.recentSpawnedProcesses) {
 				writeln(`- ${c.dim}${formatRecentSpawnedProcess(record)}${c.reset}`);
 			}
@@ -592,7 +592,7 @@ export async function runDoctorCommand(
 			before.staleSidecarPids.length > 0
 		) {
 			io.writeln(
-				"\nRun `cline doctor fix` to kill all stale local processes, including stale sidecars.",
+				"\n运行 `cline doctor fix` 以终止所有过期的本地进程，包括过期的派生产品。",
 			);
 		}
 		return 0;
@@ -656,33 +656,33 @@ export async function runDoctorCommand(
 		);
 		return 0;
 	}
-	writeln(`killed hub listeners ${c.dim}${killedHub}${c.reset}`);
-	writeln(`killed stale hub daemons ${c.dim}${killedStaleHubs}${c.reset}`);
-	writeln(`killed cli processes ${c.dim}${killedCli}${c.reset}`);
-	writeln(`killed sidecar processes ${c.dim}${killedSidecars}${c.reset}`);
+	writeln(`已终止 hub 监听进程 ${c.dim}${killedHub}${c.reset}`);
+	writeln(`已终止过期的 hub 守护进程 ${c.dim}${killedStaleHubs}${c.reset}`);
+	writeln(`已终止 cli 进程 ${c.dim}${killedCli}${c.reset}`);
+	writeln(`已终止派生产品进程 ${c.dim}${killedSidecars}${c.reset}`);
 	writeln(
-		`stopped connector processes ${c.dim}${stoppedConnectors.stoppedProcesses}${c.reset}`,
+		`已停止连接器进程 ${c.dim}${stoppedConnectors.stoppedProcesses}${c.reset}`,
 	);
 	writeln(
-		`stopped connector sessions ${c.dim}${stoppedConnectors.stoppedSessions}${c.reset}`,
+		`已停止连接器会话 ${c.dim}${stoppedConnectors.stoppedSessions}${c.reset}`,
 	);
 	writeln(
-		`cleared hub startup locks ${c.dim}${clearedArtifacts.startupLocks}${c.reset}`,
+		`已清除 hub 启动锁 ${c.dim}${clearedArtifacts.startupLocks}${c.reset}`,
 	);
 	writeln(
-		`cleared hub discovery records ${c.dim}${clearedArtifacts.discovery}${c.reset}`,
+		`已清除 hub 发现记录 ${c.dim}${clearedArtifacts.discovery}${c.reset}`,
 	);
-	writeln(`hub healthy after fix: ${after.hubHealthy ? "yes" : "no"}`);
-	writeln(formatPidList("remaining hub listeners", after.listeningPids));
-	writeln(formatPidList("remaining stale hub daemons", after.staleHubPids));
+	writeln(`修复后 hub 是否健康: ${after.hubHealthy ? "是" : "否"}`);
+	writeln(formatPidList("剩余的 hub 监听进程", after.listeningPids));
+	writeln(formatPidList("剩余的过期 hub 守护进程", after.staleHubPids));
 	writeln(
 		formatPidList(
-			"remaining hub startup locks",
+			"剩余的 hub 启动锁",
 			after.hubStartupLocks.map((a) => a.pid ?? -1).filter((pid) => pid > 0),
 		),
 	);
-	writeln(formatPidList("remaining cli processes", after.staleCliPids));
-	writeln(formatPidList("remaining sidecar processes", after.staleSidecarPids));
+	writeln(formatPidList("剩余的 cli 进程", after.staleCliPids));
+	writeln(formatPidList("剩余的派生产品进程", after.staleSidecarPids));
 	return 0;
 }
 
@@ -692,11 +692,11 @@ export function createDoctorCommand(
 	deps: DoctorCommandDeps = {},
 ): Command {
 	const doctor = new Command("doctor")
-		.description("Diagnose and fix local process issues")
+		.description("诊断并修复本地进程问题")
 		.exitOverride()
-		.option("--cwd <path>", "Workspace root", process.cwd())
-		.option("--json", "Output as JSON")
-		.option("-v, --verbose", "Show additional diagnostic details")
+		.option("--cwd <path>", "工作区根目录", process.cwd())
+		.option("--json", "以 JSON 格式输出")
+		.option("-v, --verbose", "显示额外的诊断详情")
 		.action(async function (this: Command) {
 			const opts = this.opts<{
 				cwd: string;
@@ -708,10 +708,10 @@ export function createDoctorCommand(
 
 	doctor
 		.command("fix")
-		.description("Kill all running processes")
-		.option("--cwd <path>", "Workspace root", process.cwd())
-		.option("--json", "Output as JSON")
-		.option("-v, --verbose", "Show additional diagnostic details")
+		.description("终止所有运行中的进程")
+		.option("--cwd <path>", "工作区根目录", process.cwd())
+		.option("--json", "以 JSON 格式输出")
+		.option("-v, --verbose", "显示额外的诊断详情")
 		.action(async function (this: Command) {
 			const opts = this.opts<{
 				cwd: string;
@@ -723,18 +723,18 @@ export function createDoctorCommand(
 
 	doctor
 		.command("log")
-		.description("Open the CLI log file")
+		.description("打开 CLI 日志文件")
 		.action(async () => {
 			const logPath = resolveCliLogPath();
 			const openPath = deps.openPath ?? defaultOpenPath;
 			try {
 				ensureFileExists(logPath);
 				await openPath(logPath);
-				io.writeln(`Opening logs stored at ${logPath}`);
+				io.writeln(`正在打开存放在 ${logPath} 的日志`);
 				setExitCode(0);
 			} catch (error) {
 				const message = error instanceof Error ? error.message : String(error);
-				io.writeErr(`failed to open log file "${logPath}": ${message}`);
+				io.writeErr(`打开日志文件 "${logPath}" 失败: ${message}`);
 				setExitCode(1);
 			}
 		});

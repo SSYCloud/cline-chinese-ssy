@@ -108,7 +108,7 @@ export const SSYAccountView = ({ mode = "personal" }: SSYAccountViewProps) => {
 				<div className="flex flex-col w-full">
 					<div className="flex items-center mb-6 flex-wrap gap-y-4 mt-4">
 						{userInfo.photoUrl ? (
-							<img alt="Profile" className="size-16 rounded-full mr-4" src={userInfo.photoUrl} />
+							<img alt="头像" className="size-16 rounded-full mr-4" src={userInfo.photoUrl} />
 						) : (
 							<div className="size-16 rounded-full bg-(--vscode-button-background) flex items-center justify-center text-2xl text-[var(--vscode-button-foreground)] mr-4">
 								{userInfo.displayName?.[0] || userInfo.email?.[0] || "?"}

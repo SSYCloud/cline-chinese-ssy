@@ -157,7 +157,7 @@ async function dispatchHookPayload(
 		}
 		if (isDev) {
 			writeErr(
-				`hook dispatch failed: ${error instanceof Error ? error.message : String(error)}`,
+				`钩子调度失败: ${error instanceof Error ? error.message : String(error)}`,
 			);
 		}
 	}
@@ -316,7 +316,7 @@ export function createRuntimeHooks(options: {
 								hookName,
 								iteration: result.iterations,
 								error: serializeHookError(
-									result.error ?? new Error("Agent run failed"),
+									result.error ?? new Error("代理运行失败"),
 								),
 								taskCancel: { taskMetadata: {} },
 							},

@@ -15,12 +15,12 @@ const CLI_COMPACTION_MODE_ALIASES: Record<string, CliCompactionMode> = {
 
 const CLI_COMPACTION_MODE_LABELS = {
 	agentic: "LLM",
-	basic: "Truncation",
-	off: "Off",
+	basic: "截断",
+	off: "关闭",
 } as const satisfies Record<CliCompactionMode, string>;
 
 export const CLI_COMPACTION_MODE_OPTION_DESCRIPTION =
-	"Context compaction mode: agentic|basic|off (default: agentic)";
+	"上下文压缩模式: agentic|basic|off（默认: agentic）";
 
 export const CLI_COMPACTION_MODE_EXPECTED_TEXT = '"agentic", "basic", or "off"';
 

@@ -78,7 +78,7 @@ const open: typeof realOpen = async (target, options) => {
 	) {
 		const script = packagedXdgOpenScript();
 		if (!script) {
-			throw new Error("Cannot open browser: xdg-open is not available");
+			throw new Error("无法打开浏览器: xdg-open 不可用");
 		}
 		return realOpen(target, { ...options, app: { name: script } });
 	}

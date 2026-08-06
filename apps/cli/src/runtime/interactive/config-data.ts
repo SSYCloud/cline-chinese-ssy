@@ -88,7 +88,7 @@ export function createInteractiveConfigDataLoader(input: {
 				});
 				if (ownedMcpMutations.length > 0 && result.failures.length > 0) {
 					throw new Error(
-						`Failed to sync plugin MCP servers: ${result.failures
+						`同步插件 MCP 服务器失败：${result.failures
 							.map((failure) => {
 								const plugin = failure.pluginName ?? failure.pluginPath;
 								return `${plugin}: ${failure.message}`;

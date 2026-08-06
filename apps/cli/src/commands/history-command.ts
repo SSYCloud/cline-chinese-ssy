@@ -39,11 +39,11 @@ export function registerHistoryCommand({
 	const historyCmd = program
 		.command("history")
 		.alias("h")
-		.description("List session history or manage saved sessions")
-		.option("--json", "Output as JSON")
-		.option("--limit <count>", "Maximum number of sessions to show", "50")
-		.option("--page <number>", "Page number for paginated results")
-		.option("--config <dir>", "configuration directory")
+		.description("列出会话历史或管理已保存的会话")
+		.option("--json", "以 JSON 格式输出")
+		.option("--limit <count>", "要显示的最大会话数", "50")
+		.option("--page <number>", "分页结果的页码")
+		.option("--config <dir>", "配置目录")
 		.action(async () => {
 			const opts = historyCmd.opts();
 			const limit = Number.parseInt(opts.limit, 10);
@@ -63,12 +63,12 @@ export function registerHistoryCommand({
 
 	const historyDeleteCmd = historyCmd
 		.command("delete")
-		.description("Delete a session from history")
-		.option("--session-id <id>", "Session ID to delete")
+		.description("从历史中删除会话")
+		.option("--session-id <id>", "要删除的会话 ID")
 		.action(async () => {
 			const opts = historyDeleteCmd.opts();
 			if (!opts.sessionId) {
-				io.writeErr("history delete requires --session-id <id>");
+				io.writeErr("history delete 需要 --session-id <id>");
 				setExitCode(1);
 				return;
 			}
@@ -78,15 +78,15 @@ export function registerHistoryCommand({
 
 	const historyUpdateCmd = historyCmd
 		.command("update")
-		.description("Update a session in history")
-		.option("--metadata <json>", "Metadata as JSON string")
-		.option("--prompt <text>", "New prompt text")
-		.option("--session-id <id>", "Session ID to update")
-		.option("--title <text>", "New title")
+		.description("更新历史中的会话")
+		.option("--metadata <json>", "作为 JSON 字符串的元数据")
+		.option("--prompt <text>", "新的提示文本")
+		.option("--session-id <id>", "要更新的会话 ID")
+		.option("--title <text>", "新标题")
 		.action(async () => {
 			const opts = historyUpdateCmd.opts();
 			if (!opts.sessionId) {
-				io.writeErr("history update requires --session-id <id>");
+				io.writeErr("history update 需要 --session-id <id>");
 				setExitCode(1);
 				return;
 			}
@@ -105,8 +105,8 @@ export function registerHistoryCommand({
 
 	const historyExportCmd = historyCmd
 		.command("export <sessionId>")
-		.description("Export a session as a standalone HTML file")
-		.option("-o, --output <path>", "Output HTML file path")
+		.description("将会话导出为独立的 HTML 文件")
+		.option("-o, --output <path>", "输出的 HTML 文件路径")
 		.action(async (sessionId: string) => {
 			const opts = historyExportCmd.opts();
 			const outputMode = resolveHistoryOutputMode(program, historyCmd);

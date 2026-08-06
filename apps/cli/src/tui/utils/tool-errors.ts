@@ -42,14 +42,14 @@ function summarizeInvalidInput(message: string): string | undefined {
 		/^Tool call\s+([A-Za-z0-9_-]+)\s+was rejected before execution:\s+Invalid input for tool\s+([A-Za-z0-9_-]+):\s*([^.\n]+)(?:\.|\n|$)/,
 	);
 	if (rejected) {
-		return `Invalid ${rejected[2]} input; tool call skipped.`;
+		return `无效的 ${rejected[2]} 输入；工具调用已跳过。`;
 	}
 
 	const invalid = message.match(
 		/^Invalid input for tool\s+([A-Za-z0-9_-]+):\s*([^.\n]+)(?:\.|\n|$)/,
 	);
 	if (invalid) {
-		return `Invalid ${invalid[1]} input; tool call skipped.`;
+		return `无效的 ${invalid[1]} 输入；工具调用已跳过。`;
 	}
 
 	return undefined;
@@ -66,11 +66,11 @@ function truncateSummary(text: string): string {
 function summarizeErrorDetail(detail: string): string {
 	const trimmed = detail.trim();
 	if (!trimmed) {
-		return "Tool failed.";
+		return "工具执行失败。";
 	}
 
 	if (trimmed.startsWith("{") || trimmed.startsWith("[")) {
-		return "Tool returned a structured error.";
+		return "工具返回了结构化错误。";
 	}
 
 	const firstLine =
@@ -78,7 +78,7 @@ function summarizeErrorDetail(detail: string): string {
 			.replace(/\r\n/g, "\n")
 			.split("\n")
 			.map((line) => line.trim())
-			.find(Boolean) ?? "Tool failed.";
+			.find(Boolean) ?? "工具执行失败。";
 	const withoutGenericPrefix = firstLine.replace(/^Error:\s+/i, "");
 
 	return truncateSummary(withoutGenericPrefix.replace(/\s+/g, " "));
@@ -101,7 +101,7 @@ export function getToolErrorPresentation(error: string): ToolErrorPresentation {
 	if (rejected) {
 		return {
 			severity: "warning",
-			summary: `${rejected[1]} call was skipped before execution.`,
+			summary: `${rejected[1]} 调用在执行前被跳过。`,
 			detail,
 		};
 	}

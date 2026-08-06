@@ -31,7 +31,7 @@ export async function dispatchConnectorHook(
 			cwd: process.cwd(),
 			env: process.env,
 			onSpawn: ({ command, pid, detached }) => {
-				logger.core.log("Process spawned", {
+				logger.core.log("进程已生成", {
 					component: "connector-hooks",
 					command: command.join(" "),
 					commandArgs: command.slice(1),
@@ -45,7 +45,7 @@ export async function dispatchConnectorHook(
 			},
 		});
 		if ((result?.exitCode ?? 0) !== 0) {
-			logger.core.log("Connector hook exited non-zero", {
+			logger.core.log("连接器钩子以非零码退出", {
 				severity: "warn",
 				adapter: hookPayload.adapter,
 				event: hookPayload.event,
@@ -54,12 +54,12 @@ export async function dispatchConnectorHook(
 			});
 		}
 	} catch (error) {
-		logger.core.log("Connector hook dispatch failed", {
-			severity: "warn",
-			adapter: hookPayload.adapter,
-			event: hookPayload.event,
-			error,
-		});
+		logger.core.log("连接器钩子分发失败", {
+		severity: "warn",
+		adapter: hookPayload.adapter,
+		event: hookPayload.event,
+		error,
+	});
 	}
 }
 
@@ -92,7 +92,7 @@ export async function authorizeConnectorEvent(
 				cwd: process.cwd(),
 				env: process.env,
 				onSpawn: ({ command, pid, detached }) => {
-					logger.core.log("Process spawned", {
+					logger.core.log("进程已生成", {
 						component: "connector-hooks",
 						command: command.join(" "),
 						commandArgs: command.slice(1),
@@ -114,7 +114,7 @@ export async function authorizeConnectorEvent(
 			return parsed.data;
 		}
 		if ((result?.exitCode ?? 0) !== 0) {
-			logger.core.log("Connector authorization hook exited non-zero", {
+			logger.core.log("连接器授权钩子以非零码退出", {
 				severity: "warn",
 				adapter: input.adapter,
 				event: "session.authorize",
@@ -123,7 +123,7 @@ export async function authorizeConnectorEvent(
 			});
 		}
 		if (result?.parseError || result?.stdout.trim()) {
-			logger.core.log("Connector authorization hook returned invalid control", {
+			logger.core.log("连接器授权钩子返回了无效的控制", {
 				severity: "warn",
 				adapter: input.adapter,
 				event: "session.authorize",
@@ -132,7 +132,7 @@ export async function authorizeConnectorEvent(
 			});
 		}
 	} catch (error) {
-		logger.core.log("Connector authorization hook dispatch failed", {
+		logger.core.log("连接器授权钩子分发失败", {
 			severity: "warn",
 			adapter: input.adapter,
 			event: "session.authorize",

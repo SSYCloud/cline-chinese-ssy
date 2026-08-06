@@ -63,7 +63,7 @@ export function ClineModelPicker(props: {
 		return (
 			<box flexDirection="row" gap={1} paddingX={1}>
 				<spinner name="dots" color="gray" />
-				<text fg="gray">Loading models...</text>
+				<text fg="gray">正在加载模型...</text>
 			</box>
 		);
 	}
@@ -127,7 +127,7 @@ export function ClineModelPicker(props: {
 					))}
 					{isCurrent && (
 						<text fg={isSel ? palette.textOnSelection : "gray"} flexShrink={0}>
-							(current)
+							(当前)
 						</text>
 					)}
 				</box>,
@@ -146,7 +146,7 @@ export function ClineModelPicker(props: {
 						{isSel ? "\u276f" : " "}
 					</text>
 					<text fg={isSel ? palette.textOnSelection : "gray"}>
-						Browse all models...
+						浏览所有模型...
 					</text>
 				</box>,
 			);

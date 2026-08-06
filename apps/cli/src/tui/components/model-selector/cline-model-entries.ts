@@ -23,9 +23,9 @@ export const CLINE_MODEL_PICKER_TIER_LABELS: Record<
 	ClineModelPickerTier,
 	string
 > = {
-	recommended: "Recommended",
-	subscribed: "Subscribed",
-	free: "Free",
+	recommended: "推荐",
+	subscribed: "已订阅",
+	free: "免费",
 };
 
 // Featured entries for the sectioned picker, keyed by provider: cline gets

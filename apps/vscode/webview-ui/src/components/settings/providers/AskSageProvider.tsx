@@ -90,7 +90,7 @@ export const AskSageProvider = ({ showModelOptions, isPopup, currentMode }: AskS
 	return (
 		<div>
 			<ApiKeyField
-				helpText="This key is stored locally and only used to make API requests from this extension."
+				helpText="此密钥仅存储在本地，仅用于从此扩展发起 API 请求。"
 				initialValue={apiConfiguration?.asksageApiKey || ""}
 				onChange={(value) => handleFieldChange("asksageApiKey", value)}
 				providerName="AskSage"
@@ -99,7 +99,7 @@ export const AskSageProvider = ({ showModelOptions, isPopup, currentMode }: AskS
 			<DebouncedTextField
 				initialValue={apiConfiguration?.asksageApiUrl || askSageDefaultURL}
 				onChange={handleApiUrlChange}
-				placeholder="Enter AskSage API URL..."
+				placeholder="输入 AskSage API URL..."
 				style={{ width: "100%" }}
 				type="text">
 				<span style={{ fontWeight: 500 }}>AskSage API URL</span>
@@ -108,7 +108,7 @@ export const AskSageProvider = ({ showModelOptions, isPopup, currentMode }: AskS
 			{showModelOptions && (
 				<>
 					<ModelSelector
-						label="Model"
+						label="模型"
 						models={availableModels}
 						onChange={(e) =>
 							handleModeFieldChange(

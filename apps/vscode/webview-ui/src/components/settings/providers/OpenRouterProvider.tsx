@@ -18,7 +18,7 @@ const OpenRouterBalanceDisplay = ({ apiKey }: { apiKey: string }) => {
 	const { data: keyInfo, isLoading, error } = useOpenRouterKeyInfo(apiKey)
 
 	if (isLoading) {
-		return <span style={{ fontSize: "12px", color: "var(--vscode-descriptionForeground)" }}>Loading...</span>
+		return <span style={{ fontSize: "12px", color: "var(--vscode-descriptionForeground)" }}>正在加载...</span>
 	}
 
 	if (error || !keyInfo || keyInfo.limit === null) {
@@ -41,8 +41,8 @@ const OpenRouterBalanceDisplay = ({ apiKey }: { apiKey: string }) => {
 				paddingLeft: 4,
 				cursor: "pointer",
 			}}
-			title={`Remaining balance: ${formattedBalance}\nLimit: ${formatPrice(keyInfo.limit)}\nUsage: ${formatPrice(keyInfo.usage)}`}>
-			Balance: {formattedBalance}
+			title={`剩余余额：${formattedBalance}\n限额：${formatPrice(keyInfo.limit)}\n用量：${formatPrice(keyInfo.usage)}`}>
+			余额：{formattedBalance}
 		</VSCodeLink>
 	)
 }
@@ -81,11 +81,11 @@ export const OpenRouterProvider = ({ showModelOptions, isPopup, currentMode }: O
 				<DebouncedTextField
 					initialValue={savedApiKeyMask}
 					onChange={handleApiKeyChange}
-					placeholder="Enter API Key..."
+					placeholder="输入 API 密钥..."
 					style={{ width: "100%" }}
 					type="password">
 					<div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
-						<span style={{ fontWeight: 500 }}>OpenRouter API Key</span>
+						<span style={{ fontWeight: 500 }}>OpenRouter API 密钥</span>
 						{openRouterApiKey && <OpenRouterBalanceDisplay apiKey={openRouterApiKey} />}
 					</div>
 				</DebouncedTextField>
@@ -100,7 +100,7 @@ export const OpenRouterProvider = ({ showModelOptions, isPopup, currentMode }: O
 							}
 						}}
 						style={{ margin: "5px 0 0 0" }}>
-						Get OpenRouter API Key
+						获取 OpenRouter API 密钥
 					</VSCodeButton>
 				)}
 				<p
@@ -109,7 +109,7 @@ export const OpenRouterProvider = ({ showModelOptions, isPopup, currentMode }: O
 						marginTop: "5px",
 						color: "var(--vscode-descriptionForeground)",
 					}}>
-					This key is stored locally and only used to make API requests from this extension.
+					此密钥仅存储在本地，仅用于从此扩展发起 API 请求。
 				</p>
 			</div>
 

@@ -40,7 +40,7 @@ async function requestDesktopToolApprovalFromCore(
 				).requestDesktopToolApproval;
 				if (typeof fn !== "function") {
 					throw new Error(
-						"Installed @cline/core does not expose requestDesktopToolApproval",
+						"已安装的 @cline/core 未暴露 requestDesktopToolApproval",
 					);
 				}
 				return fn;
@@ -48,7 +48,7 @@ async function requestDesktopToolApprovalFromCore(
 			.catch(() => {
 				return async () => ({
 					approved: false,
-					reason: "Desktop tool approval IPC is not available",
+					reason: "桌面工具审批 IPC 不可用",
 				});
 			});
 	}
@@ -68,7 +68,7 @@ async function requestTerminalToolApproval(
 	if (!process.stdin.isTTY || !process.stdout.isTTY) {
 		return {
 			approved: false,
-			reason: `Tool "${request.toolName}" requires approval in a TTY session`,
+			reason: `工具 "${request.toolName}" 需要在 TTY 会话中获得审批`,
 		};
 	}
 	const preview = truncate(JSON.stringify(request.input), 160);
@@ -78,7 +78,7 @@ async function requestTerminalToolApproval(
 			output: process.stdout,
 		});
 		rl.question(
-			`\n${c.yellow}Approve ${c.green}"${request.toolName}" ${c.dim}${preview} ${c.reset}[y/N] `,
+			`\n${c.yellow}批准 ${c.green}"${request.toolName}" ${c.dim}${preview} ${c.reset}[y/N] `,
 			(value) => {
 				rl.close();
 				resolve(value);
@@ -91,7 +91,7 @@ async function requestTerminalToolApproval(
 	}
 	return {
 		approved: false,
-		reason: `Tool "${request.toolName}" was denied by user`,
+		reason: `工具 "${request.toolName}" 已被用户拒绝`,
 	};
 }
 
@@ -127,7 +127,7 @@ export async function askQuestionInTerminal(
 			output: process.stdout,
 		});
 
-		write(`\n${c.dim}[follow-up]${c.reset} ${question}\n`);
+		write(`\n${c.dim}[追问]${c.reset} ${question}\n`);
 		for (const [index, option] of options.entries()) {
 			write(`${c.dim}  ${index + 1}.${c.reset} ${option}\n`);
 		}
@@ -135,7 +135,7 @@ export async function askQuestionInTerminal(
 		// normal blinking insertion point for the follow-up.
 		write(SHOW_TERMINAL_CURSOR);
 		write(
-			`${c.dim}Choose 1-${options.length} or type a custom answer:${c.reset}\n${c.green}>${c.reset} `,
+			`${c.dim}选择 1-${options.length} 或输入自定义答案:${c.reset}\n${c.green}>${c.reset} `,
 		);
 
 		rl.question("", (value) => {
@@ -164,5 +164,5 @@ export async function submitAndExitInTerminal(
 	verified: boolean,
 ): Promise<string> {
 	const status = verified ? "verified" : "unverified";
-	return `Submission recorded (${status}): ${summary}`;
+	return `已记录提交 (${status}): ${summary}`;
 }

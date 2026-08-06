@@ -96,7 +96,7 @@ const SpendLimitError: React.FC<SpendLimitErrorProps> = ({ message, budgetPeriod
 				<div className="mb-3">
 					{spentUsd != null && limitUsd != null && (
 						<div className="text-foreground" style={{ fontSize: "var(--vscode-font-size)", lineHeight: 1.3 }}>
-							{periodLabel ? `${periodLabel} usage` : "Usage"}:{" "}
+							{periodLabel ? `${periodLabel} 用量` : "用量"}：{" "}
 							<span className="font-bold">
 								${spentUsd.toFixed(2)} / ${limitUsd.toFixed(2)}
 							</span>
@@ -105,13 +105,13 @@ const SpendLimitError: React.FC<SpendLimitErrorProps> = ({ message, budgetPeriod
 
 					{resetsAtFormatted && (
 						<div className="text-foreground" style={{ fontSize: "var(--vscode-font-size)", lineHeight: 1.3 }}>
-							Resets: <span className="font-bold">{resetsAtFormatted}</span>
+							重置时间：<span className="font-bold">{resetsAtFormatted}</span>
 						</div>
 					)}
 
 					<div className="text-(--vscode-descriptionForeground) mt-2 text-xs inline-flex items-center">
 						<span className="codicon codicon-organization mr-1" />
-						Limits set by your organization.
+						限额由你的组织设置。
 					</div>
 				</div>
 			</div>
@@ -124,17 +124,17 @@ const SpendLimitError: React.FC<SpendLimitErrorProps> = ({ message, budgetPeriod
 				{buttonState === "sending" ? (
 					<>
 						<span className="codicon codicon-loading codicon-modifier-spin mr-1.5" />
-						Sending…
+						发送中…
 					</>
 				) : buttonState === "sent" ? (
 					<>
 						<span className="codicon codicon-check mr-1.5" />
-						Request Sent
+						请求已发送
 					</>
 				) : (
 					<>
 						<span className="codicon codicon-arrow-up mr-1.5" />
-						Request Increase
+						申请提高限额
 					</>
 				)}
 			</VSCodeButton>

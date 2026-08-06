@@ -314,7 +314,7 @@ function App(props: TuiProps) {
 			setAppView("chat");
 			session.appendEntry({
 				kind: "error",
-				text: `Clear failed: ${error instanceof Error ? error.message : String(error)}`,
+				text: `清除失败：${error instanceof Error ? error.message : String(error)}`,
 			});
 		} finally {
 			refocusTextareaRef.current();
@@ -323,11 +323,11 @@ function App(props: TuiProps) {
 
 	const openCheckpointRestore = useCallback(async () => {
 		if (checkpointRestoreInFlightRef.current) {
-			showToast("Checkpoint restore already in progress", "info");
+			showToast("检查点恢复已在进行中", "info");
 			return;
 		}
 		if (session.isRunning) {
-			showToast("Wait for the current run to finish before restoring", "info");
+			showToast("请等待当前运行结束后再恢复", "info");
 			return;
 		}
 		checkpointRestoreInFlightRef.current = true;
@@ -335,17 +335,17 @@ function App(props: TuiProps) {
 		try {
 			const data = await props.getCheckpointData();
 			if (!data) {
-				showToast("No checkpoint data available", "error");
+				showToast("没有可用的检查点数据", "error");
 				return;
 			}
 			const { messages: rawMessages, checkpointHistory } = data;
 			if (checkpointHistory.length === 0) {
-				showToast("No checkpoints available", "info");
+				showToast("没有可用的检查点", "info");
 				return;
 			}
 			const items = buildCheckpointPickerItems(rawMessages, checkpointHistory);
 			if (items.length === 0) {
-				showToast("No checkpoints to restore", "info");
+				showToast("没有可恢复的检查点", "info");
 				return;
 			}
 
@@ -374,7 +374,7 @@ function App(props: TuiProps) {
 			const restoreWorkspace = restoreMode === "chat-and-workspace";
 			session.appendEntry({
 				kind: "status",
-				text: `Restoring to checkpoint${restoreWorkspace ? " (chat + workspace)" : " (chat only)"}...`,
+				text: `正在恢复到检查点${restoreWorkspace ? "（聊天 + 工作区）" : "（仅聊天）"}...`,
 			});
 			restoreStatusEntryAppended = true;
 			const result = await props.onRestoreCheckpoint(
@@ -384,7 +384,7 @@ function App(props: TuiProps) {
 			if (!result) {
 				session.updateLastEntry(() => ({
 					kind: "error",
-					text: "Checkpoint restore failed: no result returned.",
+					text: "检查点恢复失败：未返回结果。",
 				}));
 				return;
 			}
@@ -407,9 +407,9 @@ function App(props: TuiProps) {
 			// <user_input mode="..."> envelope, which must not leak into the
 			// input box the user is about to edit and re-send.
 			populateInputRef.current(formatDisplayUserInput(picked.fullText));
-			showToast("Restored to checkpoint", "success");
+			showToast("已恢复到检查点", "success");
 		} catch (error) {
-			const message = `Checkpoint restore failed: ${error instanceof Error ? error.message : String(error)}`;
+			const message = `检查点恢复失败：${error instanceof Error ? error.message : String(error)}`;
 			if (restoreStatusEntryAppended) {
 				session.updateLastEntry(() => ({
 					kind: "error",
@@ -440,7 +440,7 @@ function App(props: TuiProps) {
 				await import("../utils/open")
 					.then(({ default: open }) => open(SKILLS_MARKETPLACE_URL))
 					.catch(() => {
-						showToast(`Visit ${SKILLS_MARKETPLACE_URL}`, "info");
+						showToast(`访问 ${SKILLS_MARKETPLACE_URL}`, "info");
 					});
 				if (invocation) {
 					removeLocalCommandInvocationRef.current(invocation);
@@ -524,7 +524,7 @@ function App(props: TuiProps) {
 				.onUpdatePendingPrompt({ promptId, delivery: "steer" })
 				.catch((error) => {
 					showToast(
-						`Could not steer queued message: ${error instanceof Error ? error.message : String(error)}`,
+						`无法发送排队的消息：${error instanceof Error ? error.message : String(error)}`,
 						"error",
 					);
 				});
@@ -770,7 +770,7 @@ function App(props: TuiProps) {
 			if (!promptId) return;
 			const prompt = text.trim();
 			if (!prompt) {
-				showToast("Queued message cannot be empty", "error");
+				showToast("排队的消息不能为空", "error");
 				return;
 			}
 			try {
@@ -780,7 +780,7 @@ function App(props: TuiProps) {
 				refocusTextareaRef.current();
 			} catch (error) {
 				showToast(
-					`Could not update queued message: ${error instanceof Error ? error.message : String(error)}`,
+					`无法更新排队的消息：${error instanceof Error ? error.message : String(error)}`,
 					"error",
 				);
 			}

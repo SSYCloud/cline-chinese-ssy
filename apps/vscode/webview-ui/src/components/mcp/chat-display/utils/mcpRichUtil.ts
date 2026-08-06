@@ -344,7 +344,7 @@ export const processResponseUrls = (
 			// Process URLs in the background
 			await processUrlTypes(matches, onMatchesUpdated, cancellationToken)
 		} catch (_error) {
-			onError("Failed to process response content. Switch to plain text mode to view safely.")
+			onError("处理响应内容失败，请切换到纯文本模式安全查看。")
 		}
 	}
 

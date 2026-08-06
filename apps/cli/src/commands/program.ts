@@ -23,82 +23,82 @@ function normalizeAutoApproveValue(
 export function addRootOptions(cmd: Command): Command {
 	return (
 		cmd
-			.option("-p, --plan", "Run in plan mode")
-			.option("--json", "Output messages as JSON instead of styled text")
+			.option("-p, --plan", "以规划模式运行")
+			.option("--json", "以 JSON 格式输出消息而不是带样式的文本")
 			.option(
 				"--auto-approve <boolean>",
-				"Set tool auto-approval for all tools (default: true)",
+				"为所有工具设置工具自动批准（默认：true）",
 				normalizeAutoApproveValue,
 			)
-			.option("-c, --cwd <path>", "Working directory")
+			.option("-c, --cwd <path>", "工作目录")
 			.option(
 				"--thinking <level>",
-				"Set reasoning effort: none|low|medium|high|xhigh. Bare --thinking uses medium; omitted leaves provider default.",
+				"设置思考强度：none|low|medium|high|xhigh。仅使用 --thinking 时采用 medium；省略则使用提供方默认值。",
 			)
 			.option("--compaction <mode>", CLI_COMPACTION_MODE_OPTION_DESCRIPTION)
 			.option(
 				"-i, --tui",
-				"Open the terminal user interface (TUI) for interactive sessions",
+				"为交互式会话打开终端用户界面（TUI）",
 			)
-			.option("--id <session-id>", "Resume an existing session by ID")
-			.option("-P, --provider <id>", "Provider id (default: cline)")
-			.option("-k, --key <api-key>", "API key override for this run")
+			.option("--id <session-id>", "通过 ID 恢复现有会话")
+			.option("-P, --provider <id>", "提供方 ID（默认：cline）")
+			.option("-k, --key <api-key>", "本次运行的 API 密钥覆盖")
 			.option(
 				"-m, --model <model-id>",
-				"Model to use for the session with the selected provider",
+				"用于所选提供方会话的模型",
 			)
 			.option(
 				"-s, --system <system-prompt>",
-				"Override the default system prompt",
+				"覆盖默认系统提示",
 			)
-			.option("-z, --zen", "Start a session that runs in the background hub")
+			.option("-z, --zen", "在后台 hub 中启动一个会话")
 			.option(
 				"--retries [value]",
-				"Number of maximum consecutive mistakes (retries) before exiting (default: 6)",
+				"退出前允许的最大连续错误次数（重试）（默认：6）",
 			)
 			.option(
 				"-t, --timeout <seconds>",
-				"Optional timeout in seconds (default: 0 for no timeout)",
+				"可选的超时秒数（默认：0 表示无超时）",
 			)
 			.option(
 				"--acp",
-				"Run in Agent Client Protocol (ACP) mode for editor integration",
+				"以 Agent Client Protocol（ACP）模式运行以集成编辑器",
 			)
-			.option("--config <path>", "Configuration directory (default: ~/.cline)")
+			.option("--config <path>", "配置目录（默认：~/.cline）")
 			.option(
 				"--data-dir <path>",
-				"Use isolated local state at this directory path (default: ~/.cline/data)",
+				"在此目录路径使用隔离的本地状态（默认：~/.cline/data）",
 			)
 			.option(
 				"--hooks-dir <path>",
-				"Directory path to additional hooks for runtime hook injection (default: ~/.cline/hooks)",
+				"用于运行时钩子注入的附加钩子目录路径（默认：~/.cline/hooks）",
 			)
 			.option(
 				"--worktree",
-				"Auto-create a detached git worktree under ~/.cline/worktrees/ and run the task there",
+				"在 ~/.cline/worktrees/ 下自动创建分离的 git worktree 并在其中运行任务",
 			)
-			.option("--update", "Check for updates and install if available")
-			.option("--kanban", "Run the kanban app")
-			.option("-v, --verbose", "Show verbose output")
+			.option("--update", "检查更新并在可用时安装")
+			.option("--kanban", "运行 kanban 应用")
+			.option("-v, --verbose", "显示详细输出")
 			// HIDDEN/LEGACY OPTIONS BELOW
 			.addOption(
 				// Act mode is the default. Keep the legacy flags accepted for users who
 				// still pass them, but do not advertise them in help output.
-				new Option("-a, --act", "Run in act mode").hideHelp(),
+				new Option("-a, --act", "以执行模式运行").hideHelp(),
 			)
 			.addOption(
 				// `-y, --yolo` is still accepted (and behaves the same as before) but
 				// hidden from `--help` output.
 				new Option(
 					"-y, --yolo",
-					"Enable yolo mode where agents can use tools without approval with only a small set of tools available.",
+					"启用 yolo 模式，agent 可以在无需批准的情况下使用工具，仅提供少量工具。",
 				).hideHelp(),
 			)
 			.addOption(
 				// TODO: Refactor teams to resume session without team name
 				new Option(
 					"--team-name <name>",
-					"Override the runtime team state name",
+					"覆盖运行时团队状态名称",
 				).hideHelp(),
 			)
 	);
@@ -106,8 +106,8 @@ export function addRootOptions(cmd: Command): Command {
 
 export function createProgram(): Command {
 	const program = new Command("cline")
-		.description("Cline CLI - AI coding assistant in your terminal")
-		.version(version, "-V, --version", "Output the version number")
+		.description("Cline CLI - 终端中的 AI 编程助手")
+		.version(version, "-V, --version", "输出版本号")
 		.exitOverride() // don't call process.exit
 		.configureOutput({
 			writeOut: () => {}, // suppress by default; main.ts re-enables for routing
@@ -117,7 +117,7 @@ export function createProgram(): Command {
 		.enablePositionalOptions()
 		.argument(
 			"[prompt]",
-			"Your prompt. Default to start in act mode with auto-approve enabled.",
+			"你的提示。默认以执行模式启动并启用自动批准。",
 		);
 
 	addRootOptions(program);

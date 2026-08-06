@@ -40,9 +40,7 @@ const ServersToggleList = ({
 			))}
 		</div>
 	) : (
-		<div className="flex flex-col items-center gap-3 my-5 text-(--vscode-descriptionForeground)">
-			No MCP servers installed
-		</div>
+		<div className="flex flex-col items-center gap-3 my-5 text-(--vscode-descriptionForeground)">未安装 MCP 服务器</div>
 	)
 }
 

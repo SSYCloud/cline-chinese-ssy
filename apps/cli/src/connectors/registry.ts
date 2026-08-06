@@ -17,7 +17,7 @@ const registry = new Map<string, ConnectorRegistryEntry>([
 		{
 			name: "discord",
 			description:
-				"Discord interactions and gateway bridge backed by RPC runtime sessions",
+				"Discord 交互与网关桥接，以 RPC 运行时会话为后端",
 			load: async () => (await import("./adapters/discord")).discordConnector,
 		},
 	],

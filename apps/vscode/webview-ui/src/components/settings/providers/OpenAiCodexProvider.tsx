@@ -83,9 +83,9 @@ export const OpenAiCodexProvider = ({ showModelOptions, isPopup, currentMode }: 
 							justifyContent: "space-between",
 							alignItems: "center",
 						}}>
-						<span style={{ color: "var(--vscode-descriptionForeground)" }}>Signed in to OpenAI Codex</span>
+						<span style={{ color: "var(--vscode-descriptionForeground)" }}>已登录 OpenAI Codex</span>
 						<VSCodeButton appearance="secondary" onClick={handleSignOut}>
-							Sign Out
+							退出登录
 						</VSCodeButton>
 					</div>
 				) : (
@@ -96,9 +96,9 @@ export const OpenAiCodexProvider = ({ showModelOptions, isPopup, currentMode }: 
 								color: "var(--vscode-descriptionForeground)",
 								marginBottom: "10px",
 							}}>
-							Sign in with your ChatGPT Plus or Pro subscription to use GPT-5 models without an API key.
+							使用你的 ChatGPT Plus 或 Pro 订阅登录，无需 API 密钥即可使用 GPT-5 模型。
 						</p>
-						<VSCodeButton onClick={handleSignIn}>Sign in to OpenAI Codex</VSCodeButton>
+						<VSCodeButton onClick={handleSignIn}>登录 OpenAI Codex</VSCodeButton>
 					</div>
 				)}
 			</div>
@@ -106,7 +106,7 @@ export const OpenAiCodexProvider = ({ showModelOptions, isPopup, currentMode }: 
 			{showModelOptions && (
 				<>
 					<ModelSelector
-						label="Model"
+						label="模型"
 						models={models}
 						onChange={(event: Event) => handleModelChange((event.target as HTMLSelectElement | null)?.value ?? "")}
 						selectedModelId={selectedModelId}

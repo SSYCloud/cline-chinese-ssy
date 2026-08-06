@@ -39,14 +39,14 @@ export function MigrationNoticeContent(
 	const [status, setStatus] = useState<string | undefined>();
 
 	const openSubscriptionPage = useCallback(() => {
-		setStatus("Opening ClinePass in your browser...");
+		setStatus("正在浏览器中打开 ClinePass...");
 		void open(subscriptionUrl, { wait: false })
 			.then(() => {
-				setStatus("Opened ClinePass in your browser.");
+				setStatus("已在你的浏览器中打开 ClinePass。");
 			})
 			.catch(() => {
 				setStatus(
-					"Could not open the browser automatically. Use the URL below.",
+					"无法自动打开浏览器。请使用下面的网址。",
 				);
 			});
 	}, [subscriptionUrl]);
@@ -66,11 +66,10 @@ export function MigrationNoticeContent(
 			<text fg={palette.act}>{notice.title}</text>
 			<box flexDirection="column">
 				<text selectable>
-					ClinePass is a $9.99/month subscription plan to get access to the
-					latest open-weight coding models with enough quota for day-to-day
-					work, at a much lower cost than paying API costs directly.
+					ClinePass 是一个每月 $9.99 的订阅套餐，可访问最新的开放权重编程模型，
+					配额足以满足日常工作需要，成本远低于直接支付 API 费用。
 				</text>
-				<text selectable>Try it now with a limited-time promo for $4.99.</text>
+				<text selectable>现在以限时促销价 $4.99 试用。</text>
 			</box>
 			<box flexDirection="row">
 				<text fg={palette.act} selectable>
@@ -79,13 +78,13 @@ export function MigrationNoticeContent(
 			</box>
 			<box flexDirection="row">
 				<box paddingX={1} backgroundColor={palette.act}>
-					<text fg={palette.textOnSelection}>Open ClinePass</text>
+					<text fg={palette.textOnSelection}>打开 ClinePass</text>
 				</box>
 			</box>
 			{status && <text fg={palette.muted}>{status}</text>}
 			<text fg={palette.muted}>
-				Press Enter to open, any other key to close
-			</text>
+				按 Enter 打开，按任意其他键关闭
+				</text>
 		</box>
 	);
 }

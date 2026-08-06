@@ -43,7 +43,7 @@ function normalizeTransportType(
 		return normalized;
 	}
 	throw new Error(
-		`Unsupported MCP transport "${normalized}". Expected stdio, sse, http, streamable-http, or streamableHttp.`,
+		`不支持的 MCP 传输方式 "${normalized}"。应为 stdio、sse、http、streamable-http 或 streamableHttp。`,
 	);
 }
 
@@ -52,11 +52,11 @@ function assertValidUrl(url: string): void {
 	try {
 		parsed = new URL(url);
 	} catch {
-		throw new Error(`Invalid MCP server URL: ${url}`);
+		throw new Error(`无效的 MCP 服务器 URL: ${url}`);
 	}
 	if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
 		throw new Error(
-			`Invalid MCP server URL: ${url} (only http and https are supported)`,
+			`无效的 MCP 服务器 URL: ${url}（仅支持 http 和 https）`,
 		);
 	}
 }
@@ -75,14 +75,14 @@ export function buildMcpInstallDefaults(options: {
 }): McpAddDefaults {
 	const name = options.name.trim();
 	if (!name) {
-		throw new Error("MCP server name is required");
+		throw new Error("需要 MCP 服务器名称");
 	}
 	const type = normalizeTransportType(options.transport);
 	const targetArgs = options.targetArgs ?? [];
 	if (type === "stdio") {
 		if (targetArgs.length === 0) {
 			throw new Error(
-				"Stdio MCP install requires a command after the server name, for example: cline mcp install fs -- npx -y @modelcontextprotocol/server-filesystem /tmp",
+				"Stdio MCP 安装需要在服务器名称后跟命令，例如：cline mcp install fs -- npx -y @modelcontextprotocol/server-filesystem /tmp",
 			);
 		}
 		return {
@@ -94,7 +94,7 @@ export function buildMcpInstallDefaults(options: {
 
 	if (targetArgs.length !== 1) {
 		throw new Error(
-			"Remote MCP install requires exactly one URL argument after the server name.",
+			"远程 MCP 安装需要在服务器名称后提供恰好一个 URL 参数。",
 		);
 	}
 	const url = targetArgs[0]?.trim() ?? "";
@@ -136,7 +136,7 @@ export async function runMcpInstallCommand(
 			if (options.json) {
 				options.io?.writeln?.(JSON.stringify(result));
 			} else {
-				options.io?.writeln?.(`Installed MCP server ${result.name}.`);
+				options.io?.writeln?.(`已安装 MCP 服务器 ${result.name}。`);
 				for (const warning of result.warnings) {
 					options.io?.writeErr(warning);
 				}
@@ -147,7 +147,7 @@ export async function runMcpInstallCommand(
 			options.isTty ?? (process.stdin.isTTY && process.stdout.isTTY);
 		if (!isTty) {
 			throw new Error(
-				"cline mcp install opens the MCP wizard and requires a TTY. Pass --yes to install noninteractively.",
+				"cline mcp install 会打开 MCP 向导并需要 TTY。请传入 --yes 以非交互方式安装。",
 			);
 		}
 		const defaults = buildMcpInstallDefaults(options);

@@ -139,7 +139,7 @@ export function ProviderPickerContent(
 
 	return (
 		<box flexDirection="column" gap={1}>
-			<text>Select Provider</text>
+			<text>选择提供商</text>
 
 			<box border borderStyle="rounded" borderColor="gray" paddingX={1}>
 				<input
@@ -147,16 +147,16 @@ export function ProviderPickerContent(
 						setSearch(v);
 						setSelected(0);
 					}}
-					placeholder="Search providers..."
+					placeholder="搜索提供商..."
 					flexGrow={1}
 					focused
 				/>
 			</box>
 
 			{loading ? (
-				<text fg="gray">Loading providers...</text>
+				<text fg="gray">正在加载提供商...</text>
 			) : filtered.length === 0 ? (
-				<text fg="gray">No providers match</text>
+				<text fg="gray">没有匹配的提供商</text>
 			) : (
 				<box flexDirection="column">
 					{showAbove && (
@@ -274,8 +274,8 @@ export function UseExistingOrReconfigureContent(
 	const { resolve, dismiss, dialogId, providerName, extraOptions } = props;
 	const options: ExistingProviderOption[] = useMemo(
 		() => [
-			{ value: "use_existing", label: "Use existing configuration" },
-			{ value: "reconfigure", label: "Configure again" },
+			{ value: "use_existing", label: "使用现有配置" },
+			{ value: "reconfigure", label: "重新配置" },
 			...(extraOptions ?? []),
 		],
 		[extraOptions],
@@ -351,7 +351,7 @@ function ClinePassBrowserPageContent(
 		url,
 		openedStatus,
 	} = props;
-	const [status, setStatus] = useState("Opening browser...");
+	const [status, setStatus] = useState("正在打开浏览器...");
 
 	useEffect(() => {
 		void open(url, { wait: false })
@@ -359,7 +359,7 @@ function ClinePassBrowserPageContent(
 				setStatus(openedStatus);
 			})
 			.catch(() => {
-				setStatus("Could not open browser automatically. Open the URL below.");
+				setStatus("无法自动打开浏览器。请在下方打开 URL。");
 			});
 	}, [url, openedStatus]);
 
@@ -387,7 +387,7 @@ function ClinePassBrowserPageContent(
 			</text>
 
 			<text fg="gray">
-				<em>Enter or Esc to go back</em>
+				<em>按 Enter 或 Esc 返回</em>
 			</text>
 		</box>
 	);
@@ -407,26 +407,26 @@ export function ClinePassSubscriptionContent(
 	return (
 		<ClinePassBrowserPageContent
 			{...props}
-			pageLabel="Subscription page"
+			pageLabel="订阅页面"
 			url={subscriptionUrl}
-			openedStatus="Opened subscription page in your browser."
+			openedStatus="已在你的浏览器中打开订阅页面。"
 		/>
 	);
 }
 
 const DEFAULT_FIELD_LABELS: Partial<Record<ProviderConfigFieldKey, string>> = {
-	apiKey: "API key",
-	baseUrl: "Base URL",
-	azureApiVersion: "Azure API Version",
-	awsRegion: "AWS Region",
-	awsProfile: "AWS Profile Name",
-	gcpProjectId: "Google Cloud Project ID",
-	gcpRegion: "Google Cloud Region",
-	sapClientId: "Client ID",
-	sapClientSecret: "Client Secret",
-	sapTokenUrl: "Token URL",
-	sapResourceGroup: "Resource Group",
-	sapDeploymentId: "Deployment ID",
+	apiKey: "API 密钥",
+	baseUrl: "基础 URL",
+	azureApiVersion: "Azure API 版本",
+	awsRegion: "AWS 区域",
+	awsProfile: "AWS 配置文件名称",
+	gcpProjectId: "Google Cloud 项目 ID",
+	gcpRegion: "Google Cloud 区域",
+	sapClientId: "客户端 ID",
+	sapClientSecret: "客户端密钥",
+	sapTokenUrl: "令牌 URL",
+	sapResourceGroup: "资源组",
+	sapDeploymentId: "部署 ID",
 };
 
 const DEFAULT_FIELD_PLACEHOLDERS: Partial<

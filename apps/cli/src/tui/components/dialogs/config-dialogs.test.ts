@@ -54,8 +54,8 @@ describe("config detail dialog helpers", () => {
 			),
 		).toEqual([
 			{ kind: "header", name: "add-model", source: "global" },
-			{ kind: "field", label: "Path", value: ["/tmp/add-model/SKILL.md"] },
-			{ kind: "field", label: "Description", value: ["Add a model safely"] },
+			{ kind: "field", label: "路径", value: ["/tmp/add-model/SKILL.md"] },
+			{ kind: "field", label: "描述", value: ["Add a model safely"] },
 			{ kind: "status", enabled: false },
 		]);
 	});
@@ -69,15 +69,15 @@ describe("config detail dialog helpers", () => {
 
 		expect(getExtDetailRows(workflow)).toEqual([
 			{ kind: "header", name: "release", source: "workspace" },
-			{ kind: "field", label: "Path", value: ["/tmp/item"] },
-			{ kind: "field", label: "Description", value: ["Run release workflow"] },
+			{ kind: "field", label: "路径", value: ["/tmp/item"] },
+			{ kind: "field", label: "描述", value: ["Run release workflow"] },
 		]);
-		expect(getExtDetailFooterText(workflow)).toBe("Tab/Enter/Esc to go back");
+		expect(getExtDetailFooterText(workflow)).toBe("Tab/Enter/Esc 返回");
 	});
 
 	it("shows toggle hint for toggleable items", () => {
 		expect(getExtDetailFooterText(createItem({ kind: "skill" }))).toBe(
-			"Space toggle status, Tab/Enter/Esc to go back",
+			"空格切换状态，Tab/Enter/Esc 返回",
 		);
 	});
 
@@ -98,14 +98,14 @@ describe("config detail dialog helpers", () => {
 
 		expect(rows[1]).toEqual({
 			kind: "field",
-			label: "Path",
+			label: "路径",
 			value: ["/tmp/karpathy-rules.md"],
 		});
 		expect(rows[2]?.kind).toBe("field");
 		if (rows[2]?.kind === "field") {
-			expect(rows[2].label).toBe("Description");
+			expect(rows[2].label).toBe("描述");
 			expect(rows[2].value).toHaveLength(13);
-			expect(rows[2].value.at(-1)).toContain("… truncated");
+			expect(rows[2].value.at(-1)).toContain("… 已截断");
 		}
 		expect(rows[3]).toEqual({ kind: "status", enabled: true });
 	});

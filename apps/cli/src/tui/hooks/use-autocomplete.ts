@@ -187,7 +187,7 @@ export function useAutocomplete(opts: {
 
 			const result: AutocompleteOption[] = [...filteredSystem];
 			result.push({
-				display: "Skills",
+				display: "技能",
 				value: "",
 				isHeader: true,
 			});

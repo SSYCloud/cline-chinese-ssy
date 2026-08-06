@@ -191,7 +191,7 @@ const VercelModelPicker: React.FC<VercelModelPickerProps> = ({ isPopup, currentM
 			</style>
 			<div style={{ display: "flex", flexDirection: "column" }}>
 				<label htmlFor="vercel-model-search">
-					<span style={{ fontWeight: 500 }}>Model</span>
+					<span style={{ fontWeight: 500 }}>模型</span>
 				</label>
 
 				<DropdownWrapper ref={dropdownRef}>
@@ -208,7 +208,7 @@ const VercelModelPicker: React.FC<VercelModelPickerProps> = ({ isPopup, currentM
 							setIsDropdownVisible(true)
 						}}
 						onKeyDown={handleKeyDown}
-						placeholder="Search and select a model..."
+						placeholder="搜索并选择模型..."
 						role="combobox"
 						style={{
 							width: "100%",
@@ -218,7 +218,7 @@ const VercelModelPicker: React.FC<VercelModelPickerProps> = ({ isPopup, currentM
 						value={searchTerm}>
 						{searchTerm && (
 							<div
-								aria-label="Clear search"
+								aria-label="清除搜索"
 								className="input-icon-button codicon codicon-close"
 								onClick={() => {
 									setSearchTerm("")
@@ -254,9 +254,7 @@ const VercelModelPicker: React.FC<VercelModelPickerProps> = ({ isPopup, currentM
 							) : (
 								<DropdownItem isSelected={false}>
 									<span style={{ color: "var(--vscode-descriptionForeground)" }}>
-										{Object.keys(vercelAiGatewayModels).length === 0
-											? "Loading models..."
-											: "No models found"}
+										{Object.keys(vercelAiGatewayModels).length === 0 ? "正在加载模型..." : "未找到模型"}
 									</span>
 								</DropdownItem>
 							)}
@@ -273,10 +271,10 @@ const VercelModelPicker: React.FC<VercelModelPickerProps> = ({ isPopup, currentM
 							defaultEffort={showAdaptiveThinkingEffort ? adaptiveThinkingDefaultEffort : "none"}
 							description={
 								showAdaptiveThinkingEffort
-									? "Use None to disable adaptive thinking. Higher effort increases response detail and token usage."
-									: "Use None to disable extended thinking. Higher effort improves depth, but uses more tokens."
+									? "选择“无”可禁用自适应思考。更高的努力程度会增加响应细节和 token 消耗。"
+									: "选择“无”可禁用扩展思考。更高的努力程度会提升思考深度，但会消耗更多 tokens。"
 							}
-							label={showAdaptiveThinkingEffort ? "Adaptive Thinking" : undefined}
+							label={showAdaptiveThinkingEffort ? "自适应思考" : undefined}
 							onEffortChange={handleReasoningEffortChange}
 						/>
 					)}
@@ -297,18 +295,16 @@ const VercelModelPicker: React.FC<VercelModelPickerProps> = ({ isPopup, currentM
 					}}>
 					{Object.keys(vercelAiGatewayModels).length === 0 ? (
 						<>
-							Enter your Vercel AI Gateway API key above to load available models. You can get an API key from{" "}
+							在上方输入你的 Vercel AI Gateway API 密钥以加载可用模型。你可以从{" "}
 							<VSCodeLink
 								href="https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai"
 								style={{ display: "inline", fontSize: "inherit" }}>
-								Vercel AI Gateway.
+								Vercel AI Gateway
 							</VSCodeLink>
+							获取 API 密钥。
 						</>
 					) : (
-						<>
-							Select a model from the dropdown above. The extension fetches available models from your Vercel AI
-							Gateway configuration.
-						</>
+						<>从上方下拉框中选择模型。该扩展会从你的 Vercel AI Gateway 配置中获取可用模型。</>
 					)}
 				</p>
 			)}

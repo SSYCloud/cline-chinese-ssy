@@ -18,8 +18,8 @@ interface ReasoningEffortSelectorProps {
 
 const ReasoningEffortSelector = ({
 	currentMode,
-	label = "Reasoning Effort",
-	description = "Higher effort improves depth, but uses more tokens.",
+	label = "推理强度",
+	description = "更高的努力程度会提升思考深度，但会消耗更多 tokens。",
 	allowedEfforts = OPENAI_REASONING_EFFORT_OPTIONS,
 	defaultEffort = "medium",
 	onEffortChange,
@@ -49,7 +49,14 @@ const ReasoningEffortSelector = ({
 				<SelectContent>
 					{allowedEfforts.map((effort) => (
 						<SelectItem key={effort} value={effort}>
-							{effort.charAt(0).toUpperCase() + effort.slice(1)}
+							{
+								(
+									{ none: "无", low: "低", medium: "中", high: "高", xhigh: "极高" } as Record<
+										OpenaiReasoningEffort,
+										string
+									>
+								)[effort]
+							}
 						</SelectItem>
 					))}
 				</SelectContent>

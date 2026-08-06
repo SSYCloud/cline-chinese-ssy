@@ -12,13 +12,12 @@ export function ForkConfirmContent(ctx: ChoiceContext<boolean>) {
 
 	return (
 		<box flexDirection="column" paddingX={1}>
-			<text>Create a fork of the current conversation?</text>
+			<text>创建当前对话的分叉？</text>
 			<text fg="gray" marginTop={1}>
-				The fork becomes the active session. Use /history to switch back or open
-				another session.
+				分叉将成为当前会话。使用 /history 可切回或打开另一个会话。
 			</text>
 			<text fg="gray" marginTop={1}>
-				<em>Y/Enter to confirm, N/Esc to cancel</em>
+				<em>Y/Enter 确认，N/Esc 取消</em>
 			</text>
 		</box>
 	);

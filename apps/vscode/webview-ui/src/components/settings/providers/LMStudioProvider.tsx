@@ -160,13 +160,13 @@ export const LMStudioProvider = ({ currentMode }: LMStudioProviderProps) => {
 		<div className="flex flex-col gap-2">
 			<BaseUrlField
 				initialValue={config?.baseUrl ?? apiConfiguration?.lmStudioBaseUrl}
-				label="Use custom base URL"
+				label="使用自定义基础 URL"
 				onChange={handleBaseUrlChange}
 				onClear={handleBaseUrlClear}
-				placeholder="Default: http://localhost:1234"
+				placeholder="默认：http://localhost:1234"
 			/>
 
-			<div className="font-semibold">Model</div>
+			<div className="font-semibold">模型</div>
 			{lmStudioModels.length > 0 ? (
 				<DropdownContainer className="dropdown-container" onFocusCapture={() => void requestLmStudioModels()} zIndex={10}>
 					<VSCodeDropdown
@@ -190,33 +190,33 @@ export const LMStudioProvider = ({ currentMode }: LMStudioProviderProps) => {
 					<DebouncedTextField
 						initialValue={displayedSelectedModelId || ""}
 						onChange={handleModelChange}
-						placeholder={"e.g. meta-llama-3.1-8b-instruct"}
+						placeholder={"例如：meta-llama-3.1-8b-instruct"}
 						style={{ width: "100%" }}
 					/>
 				</div>
 			)}
 
-			<div className="font-semibold">Context Window</div>
+			<div className="font-semibold">上下文窗口</div>
 			<VSCodeTextField
 				className="w-full pointer-events-none"
 				disabled={true}
-				title="Not editable - the value is returned by the connected endpoint"
+				title="不可编辑 - 该值由连接的端点返回"
 				value={String(currentLoadedContext ?? lmStudioMaxTokens ?? "0")}
 			/>
 
 			<div className="text-xs text-description">
-				LM Studio allows you to run models locally on your computer. For instructions on how to get started, see their
+				LM Studio 允许你在本地计算机上运行模型。有关入门说明，请参阅其
 				<VSCodeLink href="https://lmstudio.ai/docs" style={{ display: "inline", fontSize: "inherit" }}>
-					quickstart guide.
+					快速入门指南。
 				</VSCodeLink>
-				You will also need to start LM Studio's{" "}
+				你还需要启动 LM Studio 的{" "}
 				<VSCodeLink className="inline" href="https://lmstudio.ai/docs/basics/server">
-					local server
+					本地服务器
 				</VSCodeLink>{" "}
-				feature with <code>lms server start</code> to use it with this extension.{" "}
+				功能并使用 <code>lms server start</code> 命令来配合此扩展使用。{" "}
 				<div className="text-error">
-					<span className="font-semibold">Note:</span> Cline uses complex prompts, so behavior can vary across models.
-					Less capable models may not work as expected.
+					<span className="font-semibold">注意：</span>Cline 使用复杂的提示词，因此不同模型的行为可能有所差异。
+					能力较弱的模型可能无法按预期工作。
 				</div>
 			</div>
 		</div>

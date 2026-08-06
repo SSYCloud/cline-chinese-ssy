@@ -73,14 +73,14 @@ export function useLocalCommandActions(input: {
 		});
 		if (sessionId) {
 			try {
-				await withLoadingDialog(dialog, "Loading session...", async () => {
+				await withLoadingDialog(dialog, "正在加载会话...", async () => {
 					const result = await onResumeSession(sessionId);
 					const { messages } = result;
 					const entries = hydrateSessionMessages(messages);
 					if (entries.length === 0) {
 						session.appendEntry({
 							kind: "error",
-							text: `Session ${sessionId} has no messages to resume.`,
+							text: `会话 ${sessionId} 没有可恢复的消息。`,
 						});
 					} else {
 						session.clearEntries();
@@ -101,7 +101,7 @@ export function useLocalCommandActions(input: {
 			} catch (error) {
 				session.appendEntry({
 					kind: "error",
-					text: `Failed to resume session: ${error instanceof Error ? error.message : String(error)}`,
+					text: `恢复会话失败：${error instanceof Error ? error.message : String(error)}`,
 				});
 			}
 		}
@@ -158,7 +158,7 @@ export function useLocalCommandActions(input: {
 			if (!cancelled) {
 				session.appendEntry({
 					kind: "error",
-					text: `Compaction failed: ${error instanceof Error ? error.message : String(error)}`,
+					text: `压缩失败：${error instanceof Error ? error.message : String(error)}`,
 				});
 			}
 		} finally {
@@ -170,7 +170,7 @@ export function useLocalCommandActions(input: {
 		if (!canForkSession) {
 			session.appendEntry({
 				kind: "status",
-				text: "Fork is available after this session has messages.",
+				text: "此会话有消息后才可进行分叉。",
 			});
 			return;
 		}
@@ -182,14 +182,14 @@ export function useLocalCommandActions(input: {
 		if (!confirmed) return;
 		session.appendEntry({
 			kind: "status",
-			text: "Creating forked session...",
+			text: "正在创建分叉会话...",
 		});
 		try {
 			const result = await onFork();
 			if (result) {
 				session.updateLastEntry(() => ({
 					kind: "status",
-					text: `Forked into new session ${result.newSessionId}. This is now the active session. Use /history to switch sessions.`,
+					text: `已分叉到新会话 ${result.newSessionId}。这现在是活动会话。使用 /history 切换会话。`,
 				}));
 				if (result.carriedWorkingContext) {
 					session.appendEntry({
@@ -203,13 +203,13 @@ export function useLocalCommandActions(input: {
 			} else {
 				session.updateLastEntry(() => ({
 					kind: "error",
-					text: "Fork failed: could not read messages from the current session.",
+					text: "分叉失败：无法读取当前会话中的消息。",
 				}));
 			}
 		} catch (error) {
 			session.updateLastEntry(() => ({
 				kind: "error",
-				text: `Fork failed: ${error instanceof Error ? error.message : String(error)}`,
+				text: `分叉失败：${error instanceof Error ? error.message : String(error)}`,
 			}));
 		}
 	}, [canForkSession, dialog, onFork, refocusTextarea, session]);

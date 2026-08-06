@@ -90,9 +90,9 @@ function HistoryListContent({
 	onDismiss,
 	onExport,
 	onDelete,
-	emptyMessage = "No sessions found",
+	emptyMessage = "未找到会话",
 	footerText,
-	title = "Session History",
+	title = "会话历史",
 	loadRows = false,
 	refreshRows,
 	refreshIntervalMs = DEFAULT_REFRESH_INTERVAL_MS,
@@ -345,7 +345,7 @@ function HistoryListContent({
 
 		return (
 			<box flexDirection="column" paddingX={1}>
-				<text>Export Session</text>
+				<text>导出会话</text>
 				<text fg="gray" marginTop={1}>
 					{exportTitle}
 				</text>
@@ -376,7 +376,7 @@ function HistoryListContent({
 				</box>
 
 				<text fg="gray" marginTop={1}>
-					<em>Arrow keys choose, Enter to export, Esc to go back</em>
+					<em>方向键选择，Enter 导出，Esc 返回</em>
 				</text>
 			</box>
 		);
@@ -388,7 +388,7 @@ function HistoryListContent({
 				<text>{title}</text>
 				<text fg="gray">{emptyMessage}</text>
 				<text fg="gray">
-					<em>Esc to close</em>
+					<em>按 Esc 关闭</em>
 				</text>
 			</box>
 		);
@@ -406,7 +406,7 @@ function HistoryListContent({
 	return (
 		<box flexDirection="column" paddingX={1}>
 			<text fg={confirmDelete ? "red" : undefined}>
-				{confirmDelete ? "Delete this session? (y/n)" : title}
+				{confirmDelete ? "删除此会话？(y/n)" : title}
 			</text>
 
 			<box flexDirection="column" marginTop={1}>

@@ -4,7 +4,7 @@ import {
 	normalizeUserInput,
 } from "@cline/shared";
 
-const FORK_TITLE_SUFFIX = " (fork)";
+const FORK_TITLE_SUFFIX = "（分叉）";
 const MAX_FORK_TITLE_LENGTH = 120;
 
 function normalizeForkTitleText(value: string | undefined): string | undefined {
@@ -60,6 +60,6 @@ export function deriveForkSessionTitle(input: {
 		normalizeForkTitleText(input.sourceTitle ?? undefined) ??
 		normalizeForkTitleText(input.sourcePrompt ?? undefined) ??
 		inferForkTitleFromMessages(input.messages) ??
-		"Untitled";
+		"未命名";
 	return `${truncateForForkSuffix(base)}${FORK_TITLE_SUFFIX}`;
 }

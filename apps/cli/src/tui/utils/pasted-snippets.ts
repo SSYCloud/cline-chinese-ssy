@@ -28,9 +28,9 @@ function previewText(text: string): string {
 export function formatPastedTextSnippetMarker(text: string): string {
 	const lineCount = countPastedTextLines(text);
 	const preview = previewText(text);
-	const lineLabel = lineCount === 1 ? "line" : "lines";
+	const lineLabel = lineCount === 1 ? "行" : "行";
 	const prefix = preview ? `${preview}... ` : "";
-	return `[${prefix}Pasted +${lineCount} ${lineLabel}]`;
+	return `[${prefix}已粘贴 +${lineCount} ${lineLabel}]`;
 }
 
 export function createUniquePastedTextSnippetMarker(

@@ -14,7 +14,7 @@ export async function exportHistorySession(input: {
 	const { sessionId, format, outputPath, outputDirectory } = input;
 	const data = await readSessionMessagesArtifact(sessionId);
 	if (!data) {
-		throw new Error(`Session ${sessionId} not found or has no messages.json`);
+		throw new Error(`会话 ${sessionId} 不存在或没有 messages.json`);
 	}
 
 	const targetPath = outputPath?.trim()

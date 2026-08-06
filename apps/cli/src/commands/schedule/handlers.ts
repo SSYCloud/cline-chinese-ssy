@@ -29,7 +29,7 @@ export function registerScheduleCommands(
 ): void {
 	const activeCmd = schedule
 		.command("active")
-		.description("Show currently active executions");
+		.description("显示当前活动中的执行");
 	addSharedOptions(activeCmd);
 	activeCmd.action(
 		action(async () => {
@@ -38,7 +38,7 @@ export function registerScheduleCommands(
 			const ensured = await ensureSchedulerHub(address, process.cwd(), io);
 			if (!ensured.ok) {
 				io.writeErr(
-					`failed to ensure hub server${formatResolvedAddressLabel(address)}`,
+					`无法确保 hub 服务器${formatResolvedAddressLabel(address)}`,
 				);
 				fail();
 				return;
@@ -55,22 +55,22 @@ export function registerScheduleCommands(
 
 	const createCmd = schedule
 		.command("create")
-		.description("Create a new schedule")
-		.argument("<name>", "Schedule name")
-		.requiredOption("--cron <pattern>", "Cron pattern")
-		.requiredOption("--prompt <text>", "Task prompt")
-		.requiredOption("--workspace <path>", "Workspace root path")
-		.option("--created-by <name>", "Creator name")
-		.option("--cwd <path>", "Working directory")
-		.option("--disabled", "Create in disabled state")
-		.option("--max-parallel <n>", "Max parallel executions", "1")
-		.option("--metadata-json <json>", "Metadata as JSON object")
-		.option("--mode <act|plan|yolo>", "Execution mode", "yolo")
-		.option("--model <model>", "Model to use", CLINE_DEFAULT_MODEL_ID)
-		.option("--provider <id>", "Provider ID", "cline")
-		.option("--system-prompt <text>", "System prompt override")
-		.option("--tags <list>", "Comma-separated tags")
-		.option("--timeout <seconds>", "Timeout in seconds");
+		.description("创建新计划")
+		.argument("<name>", "计划名称")
+		.requiredOption("--cron <pattern>", "Cron 表达式")
+		.requiredOption("--prompt <text>", "任务提示")
+		.requiredOption("--workspace <path>", "工作区根路径")
+		.option("--created-by <name>", "创建者名称")
+		.option("--cwd <path>", "工作目录")
+		.option("--disabled", "以禁用状态创建")
+		.option("--max-parallel <n>", "最大并行执行数", "1")
+		.option("--metadata-json <json>", "元数据（JSON 对象）")
+		.option("--mode <act|plan|yolo>", "执行模式", "yolo")
+		.option("--model <model>", "使用的模型", CLINE_DEFAULT_MODEL_ID)
+		.option("--provider <id>", "提供方 ID", "cline")
+		.option("--system-prompt <text>", "系统提示覆盖")
+		.option("--tags <list>", "逗号分隔的标签")
+		.option("--timeout <seconds>", "超时秒数");
 	addDeliveryOptions(createCmd);
 	addAutonomousOptions(createCmd);
 	addSharedOptions(createCmd);
@@ -81,7 +81,7 @@ export function registerScheduleCommands(
 			const ensured = await ensureSchedulerHub(address, opts.workspace, io);
 			if (!ensured.ok) {
 				io.writeErr(
-					`failed to ensure hub server${formatResolvedAddressLabel(address)}`,
+					`无法确保 hub 服务器${formatResolvedAddressLabel(address)}`,
 				);
 				fail();
 				return;
@@ -112,7 +112,7 @@ export function registerScheduleCommands(
 					metadata,
 				});
 				if (!created) {
-					io.writeErr("failed to create schedule");
+					io.writeErr("创建计划失败");
 					fail();
 					return;
 				}
@@ -125,8 +125,8 @@ export function registerScheduleCommands(
 
 	const deleteCmd = schedule
 		.command("delete")
-		.description("Delete a schedule")
-		.argument("<schedule-id>", "Schedule ID");
+		.description("删除计划")
+		.argument("<schedule-id>", "计划 ID");
 	addSharedOptions(deleteCmd);
 	deleteCmd.action(
 		action(async (scheduleId: string) => {
@@ -135,7 +135,7 @@ export function registerScheduleCommands(
 			const ensured = await ensureSchedulerHub(address, process.cwd(), io);
 			if (!ensured.ok) {
 				io.writeErr(
-					`failed to ensure hub server${formatResolvedAddressLabel(address)}`,
+					`无法确保 hub 服务器${formatResolvedAddressLabel(address)}`,
 				);
 				fail();
 				return;
@@ -153,8 +153,8 @@ export function registerScheduleCommands(
 
 	const getCmd = schedule
 		.command("get")
-		.description("Get a schedule by ID")
-		.argument("<schedule-id>", "Schedule ID");
+		.description("按 ID 获取计划")
+		.argument("<schedule-id>", "计划 ID");
 	addSharedOptions(getCmd);
 	getCmd.action(
 		action(async (scheduleId: string) => {
@@ -163,7 +163,7 @@ export function registerScheduleCommands(
 			const ensured = await ensureSchedulerHub(address, process.cwd(), io);
 			if (!ensured.ok) {
 				io.writeErr(
-					`failed to ensure hub server${formatResolvedAddressLabel(address)}`,
+					`无法确保 hub 服务器${formatResolvedAddressLabel(address)}`,
 				);
 				fail();
 				return;
@@ -172,7 +172,7 @@ export function registerScheduleCommands(
 			try {
 				const result = await client.getSchedule(scheduleId);
 				if (!result) {
-					io.writeErr(`schedule not found: ${scheduleId}`);
+					io.writeErr(`未找到计划: ${scheduleId}`);
 					fail();
 					return;
 				}
@@ -185,10 +185,10 @@ export function registerScheduleCommands(
 
 	const historyCmd = schedule
 		.command("history")
-		.description("Show execution history for a schedule")
-		.argument("<schedule-id>", "Schedule ID")
-		.option("--limit <n>", "Maximum number of results", "20")
-		.option("--status <status>", "Filter by execution status");
+		.description("显示计划的执行历史")
+		.argument("<schedule-id>", "计划 ID")
+		.option("--limit <n>", "最大结果数", "20")
+		.option("--status <status>", "按执行状态筛选");
 	addSharedOptions(historyCmd);
 	historyCmd.action(
 		action(async (scheduleId: string) => {
@@ -197,7 +197,7 @@ export function registerScheduleCommands(
 			const ensured = await ensureSchedulerHub(address, process.cwd(), io);
 			if (!ensured.ok) {
 				io.writeErr(
-					`failed to ensure hub server${formatResolvedAddressLabel(address)}`,
+					`无法确保 hub 服务器${formatResolvedAddressLabel(address)}`,
 				);
 				fail();
 				return;
@@ -218,11 +218,11 @@ export function registerScheduleCommands(
 
 	const listCmd = schedule
 		.command("list")
-		.description("List schedules")
-		.option("--disabled", "Show only disabled schedules")
-		.option("--enabled", "Show only enabled schedules")
-		.option("--limit <n>", "Maximum number of results", "100")
-		.option("--tags <list>", "Filter by comma-separated tags");
+		.description("列出计划")
+		.option("--disabled", "仅显示禁用的计划")
+		.option("--enabled", "仅显示启用的计划")
+		.option("--limit <n>", "最大结果数", "100")
+		.option("--tags <list>", "按逗号分隔的标签筛选");
 	addSharedOptions(listCmd);
 	listCmd.action(
 		action(async () => {
@@ -231,7 +231,7 @@ export function registerScheduleCommands(
 			const ensured = await ensureSchedulerHub(address, process.cwd(), io);
 			if (!ensured.ok) {
 				io.writeErr(
-					`failed to ensure hub server${formatResolvedAddressLabel(address)}`,
+					`无法确保 hub 服务器${formatResolvedAddressLabel(address)}`,
 				);
 				fail();
 				return;
@@ -245,7 +245,7 @@ export function registerScheduleCommands(
 					tags: parseList(opts.tags),
 				});
 				if (!opts.json && Array.isArray(schedules) && schedules.length === 0) {
-					io.writeln("No schedules found.");
+					io.writeln("未找到计划。");
 					return;
 				}
 				emitJsonOrText(!!opts.json, io, schedules);
@@ -257,8 +257,8 @@ export function registerScheduleCommands(
 
 	const pauseCmd = schedule
 		.command("pause")
-		.description("Pause a schedule")
-		.argument("<schedule-id>", "Schedule ID");
+		.description("暂停计划")
+		.argument("<schedule-id>", "计划 ID");
 	addSharedOptions(pauseCmd);
 	pauseCmd.action(
 		action(async (scheduleId: string) => {
@@ -267,7 +267,7 @@ export function registerScheduleCommands(
 			const ensured = await ensureSchedulerHub(address, process.cwd(), io);
 			if (!ensured.ok) {
 				io.writeErr(
-					`failed to ensure hub server${formatResolvedAddressLabel(address)}`,
+					`无法确保 hub 服务器${formatResolvedAddressLabel(address)}`,
 				);
 				fail();
 				return;
@@ -276,7 +276,7 @@ export function registerScheduleCommands(
 			try {
 				const result = await client.pauseSchedule(scheduleId);
 				if (!result) {
-					io.writeErr(`schedule not found: ${scheduleId}`);
+					io.writeErr(`未找到计划: ${scheduleId}`);
 					fail();
 					return;
 				}
@@ -289,8 +289,8 @@ export function registerScheduleCommands(
 
 	const resumeCmd = schedule
 		.command("resume")
-		.description("Resume a schedule")
-		.argument("<schedule-id>", "Schedule ID");
+		.description("恢复计划")
+		.argument("<schedule-id>", "计划 ID");
 	addSharedOptions(resumeCmd);
 	resumeCmd.action(
 		action(async (scheduleId: string) => {
@@ -299,7 +299,7 @@ export function registerScheduleCommands(
 			const ensured = await ensureSchedulerHub(address, process.cwd(), io);
 			if (!ensured.ok) {
 				io.writeErr(
-					`failed to ensure hub server${formatResolvedAddressLabel(address)}`,
+					`无法确保 hub 服务器${formatResolvedAddressLabel(address)}`,
 				);
 				fail();
 				return;
@@ -308,7 +308,7 @@ export function registerScheduleCommands(
 			try {
 				const result = await client.resumeSchedule(scheduleId);
 				if (!result) {
-					io.writeErr(`schedule not found: ${scheduleId}`);
+					io.writeErr(`未找到计划: ${scheduleId}`);
 					fail();
 					return;
 				}
@@ -321,8 +321,8 @@ export function registerScheduleCommands(
 
 	const statsCmd = schedule
 		.command("stats")
-		.description("Show statistics for a schedule")
-		.argument("<schedule-id>", "Schedule ID");
+		.description("显示计划的统计信息")
+		.argument("<schedule-id>", "计划 ID");
 	addSharedOptions(statsCmd);
 	statsCmd.action(
 		action(async (scheduleId: string) => {
@@ -331,7 +331,7 @@ export function registerScheduleCommands(
 			const ensured = await ensureSchedulerHub(address, process.cwd(), io);
 			if (!ensured.ok) {
 				io.writeErr(
-					`failed to ensure hub server${formatResolvedAddressLabel(address)}`,
+					`无法确保 hub 服务器${formatResolvedAddressLabel(address)}`,
 				);
 				fail();
 				return;
@@ -348,8 +348,8 @@ export function registerScheduleCommands(
 
 	const triggerCmd = schedule
 		.command("trigger")
-		.description("Trigger a schedule immediately")
-		.argument("<schedule-id>", "Schedule ID");
+		.description("立即触发计划")
+		.argument("<schedule-id>", "计划 ID");
 	addSharedOptions(triggerCmd);
 	triggerCmd.action(
 		action(async (scheduleId: string) => {
@@ -358,7 +358,7 @@ export function registerScheduleCommands(
 			const ensured = await ensureSchedulerHub(address, process.cwd(), io);
 			if (!ensured.ok) {
 				io.writeErr(
-					`failed to ensure hub server${formatResolvedAddressLabel(address)}`,
+					`无法确保 hub 服务器${formatResolvedAddressLabel(address)}`,
 				);
 				fail();
 				return;
@@ -367,7 +367,7 @@ export function registerScheduleCommands(
 			try {
 				const execution = await client.triggerScheduleNow(scheduleId);
 				if (!execution) {
-					io.writeErr(`schedule not found: ${scheduleId}`);
+					io.writeErr(`未找到计划: ${scheduleId}`);
 					fail();
 					return;
 				}
@@ -380,8 +380,8 @@ export function registerScheduleCommands(
 
 	const upcomingCmd = schedule
 		.command("upcoming")
-		.description("Show upcoming scheduled runs")
-		.option("--limit <n>", "Maximum number of results", "20");
+		.description("显示即将进行的计划运行")
+		.option("--limit <n>", "最大结果数", "20");
 	addSharedOptions(upcomingCmd);
 	upcomingCmd.action(
 		action(async () => {
@@ -390,7 +390,7 @@ export function registerScheduleCommands(
 			const ensured = await ensureSchedulerHub(address, process.cwd(), io);
 			if (!ensured.ok) {
 				io.writeErr(
-					`failed to ensure hub server${formatResolvedAddressLabel(address)}`,
+					`无法确保 hub 服务器${formatResolvedAddressLabel(address)}`,
 				);
 				fail();
 				return;

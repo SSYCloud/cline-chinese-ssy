@@ -179,7 +179,7 @@ describe("formatCompactionStatus", () => {
 				messagesAfter: 300,
 				compacted: false,
 			}),
-		).toBe("No compaction needed.");
+		).toBe("无需压缩。");
 	});
 
 	it("reports same-count compaction without implying no-op", () => {
@@ -189,7 +189,7 @@ describe("formatCompactionStatus", () => {
 				messagesAfter: 300,
 				compacted: true,
 			}),
-		).toBe("Compacted context; message count stayed at 300 messages.");
+		).toBe("上下文已压缩；消息数保持在 300 条消息。");
 	});
 
 	it("reports empty sessions separately", () => {
@@ -199,6 +199,6 @@ describe("formatCompactionStatus", () => {
 				messagesAfter: 0,
 				compacted: false,
 			}),
-		).toBe("No messages to compact.");
+		).toBe("没有可压缩的消息。");
 	});
 });

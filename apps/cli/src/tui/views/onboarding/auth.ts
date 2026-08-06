@@ -42,13 +42,13 @@ export function runOAuthAuthFlow(input: {
 		existing,
 		(url: string) => {
 			input.setAuthUrl(url);
-			input.setStatus("Waiting for sign-in...");
+			input.setStatus("正在等待登录...");
 			try {
 				void open(url, { wait: false }).catch(() => {
-					input.setStatus("Could not open browser. Visit the URL below.");
+					input.setStatus("无法打开浏览器。请访问下面的网址。");
 				});
 			} catch {
-				input.setStatus("Could not open browser. Visit the URL below.");
+				input.setStatus("无法打开浏览器。请访问下面的网址。");
 			}
 		},
 		input.telemetry,
@@ -72,7 +72,7 @@ export function runOAuthAuthFlow(input: {
 		.catch((err: unknown) => {
 			if (input.isAborted()) return;
 			input.setError(err instanceof Error ? err.message : String(err));
-			input.setStatus("Authentication failed");
+			input.setStatus("身份验证失败");
 		});
 }
 
@@ -104,13 +104,13 @@ export function runDeviceCodeAuthFlow(input: {
 				result.verificationUriComplete || result.verificationUri;
 			input.setUserCode(result.userCode);
 			input.setVerifyUrl(verifyUrl);
-			input.setStatus("Enter the code at the URL below");
+			input.setStatus("请在下面的网址输入代码");
 			try {
 				void open(verifyUrl, { wait: false }).catch(() => {
-					input.setStatus("Could not open browser. Visit the URL below.");
+					input.setStatus("无法打开浏览器。请访问下面的网址。");
 				});
 			} catch {
-				input.setStatus("Could not open browser. Visit the URL below.");
+				input.setStatus("无法打开浏览器。请访问下面的网址。");
 			}
 
 			completeClineDeviceAuth({
@@ -140,12 +140,12 @@ export function runDeviceCodeAuthFlow(input: {
 				.catch((err: unknown) => {
 					if (input.isAborted()) return;
 					input.setError(err instanceof Error ? err.message : String(err));
-					input.setStatus("Authentication failed");
+					input.setStatus("身份验证失败");
 				});
 		})
 		.catch((err: unknown) => {
 			if (input.isAborted()) return;
 			input.setError(err instanceof Error ? err.message : String(err));
-			input.setStatus("Could not start device code flow");
+			input.setStatus("无法启动设备代码流程");
 		});
 }

@@ -8,8 +8,8 @@ interface AboutSectionProps {
 }
 
 const VARIANT_LABELS: Record<"legacy" | "next", string> = {
-	legacy: "Legacy",
-	next: "Next",
+	legacy: "旧版",
+	next: "新版",
 }
 
 const AboutSection = ({ version, extensionVariant, renderSectionHeader }: AboutSectionProps) => {

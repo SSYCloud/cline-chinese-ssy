@@ -26,26 +26,26 @@ function buildProgressSummary(event: TeamProgressProjectionEvent): string {
 	const parts = [
 		formatCountLabel({
 			count: activeRuns,
-			singular: "run active",
-			plural: "runs active",
+			singular: "个活动运行",
+			plural: "个活动运行",
 		}),
 		formatCountLabel({
 			count: activeTasks,
-			singular: "task in progress",
-			plural: "tasks in progress",
+			singular: "个进行中的任务",
+			plural: "个进行中的任务",
 		}),
 	];
 	if (blockedTasks > 0) {
 		parts.push(
 			formatCountLabel({
 				count: blockedTasks,
-				singular: "blocked task",
-				plural: "blocked tasks",
+				singular: "个受阻任务",
+				plural: "个受阻任务",
 			}),
 		);
 	}
 	if (totalTasks > 0) {
-		parts.push(`${completedTasks}/${totalTasks} tasks complete`);
+		parts.push(`${completedTasks}/${totalTasks} 个任务完成`);
 	}
 	return parts.join(" | ");
 }
@@ -60,7 +60,7 @@ export function formatConnectorTaskUpdate(
 	switch (event.lastEvent.eventType) {
 		case "run_started":
 			return [
-				`[${teamName}] Task started`,
+				`[${teamName}] 任务已开始`,
 				buildProgressSummary(event),
 				message,
 			]
@@ -68,33 +68,33 @@ export function formatConnectorTaskUpdate(
 				.join("\n");
 		case "run_progress":
 			return [
-				`[${teamName}] Task update`,
+				`[${teamName}] 任务更新`,
 				message ?? buildProgressSummary(event),
 				message ? buildProgressSummary(event) : undefined,
 			]
 				.filter(Boolean)
 				.join("\n");
 		case "run_completed":
-			return [`[${teamName}] Task completed`, buildProgressSummary(event)]
+			return [`[${teamName}] 任务已完成`, buildProgressSummary(event)]
 				.filter(Boolean)
 				.join("\n");
 		case "run_failed":
-			return [`[${teamName}] Task failed`, message, buildProgressSummary(event)]
+			return [`[${teamName}] 任务失败`, message, buildProgressSummary(event)]
 				.filter(Boolean)
 				.join("\n");
 		case "run_cancelled":
-			return [`[${teamName}] Task cancelled`, buildProgressSummary(event)]
+			return [`[${teamName}] 任务已取消`, buildProgressSummary(event)]
 				.filter(Boolean)
 				.join("\n");
 		case "run_interrupted":
-			return [`[${teamName}] Task interrupted`, buildProgressSummary(event)]
+			return [`[${teamName}] 任务已中断`, buildProgressSummary(event)]
 				.filter(Boolean)
 				.join("\n");
 		case "team_task_updated":
 			if (event.summary.tasks.byStatus.in_progress <= 0) {
 				return undefined;
 			}
-			return [`[${teamName}] Task queue updated`, buildProgressSummary(event)]
+			return [`[${teamName}] 任务队列已更新`, buildProgressSummary(event)]
 				.filter(Boolean)
 				.join("\n");
 		default:
@@ -185,7 +185,7 @@ export function startConnectorTaskUpdateRelay<
 			} else {
 				await thread.post(body);
 			}
-			input.logger.core.log("Connector task update sent", {
+			input.logger.core.log("连接任务更新已发送", {
 				transport: input.transport,
 				threadId: match.threadId,
 				sessionId: event.sessionId,
@@ -194,7 +194,7 @@ export function startConnectorTaskUpdateRelay<
 				taskId: event.lastEvent.taskId,
 			});
 		} catch (error) {
-			input.logger.core.log("Connector task update delivery failed", {
+			input.logger.core.log("连接任务更新投递失败", {
 				severity: "warn",
 				transport: input.transport,
 				threadId: match.threadId,
@@ -212,7 +212,7 @@ export function startConnectorTaskUpdateRelay<
 				void handleProjection(event);
 			},
 			onError: (error) => {
-				input.logger.core.log("Connector task update stream failed", {
+				input.logger.core.log("连接任务更新流失败", {
 					severity: "warn",
 					transport: input.transport,
 					error,

@@ -70,7 +70,7 @@ export function useConfigPanel(opts: {
 			while (keepOpen) {
 				const [data, providerInfo] = await withLoadingDialog(
 					opts.dialog,
-					"Loading settings...",
+					"正在加载设置...",
 					async () =>
 						await Promise.all([
 							opts
@@ -134,7 +134,7 @@ export function useConfigPanel(opts: {
 						try {
 							await withLoadingDialog(
 								opts.dialog,
-								`Deleting ${action.item.name}...`,
+								`正在删除 ${action.item.name}...`,
 								async () =>
 									await opts.onDeleteConfigItem?.(action.item, {
 										includePluginTools: false,
@@ -146,7 +146,7 @@ export function useConfigPanel(opts: {
 								content: (ctx: ChoiceContext<void>) => (
 									<ConfigErrorContent
 										{...ctx}
-										title="Plugin delete failed"
+										title="插件删除失败"
 										message={
 											error instanceof Error ? error.message : String(error)
 										}

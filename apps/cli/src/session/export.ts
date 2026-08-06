@@ -87,7 +87,7 @@ export function generateConversationHTML(
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${escapeHtml(fileName)} - Conversation Export</title>
+  <title>${escapeHtml(fileName)} - 对话导出</title>
   <style>
     * {
       margin: 0;
@@ -542,7 +542,7 @@ export function generateConversationHTML(
       <div class="stats">
         <div class="stat">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
-          <span>${filteredMessages.length} messages</span>
+          <span>${filteredMessages.length} 条消息</span>
         </div>
         ${
 					totalCost > 0
@@ -559,7 +559,7 @@ export function generateConversationHTML(
 						? `
         <div class="stat">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="9" y2="9"/><line x1="4" x2="20" y1="15" y2="15"/><line x1="10" x2="8" y1="3" y2="21"/><line x1="16" x2="14" y1="3" y2="21"/></svg>
-          <span>${(totalInputTokens + totalOutputTokens).toLocaleString()} tokens</span>
+          <span>${(totalInputTokens + totalOutputTokens).toLocaleString()} 令牌</span>
         </div>
         `
 						: ""
@@ -584,19 +584,19 @@ export function generateConversationHTML(
   
   <!-- Dots Navigation Bar -->
   <nav class="dots-nav">
-    <button class="dots-nav-btn" onclick="scrollToMessage(0)" title="Scroll to top">
+    <button class="dots-nav-btn" onclick="scrollToMessage(0)" title="滚动到顶部">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
     </button>
     <div class="dots-container">
       ${filteredMessages
 				.map(
 					(msg, idx) => `
-        <div class="dot ${msg.role}" data-index="${idx}" onclick="scrollToMessage(${idx})" title="Message ${idx + 1}: ${msg.role}"></div>
+        <div class="dot ${msg.role}" data-index="${idx}" onclick="scrollToMessage(${idx})" title="消息 ${idx + 1}: ${msg.role}"></div>
       `,
 				)
 				.join("")}
     </div>
-    <button class="dots-nav-btn" onclick="scrollToMessage(${filteredMessages.length - 1})" title="Scroll to bottom">
+    <button class="dots-nav-btn" onclick="scrollToMessage(${filteredMessages.length - 1})" title="滚动到底部">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
     </button>
   </nav>
@@ -666,7 +666,7 @@ function generateMessageHTML(
         <div class="avatar ${isUser ? "user" : "assistant"}">
           ${isUser ? "U" : "A"}
         </div>
-        <span class="role">${isUser ? "User" : "Assistant"}</span>
+        <span class="role">${isUser ? "用户" : "助手"}</span>
         ${message.modelInfo?.id ? `<span class="model">${escapeHtml(message.modelInfo.id)}</span>` : ""}
       </div>
       <div class="content">
@@ -779,8 +779,8 @@ function renderToolUseHTML(
         ${
 					result
 						? result?.is_error
-							? '<span class="error">Error</span>'
-							: '<span class="success">Success</span>'
+							? '<span class="error">错误</span>'
+							: '<span class="success">成功</span>'
 						: ""
 				}
       </div>
@@ -833,7 +833,7 @@ function renderDiffHTML(
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="m10 13-2 2 2 2"/><path d="m14 17 2-2-2-2"/></svg>
         <span>${escapeHtml(filePath)}</span>
         ${ext ? `<span class="badge">${ext}</span>` : ""}
-        ${isNewFile ? '<span class="badge new-file">New File</span>' : ""}
+        ${isNewFile ? '<span class="badge new-file">新文件</span>' : ""}
         <div class="diff-stats">
           ${addedCount > 0 ? `<span class="added">+${addedCount}</span>` : ""}
           ${removedCount > 0 ? `<span class="removed">-${removedCount}</span>` : ""}
@@ -853,7 +853,7 @@ function renderCommandsHTML(
 		.map(
 			(command, i) => `
     <div class="command-block">
-      <div class="command-label">Command ${i + 1}</div>
+      <div class="command-label">命令 ${i + 1}</div>
       <code>${escapeHtml(formatStructuredCommand(command))}</code>
     </div>
   `,

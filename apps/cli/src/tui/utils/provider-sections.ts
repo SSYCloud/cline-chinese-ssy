@@ -1,5 +1,5 @@
-export const POPULAR_PROVIDER_SECTION = "Popular";
-export const OTHER_PROVIDER_SECTION = "Other";
+export const POPULAR_PROVIDER_SECTION = "热门";
+export const OTHER_PROVIDER_SECTION = "其他";
 
 export type ProviderSection =
 	| typeof POPULAR_PROVIDER_SECTION

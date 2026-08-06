@@ -198,7 +198,7 @@ function appendToolGroupRows(
 		rows.push({
 			kind: "tool-group",
 			label: first?.pluginName ?? "plugin",
-			rightLabel: `${enabledCount}/${groupItems.length} tools enabled`,
+			rightLabel: `${enabledCount}/${groupItems.length} 个工具已启用`,
 			indent: 2,
 		});
 
@@ -212,7 +212,6 @@ function appendToolGroupRows(
 				description: item.description,
 				item,
 				indent: 4,
-				rightLabel: sharedToolNames.has(item.name) ? "shared tool name" : "",
 			});
 		}
 	}
@@ -245,14 +244,14 @@ function appendToolRows(
 		items.filter((item) => !item.pluginName),
 	);
 	if (builtinTools.length > 0) {
-		rows.push({ kind: "head", label: "Built-in" });
+		rows.push({ kind: "head", label: "内置" });
 		appendExtRows(rows, builtinTools);
 	}
 
 	const pluginToolItems = items.filter((item) => item.pluginName);
 	const pluginGroups = groupToolItems(pluginToolItems);
 	if (pluginGroups.length > 0) {
-		rows.push({ kind: "head", label: "Plugins" });
+		rows.push({ kind: "head", label: "插件" });
 		appendToolGroupRows(
 			rows,
 			pluginGroups,
@@ -273,14 +272,14 @@ function appendSkillRows(
 ): void {
 	const detectedItems = items.filter((item) => !item.pluginName);
 	if (detectedItems.length > 0) {
-		rows.push({ kind: "head", label: "Detected" });
+		rows.push({ kind: "head", label: "检测到" });
 		appendExtRows(rows, detectedItems);
 	}
 
 	const pluginItems = items.filter((item) => item.pluginName);
 	const pluginGroups = groupToolItems(pluginItems);
 	if (pluginGroups.length > 0) {
-		rows.push({ kind: "head", label: "Plugins" });
+		rows.push({ kind: "head", label: "插件" });
 		for (const [, groupItems] of pluginGroups) {
 			const first = groupItems[0];
 			const enabledCount = groupItems.filter(
@@ -289,7 +288,7 @@ function appendSkillRows(
 			rows.push({
 				kind: "tool-group",
 				label: first?.pluginName ?? "plugin",
-				rightLabel: `${enabledCount}/${groupItems.length} skills enabled`,
+				rightLabel: `${enabledCount}/${groupItems.length} 个技能已启用`,
 				indent: 2,
 			});
 			appendExtRows(rows, groupItems, 4);
@@ -369,7 +368,7 @@ function getPluginLoadErrorLabel(
 	}
 	const lines = item.loadError.split("\n");
 	const first = lines[0] ?? item.loadError;
-	return lines.length > 1 ? `${first} (+${lines.length - 1} more)` : first;
+	return lines.length > 1 ? `${first} (+${lines.length - 1} 更多)` : first;
 }
 
 export function ConfigPanelContent(props: ConfigPanelProps) {
@@ -411,7 +410,7 @@ export function ConfigPanelContent(props: ConfigPanelProps) {
 	const themeController = useThemeController();
 	const dialogAccents = getDialogAccents(themeController.theme);
 	const currentThemeLabel =
-		getThemeDefinition(themeController.selectedThemeId)?.label ?? "Auto";
+		getThemeDefinition(themeController.selectedThemeId)?.label ?? "自动";
 
 	const displayName = resolveModelDisplayName(config);
 
@@ -445,7 +444,7 @@ export function ConfigPanelContent(props: ConfigPanelProps) {
 					return;
 				}
 				const message = error instanceof Error ? error.message : String(error);
-				setPluginToolsError(`Failed to load plugin diagnostics: ${message}`);
+				setPluginToolsError(`加载插件诊断失败：${message}`);
 			})
 			.finally(() => {
 				if (!cancelled) {
@@ -464,16 +463,16 @@ export function ConfigPanelContent(props: ConfigPanelProps) {
 		if (activeTab === "general") {
 			r.push({ kind: "provider" });
 			r.push({ kind: "model" });
-			r.push({ kind: "toggle", id: "mode", label: "Mode" });
-			r.push({ kind: "toggle", id: "theme", label: "Theme" });
-			r.push({ kind: "toggle", id: "compaction", label: "Compaction" });
+			r.push({ kind: "toggle", id: "mode", label: "模式" });
+			r.push({ kind: "toggle", id: "theme", label: "主题" });
+			r.push({ kind: "toggle", id: "compaction", label: "压缩" });
 			r.push({
 				kind: "toggle",
 				id: "auto-approve",
-				label: "Auto-approve all",
+				label: "全部自动批准",
 			});
-			r.push({ kind: "toggle", id: "auto-update", label: "Auto update" });
-			r.push({ kind: "toggle", id: "verbose", label: "Verbose" });
+			r.push({ kind: "toggle", id: "auto-update", label: "自动更新" });
+			r.push({ kind: "toggle", id: "verbose", label: "详细输出" });
 		} else {
 			const activeItems = resolveActiveConfigItems(configData, activeTab);
 			r.push({
@@ -484,7 +483,7 @@ export function ConfigPanelContent(props: ConfigPanelProps) {
 			if (activeItems.length === 0 && !pluginToolsLoading) {
 				r.push({
 					kind: "detail",
-					text: `No ${toTabLabel(activeTab).toLowerCase()} found.`,
+					text: `未找到${toTabLabel(activeTab)}。`,
 				});
 			} else if (activeTab === "tools") {
 				appendToolRows(r, activeItems);
@@ -526,7 +525,7 @@ export function ConfigPanelContent(props: ConfigPanelProps) {
 					const loadingText = getPluginDiagnosticsLoadingText(activeTab);
 					r.push({
 						kind: "detail",
-						text: loadingText ?? "Loading plugin diagnostics...",
+						text: loadingText ?? "正在加载插件诊断...",
 					});
 				}
 				if (activeTab === "plugins" && pluginToolsError) {
@@ -586,7 +585,7 @@ export function ConfigPanelContent(props: ConfigPanelProps) {
 		} catch (error) {
 			setConfigData(previousData);
 			const message = error instanceof Error ? error.message : String(error);
-			setToggleError(`Failed to update ${item.name}: ${message}`);
+			setToggleError(`更新 ${item.name} 失败：${message}`);
 		} finally {
 			setTogglingItemId(null);
 		}
@@ -732,7 +731,7 @@ export function ConfigPanelContent(props: ConfigPanelProps) {
 	return (
 		<box flexDirection="column" paddingX={1}>
 			<text fg={palette.act}>
-				<strong>Settings</strong>
+				<strong>设置</strong>
 			</text>
 
 			<box flexDirection="row" flexWrap="wrap" paddingBottom={1}>
@@ -755,7 +754,7 @@ export function ConfigPanelContent(props: ConfigPanelProps) {
 			{aboveCount > 0 && (
 				<text fg="gray">
 					{"▲ "}
-					{aboveCount} more
+					{aboveCount} 更多
 				</text>
 			)}
 
@@ -803,7 +802,7 @@ export function ConfigPanelContent(props: ConfigPanelProps) {
 								flexDirection="row"
 								justifyContent="space-between"
 							>
-								<text fg={isSel ? palette.act : undefined}>{pfx}Provider</text>
+								<text fg={isSel ? palette.act : undefined}>{pfx}提供商</text>
 								<text fg="white">{props.providerDisplayName}</text>
 							</box>
 						);
@@ -814,7 +813,7 @@ export function ConfigPanelContent(props: ConfigPanelProps) {
 								flexDirection="row"
 								justifyContent="space-between"
 							>
-								<text fg={isSel ? palette.act : undefined}>{pfx}Model</text>
+								<text fg={isSel ? palette.act : undefined}>{pfx}模型</text>
 								<text fg="white">{displayName}</text>
 							</box>
 						);
@@ -822,23 +821,23 @@ export function ConfigPanelContent(props: ConfigPanelProps) {
 						let value: string;
 						let valueColor: string;
 						if (row.id === "mode") {
-							value = mode === "plan" ? "Plan" : "Act";
+							value = mode === "plan" ? "计划" : "执行";
 							valueColor =
 								mode === "plan" ? dialogAccents.plan : dialogAccents.act;
 						} else if (row.id === "theme") {
 							value = currentThemeLabel;
 							valueColor = dialogAccents.act;
 						} else if (row.id === "auto-approve") {
-							value = autoApprove ? "● on" : "○ off";
+							value = autoApprove ? "● 开" : "○ 关";
 							valueColor = autoApprove ? palette.success : "gray";
 						} else if (row.id === "auto-update") {
-							value = autoUpdateEnabled ? "● on" : "○ off";
+							value = autoUpdateEnabled ? "● 开" : "○ 关";
 							valueColor = autoUpdateEnabled ? palette.success : "gray";
 						} else if (row.id === "compaction") {
 							value = formatCliCompactionMode(compactionMode);
 							valueColor = COMPACTION_MODE_COLORS[compactionMode];
 						} else {
-							value = verbose ? "● on" : "○ off";
+							value = verbose ? "● 开" : "○ 关";
 							valueColor = verbose ? palette.success : "gray";
 						}
 						return (
@@ -901,7 +900,7 @@ export function ConfigPanelContent(props: ConfigPanelProps) {
 					case "mcp-manager":
 						return (
 							<text key={absIdx} fg={isSel ? palette.act : "gray"}>
-								{pfx}Manage MCP Servers...
+								{pfx}管理 MCP 服务器...
 							</text>
 						);
 					default:
@@ -912,7 +911,7 @@ export function ConfigPanelContent(props: ConfigPanelProps) {
 			{belowCount > 0 && (
 				<text fg="gray">
 					{"▼ "}
-					{belowCount} more
+					{belowCount} 更多
 				</text>
 			)}
 
@@ -921,7 +920,7 @@ export function ConfigPanelContent(props: ConfigPanelProps) {
 			<text fg="gray">
 				<em>
 					{togglingItemId
-						? "Applying settings"
+						? "正在应用设置"
 						: getConfigFooterText({
 								canToggle: canToggleSelectedRow,
 								canDelete: canDeleteSelectedRow,

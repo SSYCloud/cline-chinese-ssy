@@ -98,7 +98,7 @@ export function useOnboardingModels(): UseOnboardingModelsResult {
 		}
 
 		const { data } = fetchState
-		const freeModels = data.free.map((rec) => toOnboardingModel(rec, "free", "Free", modelCatalog))
+		const freeModels = data.free.map((rec) => toOnboardingModel(rec, "free", "免费", modelCatalog))
 		const frontierModels = data.recommended.map((rec) => toOnboardingModel(rec, "frontier", "", modelCatalog))
 		const clinePassCatalog = Object.fromEntries(
 			data.clinePass.map((rec) => [rec.id, resolveClinePassModelInfo(rec.id, openRouterModelsByName)]),

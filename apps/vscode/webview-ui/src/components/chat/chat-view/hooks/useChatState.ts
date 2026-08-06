@@ -17,8 +17,8 @@ export function useChatState(messages: ClineMessage[]): ChatState {
 	// UI state
 	const [sendingDisabled, setSendingDisabled] = useState(false)
 	const [enableButtons, setEnableButtons] = useState<boolean>(false)
-	const [primaryButtonText, setPrimaryButtonText] = useState<string | undefined>("Approve")
-	const [secondaryButtonText, setSecondaryButtonText] = useState<string | undefined>("Reject")
+	const [primaryButtonText, setPrimaryButtonText] = useState<string | undefined>("批准")
+	const [secondaryButtonText, setSecondaryButtonText] = useState<string | undefined>("拒绝")
 	const [expandedRows, setExpandedRows] = useState<Record<number, boolean>>({})
 	const [pendingUserMessage, setPendingUserMessage] = useState<PendingUserMessage | undefined>(undefined)
 	const [pendingResponse, setPendingResponse] = useState<PendingResponse | undefined>(undefined)

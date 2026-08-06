@@ -142,7 +142,7 @@ async function postConnectorRuntimeReply<TState extends ConnectorThreadState>(
 		return;
 	}
 	if (resolveFallbackText && !text.trim()) {
-		throw new Error("Runtime completed without assistant reply text.");
+		throw new Error("运行时完成但缺少助手回复文本。");
 	}
 	if (postFinalReply) {
 		await postFinalReply(text);
@@ -178,7 +178,7 @@ async function forgetStaleThreadSession<
 		return false;
 	}
 	input.logger.core.log(
-		"Connector thread session no longer exists; starting a new session",
+		"连接线程会话已不存在；正在启动新会话",
 		{
 			severity: "warn",
 			transport: input.transport,
@@ -380,7 +380,7 @@ export async function handleConnectorUserTurn<
 	if (authorization.action === "deny") {
 		const denialMessage =
 			authorization.message?.trim() ||
-			"You are not authorized to use this bot.";
+			"你无权使用此机器人。";
 		await postConnectorText(input.thread, input.transport, denialMessage);
 		await dispatchConnectorHook(
 			input.hookCommand,
@@ -402,7 +402,7 @@ export async function handleConnectorUserTurn<
 			input.logger,
 		);
 		input.logger.core.log(
-			"Inbound connector event denied by authorization hook",
+			"入站连接事件被授权钩子拒绝",
 			{
 				transport: input.transport,
 				threadId: input.thread.id,
@@ -423,7 +423,7 @@ export async function handleConnectorUserTurn<
 		!input.thread.isDM &&
 		!isConnectorCommandAddressedToThisBot(resolvedInput, input.botUserName)
 	) {
-		input.logger.core.log("Unaddressed connector chat command ignored", {
+		input.logger.core.log("未定向的连接聊天命令已忽略", {
 			transport: input.transport,
 			threadId: input.thread.id,
 			channelId: input.thread.channelId,
@@ -443,9 +443,9 @@ export async function handleConnectorUserTurn<
 		await postConnectorText(
 			input.thread,
 			input.transport,
-			"Only the connector owner can use slash commands.",
+			"只有连接器所有者可以使用斜杠命令。",
 		);
-		input.logger.core.log("Non-owner connector chat command denied", {
+		input.logger.core.log("非所有者连接聊天命令被拒绝", {
 			transport: input.transport,
 			threadId: input.thread.id,
 			channelId: input.thread.channelId,
@@ -467,7 +467,7 @@ export async function handleConnectorUserTurn<
 		commandName !== "/unmute" &&
 		commandName !== "/mute"
 	) {
-		input.logger.core.log("Muted connector thread message ignored", {
+		input.logger.core.log("已静音的连接线程消息已忽略", {
 			transport: input.transport,
 			threadId: input.thread.id,
 			channelId: input.thread.channelId,
@@ -540,7 +540,7 @@ export async function handleConnectorUserTurn<
 		await postConnectorText(
 			input.thread,
 			input.transport,
-			`${settingName}=off (disabled by connector startup)`,
+			`${settingName}=off（已通过连接器启动禁用）`,
 		);
 		return;
 	}
@@ -670,7 +670,7 @@ export async function handleConnectorUserTurn<
 					await postConnectorText(
 						input.thread,
 						input.transport,
-						"No active task to abort.",
+						"当前没有可中止的任务。",
 					);
 					return;
 				}
@@ -678,7 +678,7 @@ export async function handleConnectorUserTurn<
 				await postConnectorText(
 					input.thread,
 					input.transport,
-					"Aborting current task.",
+					"正在中止当前任务。",
 				);
 			},
 			mute: async (commandInput: MuteCommandInput) => {
@@ -690,7 +690,7 @@ export async function handleConnectorUserTurn<
 						})
 					: undefined;
 				if (commandInput.target?.trim() && !target) {
-					return `Could not resolve mute target: ${commandInput.target.trim()}`;
+					return `无法解析静音目标：${commandInput.target.trim()}`;
 				}
 				const activeTurns = input.activeTurns
 					? Array.from(input.activeTurns.entries()).filter(([key, turn]) =>
@@ -716,7 +716,7 @@ export async function handleConnectorUserTurn<
 						true,
 						input.errorLabel,
 					);
-					return `Muted ${formatMuteTargetLabel(target)} in this thread. I will ignore their messages until /unmute ${formatMuteTargetLabel(target)}.`;
+					return `已在本线程静音 ${formatMuteTargetLabel(target)}。我将忽略其消息，直到 /unmute ${formatMuteTargetLabel(target)}。`;
 				}
 				setThreadMuted(
 					input.bindingsPath,
@@ -735,7 +735,7 @@ export async function handleConnectorUserTurn<
 						})
 					: undefined;
 				if (commandInput.target?.trim() && !target) {
-					return `Could not resolve unmute target: ${commandInput.target.trim()}`;
+					return `无法解析取消静音目标：${commandInput.target.trim()}`;
 				}
 				if (target) {
 					setParticipantMuted(
@@ -745,7 +745,7 @@ export async function handleConnectorUserTurn<
 						false,
 						input.errorLabel,
 					);
-					return `Unmuted ${formatMuteTargetLabel(target)} in this thread.`;
+					return `已在本线程取消静音 ${formatMuteTargetLabel(target)}。`;
 				}
 				if (!threadMuted) {
 					const mutedParticipants = findMutedParticipantsForThread(
@@ -753,9 +753,9 @@ export async function handleConnectorUserTurn<
 						input.thread,
 					);
 					if (mutedParticipants.length > 0) {
-						return `No thread-level mute is active. Participant-specific mutes are still active for ${formatMuteTargetList(mutedParticipants)}. Use /unmute <target> to clear one.`;
+						return `没有激活的线程级静音。针对特定参与者的静音仍对 ${formatMuteTargetList(mutedParticipants)} 生效。使用 /unmute <target> 清除其中一项。`;
 					}
-					return "Thread is not muted.";
+					return "线程未被静音。";
 				}
 				setThreadMuted(
 					input.bindingsPath,
@@ -873,10 +873,10 @@ export async function handleConnectorUserTurn<
 						},
 					});
 					if (!created) {
-						return "Failed to create schedule.";
+						return "创建计划失败。";
 					}
 					return [
-						`Scheduled "${created.name}".`,
+						`已计划 "${created.name}"。`,
 						`id=${created.scheduleId}`,
 						`cron=${created.cronPattern}`,
 						`nextRunAt=${created.nextRunAt || "pending"}`,
@@ -898,7 +898,7 @@ export async function handleConnectorUserTurn<
 						);
 					});
 					if (matching.length === 0) {
-						return "No schedules are targeting this thread.";
+						return "没有针对此线程的计划。";
 					}
 					return matching
 						.map((schedule) =>
@@ -914,10 +914,10 @@ export async function handleConnectorUserTurn<
 				trigger: async (scheduleId) => {
 					const execution = await input.client.triggerScheduleNow(scheduleId);
 					if (!execution) {
-						return `Schedule not found: ${scheduleId}`;
+						return `找不到计划：${scheduleId}`;
 					}
 					return [
-						`Triggered schedule ${scheduleId}.`,
+						`已触发计划 ${scheduleId}。`,
 						`executionId=${execution.executionId}`,
 						`status=${execution.status}`,
 					].join("\n");
@@ -925,8 +925,8 @@ export async function handleConnectorUserTurn<
 				delete: async (scheduleId) => {
 					const deleted = await input.client.deleteSchedule(scheduleId);
 					return deleted
-						? `Deleted schedule ${scheduleId}.`
-						: `Schedule not found: ${scheduleId}`;
+						? `已删除计划 ${scheduleId}。`
+						: `找不到计划：${scheduleId}`;
 				},
 			},
 		})
@@ -991,7 +991,7 @@ export async function handleConnectorUserTurn<
 			const enqueueTurn = input.enqueueTurn;
 			if (!enqueueTurn) {
 				throw new Error(
-					"Active connector turns require a per-thread turn queue",
+					"活跃连接回合需要按线程的回合队列",
 				);
 			}
 			await enqueueTurn(() =>
@@ -1254,7 +1254,7 @@ export async function maybeHandleConnectorApprovalReply<
 		await postConnectorText(
 			input.thread,
 			input.transport ?? "",
-			`Approval pending for "${pending.toolName}". Reply "Y" to approve or "N" to deny.`,
+			`等待批准 "${pending.toolName}"。回复 "Y" 批准或 "N" 拒绝。`,
 		);
 		return true;
 	}
@@ -1269,8 +1269,8 @@ export async function maybeHandleConnectorApprovalReply<
 		input.thread,
 		input.transport ?? "",
 		decision.approved
-			? `Approved "${pending.toolName}".`
-			: `Denied "${pending.toolName}".`,
+			? `已批准 "${pending.toolName}"。`
+			: `已拒绝 "${pending.toolName}"。`,
 	);
 	return true;
 }

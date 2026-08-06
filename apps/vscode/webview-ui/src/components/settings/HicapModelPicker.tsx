@@ -165,7 +165,7 @@ const HicapModelPicker: React.FC<HicapModelPickerProps> = ({ isPopup, currentMod
 		<div className="w-full">
 			<div className="flex flex-col">
 				<label htmlFor="model-search">
-					<span className="font-medium">Model ID</span>
+					<span className="font-medium">模型 ID</span>
 				</label>
 
 				<div className="relative w-full" ref={dropdownRef}>
@@ -179,13 +179,13 @@ const HicapModelPicker: React.FC<HicapModelPickerProps> = ({ isPopup, currentMod
 							setIsDropdownVisible(true)
 						}}
 						onKeyDown={handleKeyDown}
-						placeholder="Search and select a model..."
+						placeholder="搜索并选择模型..."
 						role="combobox"
 						style={{ zIndex: HICAP_MODEL_PICKER_Z_INDEX }}
 						value={searchTerm}>
 						{searchTerm && (
 							<div
-								aria-label="Clear search"
+								aria-label="清除搜索"
 								className="flex justify-center items-center h-full input-icon-button codicon codicon-close"
 								onClick={() => {
 									setSearchTerm("")

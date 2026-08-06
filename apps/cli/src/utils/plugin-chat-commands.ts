@@ -96,7 +96,7 @@ export async function createWorkspaceChatCommandHost(input: {
 	} catch (error) {
 		const message = error instanceof Error ? error.message : String(error);
 		input.logger?.log(
-			`plugin command loading failed; continuing without plugin commands (${message})`,
+			`插件命令加载失败; 在没有插件命令的情况下继续 (${message})`,
 		);
 		return { host: chatCommandHost, pluginSlashCommands: [] };
 	}
@@ -119,7 +119,7 @@ export async function createWorkspaceChatCommandHost(input: {
 	} catch (error) {
 		const message = error instanceof Error ? error.message : String(error);
 		input.logger?.log(
-			`plugin command registry initialization failed; continuing without plugin commands (${message})`,
+			`插件命令注册表初始化失败; 在没有插件命令的情况下继续 (${message})`,
 		);
 		await loaded.shutdown?.().catch(() => {
 			// Best effort cleanup after failed command discovery.

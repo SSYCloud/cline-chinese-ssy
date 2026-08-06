@@ -63,7 +63,7 @@ const editorFeatures: FeatureToggle[] = [
 	},
 	{
 		id: "worktrees",
-		label: "Worktrees",
+		label: "工作树",
 		description: "启用 git worktree 管理，以并行运行 Cline 任务。",
 		stateKey: "worktreesEnabled",
 		settingKey: "worktreesEnabled",
@@ -83,7 +83,7 @@ const experimentalFeatures: FeatureToggle[] = [
 const advancedFeatures: FeatureToggle[] = [
 	{
 		id: "hooks",
-		label: "Hooks",
+		label: "钩子",
 		description: "在任务执行期间启用生命周期和工具 hooks。",
 		stateKey: "hooksEnabled",
 		settingKey: "hooksEnabled",

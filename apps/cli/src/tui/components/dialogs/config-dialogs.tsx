@@ -63,7 +63,7 @@ export function ExtDetailContent(
 		} catch (error) {
 			setItem(previousItem);
 			const message = error instanceof Error ? error.message : String(error);
-			setToggleError(`Failed to update ${item.name}: ${message}`);
+			setToggleError(`更新 ${item.name} 失败：${message}`);
 		}
 	};
 
@@ -117,9 +117,9 @@ export function ExtDetailContent(
 								marginTop={1}
 								justifyContent="space-between"
 							>
-								<text fg="gray">Status</text>
+								<text fg="gray">状态</text>
 								<text fg={row.enabled ? palette.success : "red"}>
-									{row.enabled ? "Enabled" : "Disabled"}
+									{row.enabled ? "已启用" : "已禁用"}
 								</text>
 							</box>
 						);
@@ -153,12 +153,12 @@ export function DeleteConfigItemConfirmContent(
 
 	return (
 		<box flexDirection="column" paddingX={1}>
-			<text>Delete plugin {props.item.name}?</text>
+			<text>删除插件 {props.item.name}？</text>
 			<text fg="gray" marginTop={1}>
-				This removes the installed plugin files from {props.item.path}.
+				这将从 {props.item.path} 移除已安装的插件文件。
 			</text>
 			<text fg="gray" marginTop={1}>
-				<em>Y/Enter to confirm, N/Esc to cancel</em>
+				<em>Y/Enter 确认，N/Esc 取消</em>
 			</text>
 		</box>
 	);
@@ -183,7 +183,7 @@ export function ConfigErrorContent(
 				{props.message}
 			</text>
 			<text fg="gray" marginTop={1}>
-				<em>Enter/Esc to close</em>
+				<em>Enter/Esc 关闭</em>
 			</text>
 		</box>
 	);

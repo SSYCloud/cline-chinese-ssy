@@ -75,7 +75,7 @@ export function getPriceRange(modelInfo: PriceRangeInfo): string {
 	const completion = Number(modelInfo.outputPrice ?? 0)
 	const cost = prompt + completion
 	if (cost === 0) {
-		return "Free"
+		return "免费"
 	}
 	if (cost < 10) {
 		return "$"
@@ -92,28 +92,28 @@ interface CapabilityInfo {
 export function getCapabilities(modelInfo: CapabilityInfo): string[] {
 	const capabilities = new Set<string>()
 	if (modelInfo.supportsImages) {
-		capabilities.add("Images")
+		capabilities.add("图片")
 	}
 	if (modelInfo.supportsPromptCache) {
-		capabilities.add("Prompt Cache")
+		capabilities.add("提示缓存")
 	}
-	capabilities.add("Tools")
+	capabilities.add("工具")
 	return Array.from(capabilities)
 }
 
 export function getSpeedLabel(latency?: number): string {
 	if (!latency) {
-		return "Average"
+		return "平均"
 	}
 	if (latency < 1) {
-		return "Instant"
+		return "即时"
 	}
 	if (latency < 2) {
-		return "Fast"
+		return "快"
 	}
 	if (latency > 5) {
-		return "Slow"
+		return "慢"
 	}
 
-	return "Average"
+	return "平均"
 }

@@ -159,7 +159,7 @@ export function useAgentEventHandlers(deps: AgentEventDeps) {
 						case "reasoning": {
 							const chunk =
 								event.redacted && !event.reasoning
-									? "[redacted]"
+									? "[已编辑]"
 									: (event.reasoning ?? "");
 							if (activeInlineStreamRef.current !== "reasoning") {
 								closeInlineStream();
@@ -306,67 +306,67 @@ export function useAgentEventHandlers(deps: AgentEventDeps) {
 			};
 			switch (event.type) {
 				case "teammate_spawned":
-					team(`[team] teammate spawned: ${event.agentId}`);
+					team(`[团队] 队友已生成: ${event.agentId}`);
 					break;
 				case "teammate_shutdown":
-					team(`[team] teammate shutdown: ${event.agentId}`);
+					team(`[团队] 队友已关闭: ${event.agentId}`);
 					break;
 				case "team_task_updated":
-					team(`[team task] ${event.task.id} -> ${event.task.status}`);
+					team(`[团队任务] ${event.task.id} -> ${event.task.status}`);
 					break;
 				case "team_message":
 					team(
-						`[mailbox] ${event.message.fromAgentId} -> ${event.message.toAgentId}: ${event.message.subject}`,
+						`[邮箱] ${event.message.fromAgentId} -> ${event.message.toAgentId}: ${event.message.subject}`,
 					);
 					break;
 				case "team_mission_log":
 					team(
-						`[mission] ${event.entry.agentId}: ${truncate(event.entry.summary, 90)}`,
+						`[任务日志] ${event.entry.agentId}: ${truncate(event.entry.summary, 90)}`,
 					);
 					break;
 				case "run_queued":
-					team(`[team run] queued ${event.run.id} -> ${event.run.agentId} ...`);
+					team(`[团队运行] 已排队 ${event.run.id} -> ${event.run.agentId} ...`);
 					break;
 				case "run_started":
 					team(
-						`[team run] started ${event.run.id} -> ${event.run.agentId} ...`,
+						`[团队运行] 已开始 ${event.run.id} -> ${event.run.agentId} ...`,
 					);
 					break;
 				case "run_progress":
 					if (event.message === "heartbeat") break;
-					team(`[team run] progress ${event.run.id}: ${event.message}`);
+					team(`[团队运行] 进度 ${event.run.id}: ${event.message}`);
 					break;
 				case "run_completed":
-					team(`[team run] completed ${event.run.id}`);
+					team(`[团队运行] 已完成 ${event.run.id}`);
 					break;
 				case "run_failed":
 					team(
-						`[team run] failed ${event.run.id}: ${event.run.error ?? "unknown error"}`,
+						`[团队运行] 失败 ${event.run.id}: ${event.run.error ?? "未知错误"}`,
 					);
 					break;
 				case "run_cancelled":
-					team(`[team run] cancelled ${event.run.id}`);
+					team(`[团队运行] 已取消 ${event.run.id}`);
 					break;
 				case "run_interrupted":
-					team(`[team run] interrupted ${event.run.id}`);
+					team(`[团队运行] 已中断 ${event.run.id}`);
 					break;
 				case "outcome_created":
 					team(
-						`[team outcome] created ${event.outcome.id}: ${event.outcome.title}`,
+						`[团队结果] 已创建 ${event.outcome.id}: ${event.outcome.title}`,
 					);
 					break;
 				case "outcome_fragment_attached":
 					team(
-						`[team outcome] fragment ${event.fragment.id} attached to ${event.fragment.section}`,
+						`[团队结果] 片段 ${event.fragment.id} 已附加到 ${event.fragment.section}`,
 					);
 					break;
 				case "outcome_fragment_reviewed":
 					team(
-						`[team outcome] fragment ${event.fragment.id} -> ${event.fragment.status}`,
+						`[团队结果] 片段 ${event.fragment.id} -> ${event.fragment.status}`,
 					);
 					break;
 				case "outcome_finalized":
-					team(`[team outcome] finalized ${event.outcome.id}`);
+					team(`[团队结果] 已定稿 ${event.outcome.id}`);
 					break;
 				case "task_start":
 				case "task_end":

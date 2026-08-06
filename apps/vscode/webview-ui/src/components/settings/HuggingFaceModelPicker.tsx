@@ -177,7 +177,7 @@ const HuggingFaceModelPicker: React.FC<HuggingFaceModelPickerProps> = ({ isPopup
 		<div className="w-full">
 			<div className="flex flex-col">
 				<label htmlFor="hf-model-search">
-					<span className="font-medium">Model</span>
+					<span className="font-medium">模型</span>
 				</label>
 
 				<div className="relative w-full" ref={dropdownRef}>
@@ -191,12 +191,12 @@ const HuggingFaceModelPicker: React.FC<HuggingFaceModelPickerProps> = ({ isPopup
 							setSelectedIndex(-1)
 						}}
 						onKeyDown={handleKeyDown}
-						placeholder="Search models..."
+						placeholder="搜索模型..."
 						role="combobox"
 						value={searchTerm}>
 						{searchTerm && (
 							<div
-								aria-label="Clear search"
+								aria-label="清除搜索"
 								className="input-icon-button codicon codicon-close"
 								onClick={() => {
 									setSearchTerm("")

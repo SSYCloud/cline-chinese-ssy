@@ -39,12 +39,12 @@ export const ClineAccountInfoCard = ({ usageLink }: { usageLink?: string }) => {
 		<div className="max-w-[600px]">
 			{user ? (
 				<VSCodeButton appearance="secondary" onClick={handleShowAccount}>
-					View Billing & Usage
+					查看账单与用量
 				</VSCodeButton>
 			) : (
 				<div className="flex flex-col gap-3">
 					<VSCodeButton className="mt-0" disabled={isLoginLoading} onClick={handleLogin}>
-						Sign Up with Cline
+						使用 Cline 注册
 						{isLoginLoading && (
 							<span className="ml-1 animate-spin">
 								<span className="codicon codicon-refresh" />

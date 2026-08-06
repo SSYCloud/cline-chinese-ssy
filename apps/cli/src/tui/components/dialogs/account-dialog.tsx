@@ -47,20 +47,20 @@ interface AccountAction {
 const LOADED_ACTIONS: AccountAction[] = [
 	{
 		id: "change-model",
-		label: "Change model",
-		description: "Open the Cline model selector",
+		label: "切换模型",
+		description: "打开 Cline 模型选择器",
 		enabled: true,
 	},
 	{
 		id: "change-account",
-		label: "Change account",
-		description: "Switch personal account or organization",
+		label: "切换账户",
+		description: "切换个人账户或组织",
 		enabled: true,
 	},
 	{
 		id: "change-provider",
-		label: "Change provider",
-		description: "Open provider picker",
+		label: "切换提供商",
+		description: "打开提供商选择器",
 		enabled: true,
 	},
 ];
@@ -68,14 +68,14 @@ const LOADED_ACTIONS: AccountAction[] = [
 const UNAUTHENTICATED_ACTIONS: AccountAction[] = [
 	{
 		id: "login",
-		label: "Sign in or create account",
-		description: "Use Cline OAuth",
+		label: "登录或创建账户",
+		description: "使用 Cline OAuth",
 		enabled: true,
 	},
 	{
 		id: "learn-more",
-		label: "Learn more",
-		description: "Open cline.bot",
+		label: "了解更多",
+		description: "打开 cline.bot",
 		enabled: true,
 	},
 ];
@@ -236,7 +236,7 @@ export function AccountDialogContent(
 	} = props;
 	const [state, setState] = useState<AccountState>({
 		status: "loading",
-		message: "Loading account details...",
+		message: "正在加载账户详情...",
 	});
 	const [view, setView] = useState<AccountView>("overview");
 	const [selectedAction, setSelectedAction] = useState(0);
@@ -246,7 +246,7 @@ export function AccountDialogContent(
 	const reload = useCallback(async () => {
 		const currentGeneration = generation.current + 1;
 		generation.current = currentGeneration;
-		setState({ status: "loading", message: "Loading account details..." });
+		setState({ status: "loading", message: "正在加载账户详情..." });
 		try {
 			const snapshot = await loadAccount();
 			if (generation.current === currentGeneration) {
@@ -289,7 +289,7 @@ export function AccountDialogContent(
 			{
 				id: "personal",
 				organizationId: null,
-				label: "Personal account",
+				label: "个人账户",
 				description: snapshot.user.email,
 				active: snapshot.activeOrganization === null,
 			},
@@ -308,8 +308,8 @@ export function AccountDialogContent(
 			setState({
 				status: "loading",
 				message: row.organizationId
-					? `Switching to ${row.label}...`
-					: "Switching to personal account...",
+					? `正在切换到 ${row.label}...`
+					: "正在切换到个人账户...",
 			});
 			try {
 				await switchAccount(row.organizationId);
@@ -424,9 +424,9 @@ export function AccountDialogContent(
 	if (state.status === "loading") {
 		return (
 			<box flexDirection="column" paddingX={1} gap={1}>
-				<text fg={palette.act}>Cline Account</text>
+				<text fg={palette.act}>Cline 账户</text>
 				<text fg="gray">{state.message}</text>
-				<text fg="gray">Esc to close</text>
+				<text fg="gray">按 Esc 关闭</text>
 			</box>
 		);
 	}
@@ -434,9 +434,9 @@ export function AccountDialogContent(
 	if (state.status === "error") {
 		return (
 			<box flexDirection="column" paddingX={1} gap={1}>
-				<text fg={palette.act}>Cline Account</text>
+				<text fg={palette.act}>Cline 账户</text>
 				<text fg="red">{state.message}</text>
-				<text fg="gray">Esc to close</text>
+				<text fg="gray">按 Esc 关闭</text>
 			</box>
 		);
 	}
@@ -444,11 +444,10 @@ export function AccountDialogContent(
 	if (state.status === "unauthenticated") {
 		return (
 			<box flexDirection="column" paddingX={1} gap={1}>
-				<text fg={palette.act}>Cline Account</text>
-				<text>Sign in or create a Cline account.</text>
+				<text fg={palette.act}>Cline 账户</text>
+				<text>登录或创建 Cline 账户。</text>
 				<text fg="gray">
-					Get access to the latest models with regular free promos and
-					discounts.
+					定期免费促销和折扣，获取最新模型的使用权限。
 				</text>
 
 				<box flexDirection="column">
@@ -465,7 +464,7 @@ export function AccountDialogContent(
 					))}
 				</box>
 
-				<text fg="gray">↑/↓ navigate, Enter to select, Esc to close</text>
+				<text fg="gray">↑/↓ 导航，Enter 选择，Esc 关闭</text>
 			</box>
 		);
 	}
@@ -473,7 +472,7 @@ export function AccountDialogContent(
 	if (view === "organizations") {
 		return (
 			<box flexDirection="column" paddingX={1}>
-				<text fg={palette.act}>Change Account</text>
+				<text fg={palette.act}>切换账户</text>
 				<box flexDirection="column" gap={0}>
 					{orgRows.map((row, index) => (
 						<OrganizationRow
@@ -489,7 +488,7 @@ export function AccountDialogContent(
 						/>
 					))}
 				</box>
-				<text fg="gray">↑/↓ navigate, Enter to select, Esc to go back</text>
+				<text fg="gray">↑/↓ 导航，Enter 选择，Esc 返回</text>
 			</box>
 		);
 	}
@@ -498,12 +497,12 @@ export function AccountDialogContent(
 	const displayName =
 		loaded.user.displayName?.trim() ||
 		loaded.user.email?.trim() ||
-		"Cline user";
-	const activeAccount = loaded.activeOrganization?.name ?? "Personal account";
+		"Cline 用户";
+	const activeAccount = loaded.activeOrganization?.name ?? "个人账户";
 
 	return (
 		<box flexDirection="column" paddingX={1} gap={1}>
-			<text fg={palette.act}>Cline Account</text>
+			<text fg={palette.act}>Cline 账户</text>
 
 			<box flexDirection="row" gap={2}>
 				<box
@@ -522,25 +521,25 @@ export function AccountDialogContent(
 						{loaded.user.email}
 					</text>
 					<text fg="gray">
-						Member since {formatDate(loaded.user.createdAt)}
+						注册于 {formatDate(loaded.user.createdAt)}
 					</text>
 				</box>
 			</box>
 
 			<box flexDirection="column" border borderColor="gray" paddingX={1}>
-				<AccountField label="Active account" value={activeAccount} />
+				<AccountField label="当前账户" value={activeAccount} />
 				<AccountField
-					label="Credits"
+					label="积分"
 					value={formatClineCredits(loaded.displayedBalance)}
 				/>
 				{loaded.activeOrganization && (
 					<AccountField
-						label="Personal"
+						label="个人"
 						value={formatClineCredits(loaded.balance.balance)}
 					/>
 				)}
 				<AccountField
-					label="Organizations"
+					label="组织"
 					value={String(loaded.organizations.length)}
 				/>
 			</box>
@@ -559,7 +558,7 @@ export function AccountDialogContent(
 				))}
 			</box>
 
-			<text fg="gray">↑/↓ navigate, Enter to select, Esc to close</text>
+			<text fg="gray">↑/↓ 导航，Enter 选择，Esc 关闭</text>
 		</box>
 	);
 }

@@ -358,9 +358,7 @@ const BrowserSessionRow = memo((props: BrowserSessionRowProps) => {
 				) : (
 					<span className="codicon codicon-inspect" style={browserIconStyle} />
 				)}
-				<span style={approveTextStyle}>
-					{isAutoApproved ? "Cline is using the browser:" : "Cline wants to use the browser:"}
-				</span>
+				<span style={approveTextStyle}>{isAutoApproved ? "Cline 正在使用浏览器：" : "Cline 想要使用浏览器："}</span>
 			</div>
 			<div
 				style={{
@@ -398,7 +396,7 @@ const BrowserSessionRow = memo((props: BrowserSessionRowProps) => {
 					}}>
 					{displayState.screenshot ? (
 						<img
-							alt="Browser screenshot"
+							alt="浏览器截图"
 							onClick={() =>
 								FileServiceClient.openImage(StringRequest.create({ value: displayState.screenshot })).catch(
 									(err) => console.error("Failed to open image:", err),
@@ -439,10 +437,10 @@ const BrowserSessionRow = memo((props: BrowserSessionRowProps) => {
 							padding: `9px 8px ${consoleLogsExpanded ? 0 : 8}px 8px`,
 						}}>
 						{consoleLogsExpanded ? <ChevronDownIcon size={16} /> : <ChevronRightIcon size={16} />}
-						<span style={consoleLogsTextStyle}>Console Logs</span>
+						<span style={consoleLogsTextStyle}>控制台日志</span>
 					</div>
 					{consoleLogsExpanded && (
-						<CodeBlock source={`${"```"}shell\n${displayState.consoleLogs || "(No new logs)"}\n${"```"}`} />
+						<CodeBlock source={`${"```"}shell\n${displayState.consoleLogs || "（无新日志）"}\n${"```"}`} />
 					)}
 				</div>
 			</div>
@@ -454,18 +452,18 @@ const BrowserSessionRow = memo((props: BrowserSessionRowProps) => {
 			{pages.length > 1 && (
 				<div style={paginationContainerStyle}>
 					<div>
-						Step {currentPageIndex + 1} of {pages.length}
+						第 {currentPageIndex + 1} 步，共 {pages.length} 步
 					</div>
 					<div style={paginationButtonGroupStyle}>
 						<VSCodeButton
 							disabled={currentPageIndex === 0 || isBrowsing}
 							onClick={() => setCurrentPageIndex((i) => i - 1)}>
-							Previous
+							上一步
 						</VSCodeButton>
 						<VSCodeButton
 							disabled={currentPageIndex === pages.length - 1 || isBrowsing}
 							onClick={() => setCurrentPageIndex((i) => i + 1)}>
-							Next
+							下一步
 						</VSCodeButton>
 					</div>
 				</div>
@@ -516,7 +514,7 @@ const BrowserSessionRowContent = memo(
 			return (
 				<>
 					<div style={headerStyle}>
-						<span style={browserSessionStartedTextStyle}>Browser Session Started</span>
+						<span style={browserSessionStartedTextStyle}>浏览器会话已开始</span>
 					</div>
 					<div style={codeBlockContainerStyle}>
 						<CodeBlock forceWrap={true} source={`${"```"}shell\n${message.text}\n${"```"}`} />
@@ -572,17 +570,17 @@ const BrowserActionBox = ({ action, coordinate, text }: { action: BrowserAction;
 	const getBrowserActionText = (action: BrowserAction, coordinate?: string, text?: string) => {
 		switch (action) {
 			case "launch":
-				return `Launch browser at ${text}`
+				return `在 ${text} 启动浏览器`
 			case "click":
-				return `Click (${coordinate?.replace(",", ", ")})`
+				return `点击 (${coordinate?.replace(",", ", ")})`
 			case "type":
-				return `Type "${text}"`
+				return `输入 "${text}"`
 			case "scroll_down":
-				return "Scroll down"
+				return "向下滚动"
 			case "scroll_up":
-				return "Scroll up"
+				return "向上滚动"
 			case "close":
-				return "Close browser"
+				return "关闭浏览器"
 			default:
 				return action
 		}
@@ -592,7 +590,7 @@ const BrowserActionBox = ({ action, coordinate, text }: { action: BrowserAction;
 			<div style={browserActionBoxContainerInnerStyle}>
 				<div style={browseActionRowContainerStyle}>
 					<span style={browseActionRowStyle}>
-						<span style={browseActionTextStyle}>Browse Action: </span>
+						<span style={browseActionTextStyle}>浏览操作： </span>
 						{getBrowserActionText(action, coordinate, text)}
 					</span>
 				</div>

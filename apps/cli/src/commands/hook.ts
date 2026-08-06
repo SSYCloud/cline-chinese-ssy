@@ -24,7 +24,7 @@ async function handleHookPayload(payload: HookEventPayload): Promise<unknown> {
 			return {};
 		default:
 			throw new Error(
-				`unsupported hookName: ${(payload as { hookName: string }).hookName}`,
+				`不支持的 hookName: ${(payload as { hookName: string }).hookName}`,
 			);
 	}
 }
@@ -38,14 +38,14 @@ export async function runHookCommand(io: HookIo) {
 	try {
 		const raw = (await readStdinUtf8()).trim();
 		if (!raw) {
-			io.writeErr("hook command expects JSON payload on stdin");
+			io.writeErr("hook 命令期望从标准输入接收 JSON 载荷");
 			return 1;
 		}
 
 		const parsed = JSON.parse(raw) as unknown;
 		const payload = await parseCliHookPayload(parsed);
 		if (!payload) {
-			io.writeErr("invalid hook payload");
+			io.writeErr("无效的 hook 载荷");
 			return 1;
 		}
 

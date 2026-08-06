@@ -104,7 +104,7 @@ export function OnboardingDoneScreen(props: { mouse: MouseTrackerState }) {
 			alignItems="center"
 			onMouseMove={props.mouse.onMouseMove}
 		>
-			<text fg={colors.success}>{"\u2714"} You're all set!</text>
+			<text fg={colors.success}>{"\u2714"} \u4e00\u5207\u5c31\u7eea\uff01</text>
 		</box>
 	);
 }
@@ -128,7 +128,7 @@ export function OnboardingOAuthPendingScreen(props: {
 			mouse={props.mouse}
 		>
 			<box flexDirection="column" alignItems="center" gap={1}>
-				<text fg={defaultFg}>Signing in with {props.label}</text>
+				<text fg={defaultFg}>正在使用 {props.label} 登录</text>
 
 				{!props.authError && (
 					<box flexDirection="row" gap={1} justifyContent="center">
@@ -140,7 +140,7 @@ export function OnboardingOAuthPendingScreen(props: {
 				{props.authError && (
 					<box flexDirection="column" alignItems="center" gap={1}>
 						<text fg="red">{props.authError}</text>
-						<text fg="gray">Esc to go back</text>
+						<text fg="gray">按 Esc 返回</text>
 					</box>
 				)}
 
@@ -154,7 +154,7 @@ export function OnboardingOAuthPendingScreen(props: {
 						paddingY={1}
 						width={props.contentWidth}
 					>
-						<text fg="gray">If the browser didn't open:</text>
+						<text fg="gray">如果浏览器没有打开：</text>
 						<text fg={colors.accent} marginTop={1} selectable>
 							<a href={props.authUrl}>{props.authUrl}</a>
 						</text>
@@ -162,7 +162,7 @@ export function OnboardingOAuthPendingScreen(props: {
 				)}
 
 				<text fg="gray">
-					<em>Esc to cancel, Ctrl+C to exit</em>
+					<em>按 Esc 取消，Ctrl+C 退出</em>
 				</text>
 			</box>
 		</OnboardingFrame>
@@ -188,7 +188,7 @@ export function OnboardingDeviceCodeScreen(props: {
 			mouse={props.mouse}
 		>
 			<box flexDirection="column" alignItems="center" gap={1}>
-				<text fg={defaultFg}>Signing in with {props.label}</text>
+				<text fg={defaultFg}>正在使用 {props.label} 登录</text>
 
 				{!props.deviceUserCode && !props.deviceError && (
 					<box flexDirection="row" gap={1} justifyContent="center">
@@ -200,7 +200,7 @@ export function OnboardingDeviceCodeScreen(props: {
 				{props.deviceError && (
 					<box flexDirection="column" alignItems="center" gap={1}>
 						<text fg="red">{props.deviceError}</text>
-						<text fg="gray">Esc to go back</text>
+						<text fg="gray">按 Esc 返回</text>
 					</box>
 				)}
 
@@ -216,12 +216,12 @@ export function OnboardingDeviceCodeScreen(props: {
 						alignItems="center"
 						gap={1}
 					>
-						<text fg="gray">Your code:</text>
+						<text fg="gray">你的代码：</text>
 						<text fg={defaultFg} selectable>
 							<strong>{props.deviceUserCode}</strong>
 						</text>
 						<text fg="gray" marginTop={1}>
-							Visit this URL and enter the code above:
+							访问此网址并输入上面的代码：
 						</text>
 						<text fg={colors.accent} selectable>
 							<a href={props.deviceVerifyUrl}>{props.deviceVerifyUrl}</a>
@@ -232,12 +232,12 @@ export function OnboardingDeviceCodeScreen(props: {
 				{props.deviceUserCode && !props.deviceError && (
 					<box flexDirection="row" gap={1} justifyContent="center">
 						<spinner name="dots" color={colors.accent} />
-						<text fg="gray">Waiting for sign-in...</text>
+						<text fg="gray">正在等待登录...</text>
 					</box>
 				)}
 
 				<text fg="gray">
-					<em>Esc to cancel, Ctrl+C to exit</em>
+					<em>按 Esc 取消，Ctrl+C 退出</em>
 				</text>
 			</box>
 		</OnboardingFrame>
@@ -250,28 +250,28 @@ import type {
 } from "@cline/core";
 
 const DEFAULT_FIELD_LABELS: Partial<Record<ProviderConfigFieldKey, string>> = {
-	apiKey: "API key",
+	apiKey: "API 密钥",
 	baseUrl: "Base URL",
 	azureApiVersion: "Azure API Version",
 	awsRegion: "AWS Region",
 	awsProfile: "AWS Profile Name",
-	sapClientId: "Client ID",
-	sapClientSecret: "Client Secret",
+	sapClientId: "客户端 ID",
+	sapClientSecret: "客户端密钥",
 	sapTokenUrl: "Token URL",
-	sapResourceGroup: "Resource Group",
-	sapDeploymentId: "Deployment ID",
+	sapResourceGroup: "资源组",
+	sapDeploymentId: "部署 ID",
 };
 
 const DEFAULT_FIELD_PLACEHOLDERS: Partial<
 	Record<ProviderConfigFieldKey, string>
 > = {
-	apiKey: "Paste your API key here...",
+	apiKey: "在此粘贴你的 API 密钥...",
 	baseUrl: "",
 	azureApiVersion: "2025-01-01-preview",
 	awsRegion: "us-east-1",
 	awsProfile: "default",
 	sapClientId: "sb-...|xsuaa_std!b...",
-	sapClientSecret: "SAP AI Core client secret",
+	sapClientSecret: "SAP AI Core 客户端密钥",
 	sapTokenUrl: "https://<subdomain>.authentication.sap.hana.ondemand.com",
 	sapResourceGroup: "default",
 	sapDeploymentId: "",
@@ -353,8 +353,8 @@ export function OnboardingProviderConfigScreen(props: {
 				<text fg="gray">
 					<em>
 						{visibleFields.length > 1
-							? "Tab to switch fields, Enter to save, Esc to go back, Ctrl+C to exit"
-							: "Enter to save, Esc to go back, Ctrl+C to exit"}
+							? "按 Tab 切换字段，按 Enter 保存，按 Esc 返回，Ctrl+C 退出"
+							: "按 Enter 保存，按 Esc 返回，Ctrl+C 退出"}
 					</em>
 				</text>
 			</box>
@@ -386,22 +386,22 @@ export function OnboardingCodexCliScreen(props: {
 				{props.checking && (
 					<box flexDirection="row" gap={1}>
 						<spinner name="dots" color="gray" />
-						<text fg="gray">Checking for Codex CLI...</text>
+						<text fg="gray">\u6b63\u5728\u68c0\u67e5 Codex CLI...</text>
 					</box>
 				)}
 
 				{installedStatus && (
 					<box flexDirection="column" gap={1} alignItems="center">
-						<text fg={colors.success}>{"\u25cf"} Codex CLI installed</text>
+						<text fg={colors.success}>{"\u25cf"} Codex CLI \u5df2\u5b89\u88c5</text>
 						<text fg="gray">{installedStatus.version}</text>
 					</box>
 				)}
 
 				{props.status && !props.status.installed && (
 					<box flexDirection="column" gap={1} width={props.contentWidth}>
-						<text fg="yellow">Codex CLI was not found</text>
+						<text fg="yellow">未找到 Codex CLI</text>
 						<text fg="gray">{props.status.reason}</text>
-						<text fg="gray">Install Codex CLI from:</text>
+						<text fg="gray">从此处安装 Codex CLI：</text>
 						<text fg={colors.accent} selectable>
 							{CODEX_CLI_INSTALL_URL}
 						</text>
@@ -411,8 +411,8 @@ export function OnboardingCodexCliScreen(props: {
 				<text fg="gray">
 					<em>
 						{installedStatus
-							? "Enter to continue, R to recheck, Esc to go back, Ctrl+C to exit"
-							: "R to recheck, Esc to go back, Ctrl+C to exit"}
+							? "按 Enter 继续，按 R 重新检查，按 Esc 返回，Ctrl+C 退出"
+							: "按 R 重新检查，按 Esc 返回，Ctrl+C 退出"}
 					</em>
 				</text>
 			</box>
@@ -435,28 +435,28 @@ export function OnboardingProviderPickerScreen(props: {
 			mouse={props.mouse}
 		>
 			<text fg={defaultFg} paddingX={1}>
-				Choose a provider
+				选择提供商
 			</text>
 
 			{props.providersLoading ? (
 				<box flexDirection="row" gap={1} paddingX={1}>
 					<spinner name="dots" color="gray" />
-					<text fg="gray">Loading providers...</text>
+					<text fg="gray">正在加载提供商...</text>
 				</box>
 			) : (
 				<SearchableList
 					items={props.providerList.filtered}
 					selected={props.providerList.safeSelected}
 					onSearchChange={props.providerList.setSearch}
-					placeholder="Search providers..."
-					emptyText="No providers match"
+					placeholder="搜索提供商..."
+					emptyText="没有匹配的提供商"
 				/>
 			)}
 
 			<text fg="gray" paddingX={1}>
 				<em>
-					Type to search, ↑/↓ navigate, Enter to select, Esc to go back, Ctrl+C
-					to exit
+					输入搜索，↑/↓ 导航，按 Enter 选择，按 Esc 返回，Ctrl+C
+					退出
 				</em>
 			</text>
 		</OnboardingFrame>
@@ -479,10 +479,10 @@ export function OnboardingClineModelScreen(props: {
 			mouse={props.mouse}
 		>
 			<text fg={defaultFg} paddingX={1}>
-				<strong>Choose a model</strong>
+				<strong>选择模型</strong>
 			</text>
 			<text fg="gray" paddingX={1}>
-				You can change this anytime
+				你可以随时更改
 			</text>
 
 			<ClineModelPicker
@@ -492,7 +492,7 @@ export function OnboardingClineModelScreen(props: {
 			/>
 
 			<text fg="gray" paddingX={1}>
-				<em>↑/↓ navigate, Enter to select, Esc to go back, Ctrl+C to exit</em>
+				<em>↑/↓ 导航，按 Enter 选择，按 Esc 返回，Ctrl+C 退出</em>
 			</text>
 		</OnboardingFrame>
 	);
@@ -566,32 +566,32 @@ export function OnboardingClinePassSubscriptionScreen(props: {
 							flexShrink={0}
 						>
 							{isSubscribed
-								? "ClinePass subscription active"
-								: "ClinePass subscription required"}
+								? "ClinePass 订阅已激活"
+								: "需要 ClinePass 订阅"}
 						</text>
 
 						{isLoading ? (
 							<box flexDirection="row" gap={1} flexShrink={0}>
 								<spinner name="dots" color="gray" />
-								<text fg="gray">Checking your ClinePass subscription...</text>
+								<text fg="gray">正在检查你的 ClinePass 订阅...</text>
 							</box>
 						) : isSubscribed ? (
 							<text fg={defaultFg} selectable flexShrink={0}>
-								Current plan: {props.currentPlanName || "ClinePass"}
+								当前套餐：{props.currentPlanName || "ClinePass"}
 							</text>
 						) : isError ? (
 							<text
 								fg={defaultFg}
 								selectable
 								flexShrink={0}
-								content="Could not verify your ClinePass subscription. Re-check before choosing a ClinePass model."
+								content="无法验证你的 ClinePass 订阅。选择 ClinePass 模型前请重新检查。"
 							/>
 						) : (
 							<text
 								fg={defaultFg}
 								selectable
 								flexShrink={0}
-								content="No access to ClinePass subscription models yet. Subscribe to ClinePass, the low cost open weights model coding plan."
+								content="尚无法使用 ClinePass 订阅模型。订阅 ClinePass，这是低成本的开放权重模型编程套餐。"
 							/>
 						)}
 
@@ -672,7 +672,7 @@ export function OnboardingClinePassSubscriptionScreen(props: {
 						{!isSubscribed && (
 							<box flexDirection="column" marginTop={1} flexShrink={0}>
 								<text fg="gray" flexShrink={0}>
-									If the browser button does not work:
+									如果浏览器按钮不起作用：
 								</text>
 								<text fg={colors.accent} selectable flexShrink={0}>
 									<a href={props.subscriptionUrl}>{props.subscriptionUrl}</a>
@@ -684,7 +684,7 @@ export function OnboardingClinePassSubscriptionScreen(props: {
 			</box>
 
 			<text fg="gray" paddingX={1}>
-				<em>↑/↓ navigate, Enter to select, Esc to go back, Ctrl+C to exit</em>
+				<em>↑/↓ 导航，按 Enter 选择，按 Esc 返回，Ctrl+C 退出</em>
 			</text>
 		</OnboardingFrame>
 	);
@@ -707,16 +707,16 @@ export function OnboardingModelPickerScreen(props: {
 			mouse={props.mouse}
 		>
 			<text fg={defaultFg} paddingX={1}>
-				<strong>Choose a model for {props.activeProviderName}</strong>
+				<strong>为 {props.activeProviderName} 选择模型</strong>
 			</text>
 			<text fg="gray" paddingX={1}>
-				You can change this anytime
+				你可以随时更改
 			</text>
 
 			{props.modelsLoading ? (
 				<box flexDirection="row" gap={1} paddingX={1}>
 					<spinner name="dots" color="gray" />
-					<text fg="gray">Loading models...</text>
+					<text fg="gray">正在加载模型...</text>
 				</box>
 			) : (
 				<SearchableList
@@ -724,15 +724,15 @@ export function OnboardingModelPickerScreen(props: {
 					selected={props.modelList.safeSelected}
 					onSearchChange={props.modelList.setSearch}
 					onItemSelect={props.onModelItemSelect}
-					placeholder="Search models..."
-					emptyText="Create a custom model ID to enter one manually"
+					placeholder="搜索模型..."
+					emptyText="创建自定义模型 ID 以手动输入"
 				/>
 			)}
 
 			<text fg="gray" paddingX={1}>
 				<em>
-					Type to search, ↑/↓ navigate, Enter to select, Esc to go back, Ctrl+C
-					to exit
+					输入搜索，↑/↓ 导航，按 Enter 选择，按 Esc 返回，Ctrl+C
+					退出
 				</em>
 			</text>
 		</OnboardingFrame>
@@ -765,7 +765,7 @@ export function OnboardingCustomModelIdScreen(props: {
 			</text>
 
 			<box flexDirection="column" gap={0} paddingX={1}>
-				<text fg="gray">Model ID</text>
+				<text fg="gray">模型 ID</text>
 				<box
 					border
 					borderStyle="rounded"
@@ -789,7 +789,7 @@ export function OnboardingCustomModelIdScreen(props: {
 
 			<text fg="gray" paddingX={1}>
 				<em>
-					Enter to create, Esc to go back to model selection, Ctrl+C to exit
+					按 Enter 创建，按 Esc 返回模型选择，Ctrl+C 退出
 				</em>
 			</text>
 		</OnboardingFrame>
@@ -812,11 +812,11 @@ export function OnboardingThinkingLevelScreen(props: {
 			mouse={props.mouse}
 		>
 			<text fg={defaultFg} paddingX={1}>
-				Thinking level for {props.selectedModelName}
-			</text>
-			<text fg="gray" paddingX={1}>
-				Extended thinking lets the model reason through complex problems
-			</text>
+				为 {props.selectedModelName} 设置思考级别
+				</text>
+				<text fg="gray" paddingX={1}>
+					扩展思考让模型能够推理复杂问题
+				</text>
 
 			<box flexDirection="column">
 				{THINKING_LEVELS.map((level, i) => {
@@ -845,7 +845,7 @@ export function OnboardingThinkingLevelScreen(props: {
 			</box>
 
 			<text fg="gray" paddingX={1}>
-				<em>↑/↓ navigate, Enter to select, Esc to go back, Ctrl+C to exit</em>
+				<em>↑/↓ 导航，按 Enter 选择，按 Esc 返回，Ctrl+C 退出</em>
 			</text>
 		</OnboardingFrame>
 	);
@@ -880,10 +880,10 @@ export function OnboardingMainMenuScreen(props: {
 				marginTop={1}
 			>
 				<text fg={defaultFg}>
-					<strong>Welcome to Cline</strong>
+					<strong>欢迎使用 Cline</strong>
 				</text>
 				<text fg="gray" marginTop={1}>
-					Connect a model provider to get started.
+					连接一个模型提供商即可开始。
 				</text>
 			</box>
 
@@ -929,7 +929,7 @@ export function OnboardingMainMenuScreen(props: {
 			</box>
 
 			<text fg="gray" marginTop={1}>
-				<em>↑/↓ navigate, Enter to select, Ctrl+C to exit</em>
+				<em>↑/↓ 导航，按 Enter 选择，Ctrl+C 退出</em>
 			</text>
 		</box>
 	);

@@ -3,11 +3,11 @@ import { isToggleableInteractiveConfigItem } from "../../interactive-config";
 
 export type ExtDetailRow =
 	| { kind: "header"; name: string; source: string }
-	| { kind: "field"; label: "Path" | "Description" | "Error"; value: string[] }
+	| { kind: "field"; label: "路径" | "描述" | "错误"; value: string[] }
 	| { kind: "status"; enabled: boolean };
 
-const TOGGLE_FOOTER = "Space toggle status, Tab/Enter/Esc to go back";
-const DETAIL_FOOTER = "Tab/Enter/Esc to go back";
+const TOGGLE_FOOTER = "空格切换状态，Tab/Enter/Esc 返回";
+const DETAIL_FOOTER = "Tab/Enter/Esc 返回";
 
 const MAX_DESCRIPTION_LINES = 12;
 const MAX_DESCRIPTION_COLUMNS = 78;
@@ -37,7 +37,7 @@ function truncateDescription(description: string): string[] {
 	}
 	return [
 		...lines.slice(0, MAX_DESCRIPTION_LINES),
-		`… truncated ${lines.length - MAX_DESCRIPTION_LINES} lines`,
+		`… 已截断 ${lines.length - MAX_DESCRIPTION_LINES} 行`,
 	];
 }
 
@@ -68,19 +68,19 @@ export function getExtDetailFooterText(
 export function getExtDetailRows(item: InteractiveConfigItem): ExtDetailRow[] {
 	const rows: ExtDetailRow[] = [
 		{ kind: "header", name: item.name, source: item.source },
-		{ kind: "field", label: "Path", value: [item.path] },
+		{ kind: "field", label: "路径", value: [item.path] },
 	];
 	if (item.description) {
 		rows.push({
 			kind: "field",
-			label: "Description",
+			label: "描述",
 			value: truncateDescription(item.description),
 		});
 	}
 	if (item.loadError) {
 		rows.push({
 			kind: "field",
-			label: "Error",
+			label: "错误",
 			value: truncateDescription(item.loadError),
 		});
 	}

@@ -189,7 +189,7 @@ export function writeErr(text: string): void {
 		emitJsonLine("stderr", { type: "error", message: text });
 		return;
 	}
-	console.error(`${c.red}error:${c.reset} ${text}`);
+	console.error(`${c.red}错误:${c.reset} ${text}`);
 }
 
 // =============================================================================

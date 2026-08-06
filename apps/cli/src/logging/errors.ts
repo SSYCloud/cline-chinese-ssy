@@ -22,7 +22,7 @@ export function logCliProcessError(kind: string, error: unknown): void {
 			runtime: "cli",
 			component: "process",
 		});
-		logCliError(logger.core, "CLI process error", { kind, error });
+		logCliError(logger.core, "CLI 进程错误", { kind, error });
 		flushCliLoggerAdapters();
 	} catch {
 		// Process-level logging is best-effort; stderr still gets the error.

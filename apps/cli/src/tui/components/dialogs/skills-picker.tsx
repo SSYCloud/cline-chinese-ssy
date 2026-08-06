@@ -106,7 +106,7 @@ export function SkillsPickerContent(props: SkillsPickerContentProps) {
 		<box flexDirection="column" gap={1}>
 			<box flexDirection="row" justifyContent="space-between">
 				<text fg="white">
-					<strong>Skills</strong>
+					<strong>技能</strong>
 				</text>
 				<text fg="gray">esc</text>
 			</box>
@@ -117,18 +117,18 @@ export function SkillsPickerContent(props: SkillsPickerContentProps) {
 						setFilter(value);
 						setSelected(0);
 					}}
-					placeholder="Search skills..."
+					placeholder="搜索技能..."
 					flexGrow={1}
 					focused
 				/>
 			</box>
 
 			<box flexDirection="column">
-				<text fg="magenta">Skills</text>
+				<text fg="magenta">技能</text>
 
 				{totalItems === 0 ? (
 					<box flexDirection="column">
-						<text fg="gray">No matching skills found.</text>
+						<text fg="gray">未找到匹配的技能。</text>
 					</box>
 				) : (
 					visibleItems.map((absoluteIndex) => {
@@ -144,7 +144,7 @@ export function SkillsPickerContent(props: SkillsPickerContentProps) {
 								>
 									<text fg={isSelected ? palette.textOnSelection : palette.act}>
 										{isSelected ? "❯ " : "  "}
-										Browse more skills at {SKILLS_MARKETPLACE_URL}
+										在 {SKILLS_MARKETPLACE_URL} 浏览更多技能
 									</text>
 								</box>
 							);
@@ -178,14 +178,14 @@ export function SkillsPickerContent(props: SkillsPickerContentProps) {
 
 			{commands.length === 0 && !hasFilter && (
 				<text fg="gray">
-					Install skills with: <strong>npx skills add owner/repo</strong>
+					使用以下命令安装技能：<strong>npx skills add owner/repo</strong>
 				</text>
 			)}
 
 			<text fg="gray">
 				<em>
-					Type to filter, ↑/↓ navigate
-					{enterAction ? `, Enter to ${enterAction}` : ""}, Esc to close
+					输入以筛选，↑/↓ 导航
+					{enterAction ? `, Enter ${enterAction}` : ""}，Esc 关闭
 				</em>
 			</text>
 		</box>

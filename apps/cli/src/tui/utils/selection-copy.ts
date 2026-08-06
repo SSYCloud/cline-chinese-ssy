@@ -54,7 +54,7 @@ export function createSelectionCopyHandler(
 			}
 			const copied = copiedWithSystemClipboard || copiedWithOsc52;
 			deps.showToast(
-				copied ? "Copied to clipboard" : "Unable to copy selection",
+				copied ? "已复制到剪贴板" : "无法复制所选内容",
 				copied ? "success" : "error",
 			);
 		};

@@ -227,13 +227,13 @@ function ToolApprovalResponse(
 
 	return (
 		<Shell
-			title="Cline needs permission"
+			title="Cline 需要权限"
 			accent={props.accent}
 			inputBackground={props.inputBackground}
 			inputForeground={props.inputForeground}
 		>
 			<box flexDirection="column" gap={1}>
-				<text fg={theme.accents.plan}>Approve tool call?</text>
+				<text fg={theme.accents.plan}>批准工具调用？</text>
 				<text fg={props.accent} selectable>
 					{request.toolName}
 				</text>
@@ -284,9 +284,9 @@ function AskQuestionResponse(
 		? customValue
 			? `${customValue}|`
 			: customEmptyAttempted
-				? "Type a response first..."
-				: "Type a response..."
-		: "Type a response...";
+				? "请先输入响应..."
+				: "输入响应..."
+		: "输入响应...";
 	const bodyHeight = Math.min(
 		maxBodyHeight,
 		getAskQuestionContentHeight({
@@ -408,7 +408,7 @@ function AskQuestionResponse(
 
 	return (
 		<Shell
-			title="Cline is asking a question"
+			title="Cline 正在提问"
 			accent={props.accent}
 			inputBackground={props.inputBackground}
 			inputForeground={props.inputForeground}

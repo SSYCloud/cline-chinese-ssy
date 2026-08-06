@@ -35,17 +35,17 @@ export function getCliSubscriptionUrl(): string {
 }
 
 export function getCliNotSubscribedMessage(): string {
-	return `No access to ClinePass subscription models yet. Subscribe to ClinePass, the low cost open weights model coding plan: ${getCliSubscriptionUrl()}`;
+	return `尚无法访问 ClinePass 订阅模型。订阅 ClinePass（低成本开源权重模型编码方案）: ${getCliSubscriptionUrl()}`;
 }
 
 export function getCliClinePassLimitMessage(message: string): string {
 	const detail = getClinePassLimitDetailMessage(message) ?? message.trim();
 	const lines = [
-		"ClinePass limit reached",
+		"ClinePass 限制已达上限",
 		detail,
-		"Switch to Cline usage-based billing and retry with the Cline provider.",
-		"Interactive CLI: open the model selector with /model, choose Cline, then retry.",
-		"Headless CLI: rerun with --provider cline.",
+		"切换到 Cline 按使用量计费，并使用 Cline 提供商重试。",
+		"交互式 CLI: 使用 /model 打开模型选择器，选择 Cline，然后重试。",
+		"无头 CLI: 使用 --provider cline 重新运行。",
 	];
 	return lines.filter((line) => line.trim().length > 0).join("\n");
 }
@@ -57,9 +57,9 @@ const CLINE_FREE_MODEL_LIMIT_HEADER = "Daily free model limit reached";
 export function getCliClineFreePromotionEndedMessage(): string {
 	return [
 		CLINE_FREE_PROMOTION_ENDED_HEADER,
-		"The free promotion for this model has ended and it is no longer available.",
-		"Select another model to continue.",
-		"Open the model selector with /model.",
+		"此模型的免费推广已结束，不再可用。",
+		"选择另一个模型以继续。",
+		"使用 /model 打开模型选择器。",
 	].join("\n");
 }
 
@@ -67,11 +67,11 @@ export function getCliClineFreeModelLimitMessage(message: string): string {
 	const resetTime = extractClineFreeModelLimitResetTime(message);
 	return [
 		CLINE_FREE_MODEL_LIMIT_HEADER,
-		"You've reached today's free usage limit for this model.",
+		"你已达到此模型今天的免费使用限制。",
 		resetTime
-			? `Try again in ${resetTime} or select another model.`
-			: "Try again later or select another model.",
-		"Open the model selector with /model.",
+			? `在 ${resetTime} 后重试，或选择另一个模型。`
+			: "稍后重试，或选择另一个模型。",
+		"使用 /model 打开模型选择器。",
 	].join("\n");
 }
 

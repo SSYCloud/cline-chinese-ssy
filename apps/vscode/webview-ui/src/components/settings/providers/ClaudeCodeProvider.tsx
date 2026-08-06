@@ -55,10 +55,10 @@ export const ClaudeCodeProvider = ({ showModelOptions, isPopup, currentMode }: C
 			<DebouncedTextField
 				initialValue={apiConfiguration?.claudeCodePath || ""}
 				onChange={(value) => handleFieldChange("claudeCodePath", value)}
-				placeholder="Default: claude"
+				placeholder="默认：claude"
 				style={{ width: "100%", marginTop: 3 }}
 				type="text">
-				<span style={{ fontWeight: 500 }}>Claude Code CLI Path</span>
+				<span style={{ fontWeight: 500 }}>Claude Code CLI 路径</span>
 			</DebouncedTextField>
 
 			<p
@@ -67,12 +67,12 @@ export const ClaudeCodeProvider = ({ showModelOptions, isPopup, currentMode }: C
 					marginTop: 3,
 					color: "var(--vscode-descriptionForeground)",
 				}}>
-				Path to the Claude Code CLI.
+				Claude Code CLI 的路径。
 			</p>
 
 			{showModelOptions && (
 				<>
-					<ModelSelector label="Model" models={models} onChange={handleModelSelect} selectedModelId={selectedModelId} />
+					<ModelSelector label="模型" models={models} onChange={handleModelSelect} selectedModelId={selectedModelId} />
 
 					{(selectedModelId === "sonnet" || selectedModelId === "opus") && (
 						<p
@@ -82,7 +82,7 @@ export const ClaudeCodeProvider = ({ showModelOptions, isPopup, currentMode }: C
 								marginTop: 2,
 								color: "var(--vscode-descriptionForeground)",
 							}}>
-							Use the latest version of {selectedModelId} by default.
+							默认使用最新版本的 {selectedModelId}。
 						</p>
 					)}
 
@@ -90,7 +90,7 @@ export const ClaudeCodeProvider = ({ showModelOptions, isPopup, currentMode }: C
 						<ReasoningEffortSelector
 							currentMode={currentMode}
 							defaultEffort="none"
-							description="Use None to disable extended thinking. Higher effort improves depth, but uses more tokens."
+							description="选择“无”可禁用扩展思考。更高的努力程度会提升思考深度，但会消耗更多 tokens。"
 							onEffortChange={(effort) => {
 								void write({
 									reasoning: { enabled: effort !== "none", effort: effort !== "none" ? effort : undefined },

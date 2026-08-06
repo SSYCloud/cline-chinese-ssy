@@ -67,7 +67,7 @@ import {
 
 const WHATSAPP_SYSTEM_RULES = getConnectorSystemRules(
 	"WhatsApp",
-	"You can respond to user messages in threads and DMs, and you can use tools according to user's requests and your capabilities.",
+	"你能在会话和私信中回复用户消息，并能根据用户的请求和自身能力使用工具。",
 );
 
 const WHATSAPP_FIRST_CONTACT_MESSAGE = getConnectorFirstContactMessage();
@@ -255,9 +255,9 @@ async function deliverScheduledResult(input: {
 		const text = await readSessionReplyText(input.client, input.sessionId);
 		body = text?.trim()
 			? text
-			: `Schedule "${schedule?.name ?? input.scheduleId}" completed, but no assistant reply text was found.`;
+			: `计划 "${schedule?.name ?? input.scheduleId}" 已完成，但未找到助手的回复文本。`;
 	} else {
-		body = `Schedule "${schedule?.name ?? input.scheduleId}" ${input.status}.${input.errorMessage ? `\n\n${input.errorMessage}` : ""}`;
+		body = `计划 "${schedule?.name ?? input.scheduleId}" ${input.status}。${input.errorMessage ? `\n\n${input.errorMessage}` : ""}`;
 	}
 	await thread.post(body);
 }
@@ -269,7 +269,7 @@ class WhatsAppConnector extends ConnectorBase<
 	constructor() {
 		super(
 			"whatsapp",
-			"WhatsApp Business webhook bridge backed by RPC runtime sessions",
+			"WhatsApp Business 网页钩子桥接，基于 RPC 运行时会话",
 		);
 	}
 
@@ -278,46 +278,46 @@ class WhatsAppConnector extends ConnectorBase<
 			super
 				.createCommand()
 				.usage("--base-url <PUBLIC_BASE_URL> [options]")
-				.option("--user-name <name>", "WhatsApp bot username label")
-				.option("--phone-number-id <id>", "WhatsApp Business phone number id")
-				.option("--access-token <token>", "Meta access token")
-				.option("--app-secret <secret>", "Meta app secret")
-				.option("--verify-token <token>", "Webhook verify token")
-				.option("--api-version <version>", "Graph API version", "v21.0")
-				.option("--provider <id>", "Provider override")
-				.option("--model <id>", "Model override")
-				.option("--api-key <key>", "Provider API key override")
-				.option("--system <prompt>", "System prompt override")
-				.option("--cwd <path>", "Workspace / cwd for runtime")
-				.option("--mode <act|plan>", "Agent mode", "act")
-				.option("-i, --interactive", "Keep connector in foreground")
-				.option("--no-tools", "Disable tools for WhatsApp sessions")
+				.option("--user-name <name>", "WhatsApp 机器人用户名标签")
+				.option("--phone-number-id <id>", "WhatsApp Business 电话号码 ID")
+				.option("--access-token <token>", "Meta 访问令牌")
+				.option("--app-secret <secret>", "Meta 应用密钥")
+				.option("--verify-token <token>", "Webhook 验证令牌")
+				.option("--api-version <version>", "Graph API 版本", "v21.0")
+				.option("--provider <id>", "提供商覆盖")
+				.option("--model <id>", "模型覆盖")
+				.option("--api-key <key>", "提供商 API 密钥覆盖")
+				.option("--system <prompt>", "系统提示词覆盖")
+				.option("--cwd <path>", "运行时的工作区 / cwd")
+				.option("--mode <act|plan>", "代理模式", "act")
+				.option("-i, --interactive", "保持连接器在前台运行")
+				.option("--no-tools", "为 WhatsApp 会话禁用工具")
 				// Retained so existing invocations and persisted autostart arguments
 				// keep parsing; tools are on unless --no-tools is passed.
-				.option("--enable-tools", "Enable tools (default)")
+				.option("--enable-tools", "启用工具（默认）")
 				.option(
 					"--hook-command <command>",
-					"Run a shell command for connector events",
+					"为连接器事件运行 shell 命令",
 				)
 				.option(
 					"--rpc-address <host:port>",
-					"RPC address",
+					"RPC 地址",
 					process.env.CLINE_RPC_ADDRESS?.trim() ||
 						resolveDefaultCliRpcAddress(),
 				)
-				.option("--host <host>", "Webhook listen host")
-				.option("--port <port>", "Webhook listen port")
-				.option("--base-url <url>", "Public base URL for webhook configuration")
+				.option("--host <host>", "Webhook 监听主机")
+				.option("--port <port>", "Webhook 监听端口")
+				.option("--base-url <url>", "用于 webhook 配置的公共基础 URL")
 				.addHelpText(
 					"after",
 					[
 						"",
-						"Environment:",
-						"  WHATSAPP_ACCESS_TOKEN       Meta access token",
-						"  WHATSAPP_APP_SECRET         Meta app secret",
-						"  WHATSAPP_PHONE_NUMBER_ID    WhatsApp Business phone number id",
-						"  WHATSAPP_VERIFY_TOKEN       Webhook verification token",
-						"  WHATSAPP_BOT_USERNAME       Bot username label",
+						"环境：",
+						"  WHATSAPP_ACCESS_TOKEN       Meta 访问令牌",
+						"  WHATSAPP_APP_SECRET         Meta 应用密钥",
+						"  WHATSAPP_PHONE_NUMBER_ID    WhatsApp Business 电话号码 ID",
+						"  WHATSAPP_VERIFY_TOKEN       Webhook 验证令牌",
+						"  WHATSAPP_BOT_USERNAME       机器人用户名标签",
 					].join("\n"),
 				)
 		);
@@ -502,12 +502,12 @@ class WhatsAppConnector extends ConnectorBase<
 			readState: (path) => this.readConnectorState(path),
 			isRunning: (state) => isProcessRunning(state.pid),
 			formatAlreadyRunningMessage: (state) =>
-				`[whatsapp] connector already running pid=${state.pid} rpc=${state.rpcAddress} url=${state.baseUrl}`,
+				`[whatsapp] 连接器已在运行 pid=${state.pid} rpc=${state.rpcAddress} url=${state.baseUrl}`,
 			formatBackgroundStartMessage: (pid) =>
-				`[whatsapp] starting background connector pid=${pid} user=${options.userName}`,
+				`[whatsapp] 正在后台启动连接器 pid=${pid} user=${options.userName}`,
 			foregroundHint:
-				"[whatsapp] use `cline connect whatsapp -i ...` to run in the foreground",
-			launchFailureMessage: "failed to launch WhatsApp connector in background",
+				"[whatsapp] 使用 `cline connect whatsapp -i ...` 在前台运行",
+			launchFailureMessage: "无法在后台启动 WhatsApp 连接器",
 		});
 		if (backgroundExitCode !== undefined) {
 			return backgroundExitCode;
@@ -666,8 +666,8 @@ class WhatsAppConnector extends ConnectorBase<
 								? { whatsappParticipantLabel: currentState.participantLabel }
 								: {}),
 						}),
-						reusedLogMessage: "WhatsApp thread reusing RPC session",
-						startedLogMessage: "WhatsApp thread started RPC session",
+						reusedLogMessage: "WhatsApp 线程复用 RPC 会话",
+						startedLogMessage: "WhatsApp 线程已启动 RPC 会话",
 						onMessageReceived: async (details) => {
 							await dispatchConnectorHook(
 								options.hookCommand,
@@ -722,7 +722,7 @@ class WhatsAppConnector extends ConnectorBase<
 				} catch (error) {
 					const message =
 						error instanceof Error ? error.message : String(error);
-					await thread.post(`WhatsApp bridge error: ${message}`);
+					await thread.post(`WhatsApp 桥接错误：${message}`);
 				}
 			};
 			if (activeTurns.has(queueKey)) {
@@ -748,7 +748,7 @@ class WhatsAppConnector extends ConnectorBase<
 					client,
 					clientId,
 					pendingApprovals,
-					deniedReason: "Denied by WhatsApp user",
+					deniedReason: "已被 WhatsApp 用户拒绝",
 				})
 			) {
 				return;
@@ -771,7 +771,7 @@ class WhatsAppConnector extends ConnectorBase<
 					client,
 					clientId,
 					pendingApprovals,
-					deniedReason: "Denied by WhatsApp user",
+					deniedReason: "已被 WhatsApp 用户拒绝",
 				})
 			) {
 				return;
@@ -801,8 +801,8 @@ class WhatsAppConnector extends ConnectorBase<
 				"/": () =>
 					new Response(
 						[
-							"WhatsApp connector is running.",
-							`Webhook URL: ${endpointUrl}`,
+							"WhatsApp 连接器正在运行。",
+							`Webhook URL：${endpointUrl}`,
 						].join("\n"),
 					),
 			},
@@ -868,8 +868,8 @@ class WhatsAppConnector extends ConnectorBase<
 		process.once("SIGINT", () => requestStop("sigint"));
 		process.once("SIGTERM", () => requestStop("sigterm"));
 
-		io.writeln(`[whatsapp] listening on ${options.host}:${options.port}`);
-		io.writeln(`[whatsapp] configure WhatsApp webhook URL: ${endpointUrl}`);
+		io.writeln(`[whatsapp] 正在监听 ${options.host}:${options.port}`);
+		io.writeln(`[whatsapp] 配置 WhatsApp webhook URL：${endpointUrl}`);
 
 		await stopPromise;
 		clearBindingSessionIds<WhatsAppThreadState>(bindingsPath);

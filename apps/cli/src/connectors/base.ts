@@ -50,7 +50,7 @@ function stripAnsiCodes(text: string): string {
  * child's log and point at the file for the rest.
  */
 function formatChildLogHint(logPath: string): string {
-	const suffix = ` See ${logPath} for details.`;
+	const suffix = ` 详情请参阅 ${logPath}。`;
 	let handle: number | undefined;
 	try {
 		const { size } = statSync(logPath);
@@ -73,7 +73,7 @@ function formatChildLogHint(logPath: string): string {
 		if (lines.length === 0) {
 			return suffix;
 		}
-		return ` Last output from the child:\n${lines
+		return ` 子进程的最后输出：\n${lines
 			.map((line) => `  ${line}`)
 			.join("\n")}\n${suffix.trimStart()}`;
 	} catch {
@@ -361,7 +361,7 @@ export abstract class ConnectorBase<Options, State>
 			}
 			if (!isProcessRunning(pid)) {
 				input.io.writeErr(
-					`${input.launchFailureMessage}: child exited before becoming ready.${formatChildLogHint(logPath)}`,
+					`${input.launchFailureMessage}：子进程在就绪前已退出。${formatChildLogHint(logPath)}`,
 				);
 				return 1;
 			}
@@ -371,7 +371,7 @@ export abstract class ConnectorBase<Options, State>
 		}
 		await terminateProcess(pid);
 		input.io.writeErr(
-			`${input.launchFailureMessage}: timed out after ${timeoutMs}ms.${formatChildLogHint(logPath)}`,
+			`${input.launchFailureMessage}：${timeoutMs}ms 后超时。${formatChildLogHint(logPath)}`,
 		);
 		return 1;
 	}
@@ -421,7 +421,7 @@ export abstract class ConnectorBase<Options, State>
 			input.io.writeln(input.describeStoppedProcess(state));
 		} else if (isProcessRunning(pid)) {
 			input.io.writeErr(
-				`[connect] failed to stop connector process pid=${pid}`,
+				`[connect] 停止连接器进程失败 pid=${pid}`,
 			);
 			return {
 				stoppedProcesses: 0,
@@ -444,7 +444,7 @@ export abstract class ConnectorBase<Options, State>
 		}
 		const parsed = Number.parseInt(value, 10);
 		if (!Number.isFinite(parsed)) {
-			throw new Error(`invalid ${label} "${value}"`);
+			throw new Error(`无效的 ${label} "${value}"`);
 		}
 		return parsed;
 	}
@@ -452,7 +452,7 @@ export abstract class ConnectorBase<Options, State>
 	protected parseMode(value: string | undefined): "act" | "plan" {
 		const mode = value?.trim().toLowerCase() || "act";
 		if (mode !== "act" && mode !== "plan") {
-			throw new Error(`invalid mode "${mode}" (expected "act" or "plan")`);
+			throw new Error(`无效的模式 "${mode}"（应为 "act" 或 "plan"）`);
 		}
 		return mode;
 	}

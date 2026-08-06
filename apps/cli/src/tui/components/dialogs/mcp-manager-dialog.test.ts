@@ -142,7 +142,7 @@ describe("mcp manager dialog helpers", () => {
 
 		expect(result.ok).toBe(false);
 		if (!result.ok) {
-			expect(result.message).toContain('managed by plugin "repo-docs"');
+			expect(result.message).toContain('由插件 "repo-docs" 管理');
 		}
 		expect((await readSettings(settingsPath)).mcpServers?.docs?.disabled).toBe(
 			undefined,
@@ -160,16 +160,16 @@ describe("mcp manager dialog helpers", () => {
 
 		expect(result.ok).toBe(false);
 		if (!result.ok) {
-			expect(result.message).toContain('Unable to toggle MCP server "docs"');
+			expect(result.message).toContain('无法切换 MCP 服务器 "docs"');
 		}
 	});
 
 	it("keeps the footer focused on toggling", () => {
 		expect(getMcpManagerFooterText(true)).toBe(
-			"Space toggle selected, Esc to go back",
+			"空格切换所选，Esc 返回",
 		);
-		expect(getMcpManagerFooterText(true)).not.toContain("delete");
-		expect(getMcpManagerFooterText(false)).toBe("Esc to go back");
+		expect(getMcpManagerFooterText(true)).not.toContain("删除");
+		expect(getMcpManagerFooterText(false)).toBe("按 Esc 返回");
 	});
 
 	it("shows OAuth errors before general MCP status", () => {

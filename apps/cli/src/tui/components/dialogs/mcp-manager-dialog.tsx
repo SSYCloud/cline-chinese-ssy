@@ -26,8 +26,8 @@ function stringifyError(error: unknown): string {
 
 export function getMcpManagerFooterText(hasServers: boolean): string {
 	return hasServers
-		? "Space toggle selected, Esc to go back"
-		: "Esc to go back";
+		? "空格切换所选，Esc 返回"
+		: "按 Esc 返回";
 }
 
 export function getMcpManagerEntryStatus(
@@ -40,7 +40,7 @@ export function toggleMcpServer(server: McpEntry): McpServerToggleResult {
 	if (server.pluginName) {
 		return {
 			ok: false,
-			message: `MCP server "${server.name}" is managed by plugin "${server.pluginName}". Disable the plugin to disable this server.`,
+			message: `MCP 服务器 "${server.name}" 由插件 "${server.pluginName}" 管理。禁用该插件即可禁用此服务器。`,
 		};
 	}
 	try {
@@ -60,7 +60,7 @@ export function toggleMcpServer(server: McpEntry): McpServerToggleResult {
 	} catch (error) {
 		return {
 			ok: false,
-			message: `Unable to toggle MCP server "${server.name}": ${stringifyError(error)}`,
+			message: `无法切换 MCP 服务器 "${server.name}"：${stringifyError(error)}`,
 		};
 	}
 }
@@ -121,15 +121,15 @@ export function McpManagerContent(
 
 	return (
 		<box flexDirection="column" paddingX={1}>
-			<text fg={palette.act}>MCP Servers</text>
+			<text fg={palette.act}>MCP 服务器</text>
 
 			<text fg="gray" marginTop={1}>
-				Settings file:
+				设置文件：
 			</text>
 			<text selectable>{settingsPath}</text>
 
 			<text fg="gray" marginTop={1}>
-				Run cline mcp to add, edit, or remove servers.
+				运行 cline mcp 可添加、编辑或移除服务器。
 			</text>
 
 			{servers.length > 0 && (
@@ -173,7 +173,7 @@ export function McpManagerContent(
 
 			{servers.length === 0 && (
 				<text fg="gray" marginTop={1}>
-					No servers configured.
+					尚未配置服务器。
 				</text>
 			)}
 
@@ -185,17 +185,17 @@ export function McpManagerContent(
 
 			{selectedServer?.lastError && (
 				<box flexDirection="column" marginTop={1}>
-					<text fg={palette.error}>OAuth error</text>
+					<text fg={palette.error}>OAuth 错误</text>
 					<text fg={palette.error}>{selectedServer.lastError}</text>
 					<text fg="gray">
-						Run cline mcp and choose Authorize OAuth to retry.
+						运行 cline mcp 并选择"授权 OAuth"以重试。
 					</text>
 				</box>
 			)}
 
 			{hasPluginOwnedServers && (
 				<text fg="gray" marginTop={1}>
-					* managed by plugin; disable the plugin to disable the server.
+					* 由插件管理；禁用该插件即可禁用此服务器。
 				</text>
 			)}
 

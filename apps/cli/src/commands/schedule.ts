@@ -25,7 +25,7 @@ export function createScheduleCommand(
 	}
 
 	const schedule = new Command("schedule")
-		.description("Create and manage scheduled runs")
+		.description("创建和管理定时运行")
 		.exitOverride()
 		.hook("postAction", () => {
 			setExitCode(actionExitCode);

@@ -84,7 +84,7 @@ function translateContentStart(
 
 export function describeAgentError(error: unknown): string {
 	const message = getErrorMessage(error).trim();
-	return message || "The agent reported an unknown error.";
+	return message || "代理报告了未知错误。";
 }
 
 function translateContentEnd(

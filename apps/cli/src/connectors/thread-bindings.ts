@@ -255,7 +255,7 @@ export function serializeThread<TState extends ConnectorThreadState>(
 ): string {
 	const candidate = thread as Partial<SerializableConnectorThread<TState>>;
 	if (typeof candidate.toJSON !== "function") {
-		throw new Error(`${errorLabel} thread cannot be serialized`);
+		throw new Error(`${errorLabel} 线程无法序列化`);
 	}
 	return JSON.stringify(candidate.toJSON.call(thread));
 }
@@ -469,7 +469,7 @@ export async function loadThreadState<TState extends ConnectorThreadState>(
 	const binding = readBindingForThread<TState>(
 		bindingsPath,
 		thread,
-		"Connector",
+		"连接器",
 		threadState?.participantKey,
 	);
 	return mergeThreadState(threadState, binding?.state, base);

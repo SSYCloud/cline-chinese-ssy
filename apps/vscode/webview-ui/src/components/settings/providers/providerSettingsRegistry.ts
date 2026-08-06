@@ -67,7 +67,7 @@ const GENERIC_PROVIDER_PRESENTATION_OVERRIDES: Record<string, GenericProviderPre
 	minimax: {
 		signupUrl: "https://www.minimax.io/platform/user-center/basic-information/interface-key",
 		baseUrlField: {
-			label: "Base URL",
+			label: "基础 URL",
 			placeholder: "https://api.minimax.io/anthropic",
 		},
 	},
@@ -85,7 +85,7 @@ const GENERIC_PROVIDER_PRESENTATION_OVERRIDES: Record<string, GenericProviderPre
 		allowsCustomIds: true,
 		signupUrl: "https://api.together.ai/settings/api-keys",
 		baseUrlField: {
-			label: "Base URL",
+			label: "基础 URL",
 			placeholder: "https://api.together.xyz/v1",
 		},
 	},

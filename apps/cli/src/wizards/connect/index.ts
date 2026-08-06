@@ -63,7 +63,7 @@ async function collectFields(platform: PlatformDef): Promise<string[] | null> {
 					defaultValue: field.initialValue,
 					validate: field.required
 						? (v) => {
-								if (!v?.trim()) return `${field.label} is required`;
+								if (!v?.trim()) return `${field.label} 是必填项`;
 								return undefined;
 							}
 						: undefined,
@@ -92,7 +92,7 @@ async function collectSecurity(
 	if (isCancel(restrict)) return null;
 	if (!restrict) {
 		p.log.warn(
-			"Anyone who finds this bot will be able to run tasks on your machine.",
+			"任何发现此机器人的人都能在你的机器上运行任务。",
 		);
 		return [];
 	}
@@ -122,15 +122,15 @@ async function collectSecurity(
 	}
 
 	const args = security.buildArgs(values);
-	p.log.success("Access restriction enabled");
+	p.log.success("已启用访问限制");
 	return args;
 }
 
 export async function runConnectWizard(): Promise<number> {
-	p.intro("Connect a messaging platform");
+	p.intro("连接消息平台");
 
 	const platformId = await p.select({
-		message: "Select a platform",
+		message: "选择平台",
 		options: PLATFORMS.map((pl) => ({
 			value: pl.id,
 			label: pl.name,
@@ -139,34 +139,34 @@ export async function runConnectWizard(): Promise<number> {
 	});
 
 	if (isCancel(platformId)) {
-		p.outro("Cancelled");
+		p.outro("已取消");
 		return 0;
 	}
 
 	const platform = PLATFORMS.find((pl) => pl.id === (platformId as string));
 	if (!platform) {
-		p.log.error("Unknown platform");
+		p.log.error("未知平台");
 		return 1;
 	}
 
-	p.log.step(`Setting up ${platform.name}`);
+	p.log.step(`正在设置 ${platform.name}`);
 
 	if (platform.type === "webhook") {
 		p.log.warn(
-			"This connector requires a publicly accessible URL for webhooks.",
+			"此连接器需要公开可访问的网址用于 webhook。",
 		);
 	}
 
 	const args = await collectFields(platform);
 	if (!args) {
-		p.outro("Cancelled");
+		p.outro("已取消");
 		return 0;
 	}
 
 	if (platform.security) {
 		const securityArgs = await collectSecurity(platform.security);
 		if (!securityArgs) {
-			p.outro("Cancelled");
+			p.outro("已取消");
 			return 0;
 		}
 		args.push(...securityArgs);
@@ -175,32 +175,32 @@ export async function runConnectWizard(): Promise<number> {
 	const advanced = await p.group({
 		provider: () =>
 			p.text({
-				message: "Provider override",
-				placeholder: "leave empty for default",
+				message: "提供商覆盖",
+				placeholder: "留空使用默认值",
 			}),
 		model: () =>
 			p.text({
-				message: "Model override",
-				placeholder: "leave empty for default",
+				message: "模型覆盖",
+				placeholder: "留空使用默认值",
 			}),
 		systemPrompt: () =>
 			p.text({
-				message: "System prompt override",
-				placeholder: "leave empty for default",
+				message: "系统提示词覆盖",
+				placeholder: "留空使用默认值",
 			}),
 		mode: () =>
 			p.select({
-				message: "Agent mode",
+				message: "代理模式",
 				options: [
-					{ value: "act", label: "Act", hint: "execute tasks" },
-					{ value: "plan", label: "Plan", hint: "plan only" },
+					{ value: "act", label: "执行", hint: "执行任务" },
+					{ value: "plan", label: "规划", hint: "仅规划" },
 				],
 				initialValue: "act",
 			}),
 	});
 
 	if (isCancel(advanced)) {
-		p.outro("Cancelled");
+		p.outro("已取消");
 		return 0;
 	}
 
@@ -220,9 +220,9 @@ export async function runConnectWizard(): Promise<number> {
 	args.push("-i");
 
 	p.log.success(
-		`Running: cline connect ${platform.id} ${redactCommandArgs(args)}`,
+		`正在运行：cline connect ${platform.id} ${redactCommandArgs(args)}`,
 	);
-	p.outro("Starting connector (Ctrl+C to stop)");
+	p.outro("正在启动连接器（按 Ctrl+C 停止）");
 
 	return runConnectAdapter(platform.id, args, {
 		writeln: (text) => {

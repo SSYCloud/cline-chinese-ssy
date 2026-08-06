@@ -145,10 +145,10 @@ export async function runSkillCommand(
 			cleanup();
 			if (error.code === "ENOENT") {
 				io.writeErr(
-					'npx was not found. Install Node.js (which includes npx) to use "cline skill".',
+					'未找到 npx。请安装 Node.js（包含 npx）以使用 "cline skill"。',
 				);
 			} else {
-				io.writeErr(`Failed to run npx ${SKILLS_PACKAGE}: ${error.message}`);
+				io.writeErr(`运行 npx ${SKILLS_PACKAGE} 失败: ${error.message}`);
 			}
 			resolve(1);
 		});

@@ -75,7 +75,7 @@ export async function createTaskWorktree(options: {
 	if (!(await checkGitInstalled())) {
 		return {
 			success: false,
-			message: "Git is not installed. --worktree requires git on PATH.",
+			message: "未安装 Git。--worktree 需要 PATH 中有 git。",
 		};
 	}
 
@@ -83,7 +83,7 @@ export async function createTaskWorktree(options: {
 	if (!repoRoot) {
 		return {
 			success: false,
-			message: `Not a git repository: ${options.cwd}. --worktree requires a git repo.`,
+			message: `不是 git 仓库: ${options.cwd}。--worktree 需要一个 git 仓库。`,
 		};
 	}
 
@@ -94,7 +94,7 @@ export async function createTaskWorktree(options: {
 		taskId.includes("..") ||
 		taskId.includes("\0")
 	) {
-		return { success: false, message: `Invalid worktree id: ${taskId}` };
+		return { success: false, message: `无效的 worktree id: ${taskId}` };
 	}
 
 	const workspaceLabel = getWorkspaceFolderLabelForWorktreePath(repoRoot);
@@ -130,7 +130,7 @@ export async function createTaskWorktree(options: {
 		);
 		return {
 			success: true,
-			message: `Worktree created at ${worktreePath}`,
+			message: `Worktree 已创建于 ${worktreePath}`,
 			path: worktreePath,
 			taskId,
 			repoRoot,
@@ -141,7 +141,7 @@ export async function createTaskWorktree(options: {
 		}
 		return {
 			success: false,
-			message: `Failed to create worktree: ${error instanceof Error ? error.message : String(error)}`,
+			message: `创建 worktree 失败: ${error instanceof Error ? error.message : String(error)}`,
 		};
 	}
 }

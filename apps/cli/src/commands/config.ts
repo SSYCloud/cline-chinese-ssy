@@ -81,10 +81,10 @@ async function runWorkflowsConfigCommand(
 		return 0;
 	}
 	if (workflows.length === 0) {
-		io.writeln("No enabled workflows found.");
+		io.writeln("未找到已启用的工作流。");
 		return 0;
 	}
-	io.writeln("Available workflows:");
+	io.writeln("可用工作流：");
 	for (const workflow of workflows) {
 		io.writeln(`  /${workflow.name} (${workflow.path})`);
 	}
@@ -127,10 +127,10 @@ async function runRulesConfigCommand(
 		return 0;
 	}
 	if (rules.length === 0) {
-		io.writeln("No enabled rules found.");
+		io.writeln("未找到已启用的规则。");
 		return 0;
 	}
-	io.writeln("Enabled rules:");
+	io.writeln("已启用的规则：");
 	for (const rule of rules) {
 		io.writeln(`  ${rule.name} (${rule.path})`);
 	}
@@ -174,10 +174,10 @@ async function runSkillsConfigCommand(
 		return 0;
 	}
 	if (skills.length === 0) {
-		io.writeln("No enabled skills found.");
+		io.writeln("未找到已启用的技能。");
 		return 0;
 	}
-	io.writeln("Enabled skills:");
+	io.writeln("已启用的技能：");
 	for (const skill of skills) {
 		io.writeln(`  ${skill.name} (${skill.path})`);
 	}
@@ -239,10 +239,10 @@ async function runAgentsConfigCommand(
 		return 0;
 	}
 	if (agents.length === 0) {
-		io.writeln("No configured agents found.");
+		io.writeln("未找到已配置的 agent。");
 		return 0;
 	}
-	io.writeln("Configured agents:");
+	io.writeln("已配置的 agent：");
 	for (const agent of agents) {
 		io.writeln(`  ${agent.name} (${agent.path})`);
 	}
@@ -288,10 +288,10 @@ async function runPluginsConfigCommand(
 		return 0;
 	}
 	if (plugins.length === 0) {
-		io.writeln("No plugins found.");
+		io.writeln("未找到插件。");
 		return 0;
 	}
-	io.writeln("Discovered plugins:");
+	io.writeln("发现的插件：");
 	for (const plugin of plugins) {
 		io.writeln(`  ${plugin.name} (${plugin.path})`);
 	}
@@ -309,10 +309,10 @@ async function runHooksConfigCommand(
 		return 0;
 	}
 	if (hooks.length === 0) {
-		io.writeln("No hook files found.");
+		io.writeln("未找到 hook 文件。");
 		return 0;
 	}
-	io.writeln("Hook files:");
+	io.writeln("Hook 文件：");
 	for (const item of hooks) {
 		const mapped = item.hookEventName ? ` -> ${item.hookEventName}` : "";
 		io.writeln(`  ${item.fileName}${mapped} (${item.path})`);
@@ -330,7 +330,7 @@ async function runMcpConfigCommand(
 			process.stdout.write(JSON.stringify([]));
 			return 0;
 		}
-		io.writeln(`No MCP settings file found at ${settingsPath}`);
+		io.writeln(`在 ${settingsPath} 未找到 MCP 设置文件`);
 		return 0;
 	}
 
@@ -349,12 +349,12 @@ async function runMcpConfigCommand(
 			return 0;
 		}
 		if (servers.length === 0) {
-			io.writeln(`No MCP servers configured in ${settingsPath}`);
+			io.writeln(`${settingsPath} 中未配置 MCP 服务器`);
 			return 0;
 		}
-		io.writeln(`Configured MCP servers (${settingsPath}):`);
+		io.writeln(`已配置的 MCP 服务器（${settingsPath}）：`);
 		for (const server of servers) {
-			const disabledSuffix = server.disabled ? " (disabled)" : "";
+			const disabledSuffix = server.disabled ? "（已禁用）" : "";
 			io.writeln(`  ${server.name} [${server.transportType}]${disabledSuffix}`);
 		}
 		return 0;
@@ -394,12 +394,12 @@ async function runToolsConfigCommand(
 		return 0;
 	}
 	if (tools.length === 0 && pluginTools.length === 0) {
-		io.writeln("No tools found.");
+		io.writeln("未找到工具。");
 		return 0;
 	}
-	io.writeln("Available tools:");
+	io.writeln("可用工具：");
 	for (const tool of tools) {
-		const state = tool.defaultEnabled ? "enabled" : "disabled";
+		const state = tool.defaultEnabled ? "已启用" : "已禁用";
 		const names =
 			tool.headlessToolNames.length === 1 &&
 			tool.headlessToolNames[0] === tool.id
@@ -409,10 +409,10 @@ async function runToolsConfigCommand(
 	}
 	if (pluginTools.length > 0) {
 		io.writeln();
-		io.writeln("Plugin tools:");
+		io.writeln("插件工具：");
 		for (const tool of pluginTools) {
 			io.writeln(
-				`  ${tool.name} [plugin: ${tool.pluginName}] [${tool.enabled ? "enabled" : "disabled"}] (${tool.path})`,
+				`  ${tool.name} [插件: ${tool.pluginName}] [${tool.enabled ? "已启用" : "已禁用"}] (${tool.path})`,
 			);
 		}
 	}
@@ -448,10 +448,10 @@ export function createConfigCommand(
 	let actionExitCode: number | undefined;
 
 	const config = new Command("config")
-		.description("Show current configuration")
+		.description("显示当前配置")
 		.argument("[target]")
-		.option("--json", "Output as JSON")
-		.option("--config <dir>", "configuration directory")
+		.option("--json", "以 JSON 格式输出")
+		.option("--config <dir>", "配置目录")
 		.exitOverride()
 		.action(async (target?: string) => {
 			if (!target) {
@@ -523,7 +523,7 @@ export function createConfigCommand(
 					break;
 				default:
 					io.writeErr(
-						`config requires one of: workflows, rules, skills, agents, plugins, hooks, mcp, tools (got "${target}")`,
+						`config 需要以下之一：workflows、rules、skills、agents、plugins、hooks、mcp、tools（收到 "${target}"）`,
 					);
 					actionExitCode = 1;
 			}

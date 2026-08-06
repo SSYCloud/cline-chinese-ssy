@@ -27,19 +27,19 @@ const AddRemoteServerForm = ({ onCancel, onServerAdded, showEditConfiguration = 
 		e.preventDefault()
 
 		if (!serverName.trim()) {
-			setError("Server name is required")
+			setError("服务器名称必填")
 			return
 		}
 
 		if (!serverUrl.trim()) {
-			setError("Server URL is required")
+			setError("服务器 URL 必填")
 			return
 		}
 
 		try {
 			new URL(serverUrl)
 		} catch (_err) {
-			setError("Invalid URL format")
+			setError("URL 格式无效")
 			return
 		}
 
@@ -65,16 +65,16 @@ const AddRemoteServerForm = ({ onCancel, onServerAdded, showEditConfiguration = 
 			onServerAdded()
 		} catch (error) {
 			setIsSubmitting(false)
-			setError(error instanceof Error ? error.message : "Failed to add server")
+			setError(error instanceof Error ? error.message : "添加服务器失败")
 		}
 	}
 
 	return (
 		<div className="p-4 px-5">
 			<div className="text-(--vscode-foreground) mb-2">
-				Add a remote MCP server by providing a name and its URL endpoint. Learn more{" "}
+				通过提供名称及其 URL 端点来添加远程 MCP 服务器。了解更多{" "}
 				<VSCodeLink href={LINKS.DOCUMENTATION.REMOTE_MCP_SERVER_DOCS} style={{ display: "inline" }}>
-					here.
+					此处。
 				</VSCodeLink>
 			</div>
 
@@ -89,7 +89,7 @@ const AddRemoteServerForm = ({ onCancel, onServerAdded, showEditConfiguration = 
 						}}
 						placeholder="mcp-server"
 						value={serverName}>
-						Server Name
+						服务器名称
 					</VSCodeTextField>
 				</div>
 
@@ -103,12 +103,12 @@ const AddRemoteServerForm = ({ onCancel, onServerAdded, showEditConfiguration = 
 						}}
 						placeholder="https://example.com/mcp-server"
 						value={serverUrl}>
-						Server URL
+						服务器 URL
 					</VSCodeTextField>
 				</div>
 
 				<div className="mb-3">
-					<label className={`block text-sm font-medium mb-2 ${isSubmitting ? "opacity-50" : ""}`}>Transport Type</label>
+					<label className={`block text-sm font-medium mb-2 ${isSubmitting ? "opacity-50" : ""}`}>传输类型</label>
 					<VSCodeRadioGroup
 						disabled={isSubmitting}
 						onChange={(e) => {
@@ -120,7 +120,7 @@ const AddRemoteServerForm = ({ onCancel, onServerAdded, showEditConfiguration = 
 							Streamable HTTP
 						</VSCodeRadio>
 						<VSCodeRadio checked={transportType === "sse"} value="sse">
-							SSE (Legacy)
+							SSE（旧版）
 						</VSCodeRadio>
 					</VSCodeRadioGroup>
 				</div>
@@ -128,7 +128,7 @@ const AddRemoteServerForm = ({ onCancel, onServerAdded, showEditConfiguration = 
 				{error && <div className="mb-3 text-(--vscode-errorForeground)">{error}</div>}
 
 				<VSCodeButton className="w-full" disabled={isSubmitting} type="submit">
-					{isSubmitting ? "Connecting..." : "Add Server"}
+					{isSubmitting ? "正在连接..." : "添加服务器"}
 				</VSCodeButton>
 
 				{onCancel && (
@@ -139,7 +139,7 @@ const AddRemoteServerForm = ({ onCancel, onServerAdded, showEditConfiguration = 
 						onClick={onCancel}
 						style={{ marginTop: "8px" }}
 						type="button">
-						Cancel
+						取消
 					</VSCodeButton>
 				)}
 
@@ -152,7 +152,7 @@ const AddRemoteServerForm = ({ onCancel, onServerAdded, showEditConfiguration = 
 							})
 						}}
 						style={{ width: "100%", marginBottom: "5px", marginTop: 15 }}>
-						Edit Configuration
+						编辑配置
 					</VSCodeButton>
 				)}
 			</form>

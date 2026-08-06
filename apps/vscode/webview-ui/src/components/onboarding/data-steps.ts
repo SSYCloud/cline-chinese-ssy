@@ -18,14 +18,14 @@ export const STEP_CONFIG = {
 		description: "选择一个下面的选项来开始.",
 		buttons: [
 			{ text: "继续", action: "next", variant: "default" },
-			{ text: "登录 Cline 账户", action: "signin", variant: "secondary" },
+			// { text: "登录 Cline 账户", action: "signin", variant: "secondary" },
 		],
 	},
 	[NEW_USER_TYPE.CLINE_PASS]: {
-		title: "Select a ClinePass model",
+		title: "选择一个 ClinePass 模型",
 		buttons: [
-			{ text: "Create my Account", action: "signup", variant: "default" },
-			{ text: "Back", action: "back", variant: "secondary" },
+			{ text: "创建我的账户", action: "signup", variant: "default" },
+			{ text: "返回", action: "back", variant: "secondary" },
 		],
 	},
 	[NEW_USER_TYPE.FREE]: {
@@ -58,15 +58,15 @@ export const STEP_CONFIG = {
 
 const CLINE_PASS_USER_TYPE_SELECTION: UserTypeSelection = {
 	title: "ClinePass",
-	description: "Low cost subscription plan for best open weights model.",
+	description: "适用于最佳开源权重模型的低价订阅方案。",
 	type: NEW_USER_TYPE.CLINE_PASS,
 	learnMoreUrl: "https://docs.cline.bot/getting-started/clinepass",
 }
 
 const BASE_USER_TYPE_SELECTIONS: UserTypeSelection[] = [
-	{ title: "Absolutely Free", description: "Get started at no cost", type: NEW_USER_TYPE.FREE },
-	{ title: "Frontier Model", description: "Claude, GPT Codex, Gemini, etc.", type: NEW_USER_TYPE.POWER },
-	{ title: "Bring my own API key", description: "Use Cline with your provider of choice", type: NEW_USER_TYPE.BYOK },
+	{ title: "前沿模型", description: "Claude\\GPT\\Kimi\\ Glm 等，稳定高速（无需魔法）", type: NEW_USER_TYPE.POWER },
+	{ title: "免费开始", description: "SSY Cloud新用户免费获取10元模力，1模力=1RMB", type: NEW_USER_TYPE.FREE },
+	{ title: "自带 API 密钥", description: "使用你选择的提供商", type: NEW_USER_TYPE.BYOK },
 ]
 
 /** The initial onboarding keeps the three primary paths in a stable order. */

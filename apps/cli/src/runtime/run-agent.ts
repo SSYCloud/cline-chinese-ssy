@@ -72,7 +72,7 @@ function emitAbortRequested(
 	if (config.outputMode === "json") {
 		emitJsonLine("stdout", { type: "run_abort_requested", reason });
 	} else if (reason === "sigint") {
-		writeln(`\n${c.dim}[abort] requested${c.reset}`);
+		writeln(`\n${c.dim}[abort] 已请求${c.reset}`);
 	}
 }
 
@@ -83,7 +83,7 @@ function emitTeamRestored(config: Config): void {
 		return;
 	}
 	writeln(
-		`${c.dim}[team] restored persisted team state for "${teamName}"${c.reset}`,
+		`${c.dim}[团队] 已为 "${teamName}" 恢复持久化的团队状态${c.reset}`,
 	);
 }
 
@@ -103,24 +103,24 @@ function printRunStats(
 		const parts: string[] = [];
 		parts.push(`${((performance.now() - startTime) / 1000).toFixed(2)}s`);
 		const tokenParts: string[] = [
-			`${usage.inputTokens} in`,
-			`${usage.outputTokens} out`,
+			`${usage.inputTokens} 入`,
+			`${usage.outputTokens} 出`,
 		];
 		if (usage.cacheReadTokens) {
-			tokenParts.push(`${usage.cacheReadTokens} cache read`);
+			tokenParts.push(`${usage.cacheReadTokens} 缓存读`);
 		}
 		if (usage.cacheWriteTokens) {
-			tokenParts.push(`${usage.cacheWriteTokens} cache write`);
+			tokenParts.push(`${usage.cacheWriteTokens} 缓存写`);
 		}
 		parts.push(tokenParts.join(", "));
 		if (
 			shouldShowCliUsageCost(config.providerId) &&
 			typeof usage.totalCost === "number"
 		) {
-			parts.push(`${formatUsd(usage.totalCost)} est. cost`);
+			parts.push(`${formatUsd(usage.totalCost)} 预计费用`);
 		}
 		if (result.iterations > 1) {
-			parts.push(`${result.iterations} iterations`);
+			parts.push(`${result.iterations} 次迭代`);
 		}
 		writeln(`${c.dim}[${parts.join(" | ")}]${c.reset}`);
 		if (config.thinking) {
@@ -374,7 +374,7 @@ export async function runAgent(
 
 		if (abortRequested || result.finishReason === "aborted") {
 			if (timedOut) {
-				writeErr(`run timed out after ${config.timeoutSeconds}s`);
+				writeErr(`运行在 ${config.timeoutSeconds} 秒后超时`);
 				process.exitCode = 1;
 			} else if (config.outputMode === "json") {
 				emitJsonLine("stdout", {
@@ -384,7 +384,7 @@ export async function runAgent(
 				});
 			} else {
 				writeln(
-					`${c.dim}[abort] ${describeAbortSource({ abortRequested, timedOut })}${c.reset}`,
+					`${c.dim}[中止] ${describeAbortSource({ abortRequested, timedOut })}${c.reset}`,
 				);
 			}
 			writeln();

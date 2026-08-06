@@ -118,7 +118,7 @@ const HookMessage = memo(({ message, CommandOutput }: HookMessageProps) => {
 		try {
 			hookMetadata = JSON.parse(metadataStr)
 		} catch {
-			hookMetadata = { hookName: "Unknown", status: "unknown" }
+			hookMetadata = { hookName: "未知", status: "unknown" }
 		}
 
 		return { metadata: hookMetadata, output }
@@ -147,8 +147,9 @@ const HookMessage = memo(({ message, CommandOutput }: HookMessageProps) => {
 					style={{
 						color: normalColor,
 						marginBottom: "-1.5px",
-					}}></span>
-				<span style={{ color: normalColor, fontWeight: "bold" }}>Hook:</span>
+					}}
+				/>
+				<span style={{ color: normalColor, fontWeight: "bold" }}>钩子：</span>
 				<span style={{ color: normalColor }}>{metadata.hookName}</span>
 				{metadata.toolName && (
 					<span style={{ color: "var(--vscode-descriptionForeground)", fontSize: "0.9em" }}>({metadata.toolName})</span>
@@ -199,15 +200,7 @@ const HookMessage = memo(({ message, CommandOutput }: HookMessageProps) => {
 								fontSize: "13px",
 								flexShrink: 0,
 							}}>
-							{isRunning
-								? "Running"
-								: isFailed
-									? "Failed"
-									: isCancelled
-										? "Aborted"
-										: isCompleted
-											? "Completed"
-											: "Unknown"}
+							{isRunning ? "运行中" : isFailed ? "失败" : isCancelled ? "已中止" : isCompleted ? "已完成" : "未知"}
 						</span>
 						{metadata.exitCode !== undefined && metadata.exitCode !== 0 && (
 							<span
@@ -258,7 +251,7 @@ const HookMessage = memo(({ message, CommandOutput }: HookMessageProps) => {
 							fontSize: "13px",
 							color: "var(--vscode-descriptionForeground)",
 						}}>
-						Took longer than 30 seconds. Check for infinite loops or add timeouts to network requests.
+						耗时超过 30 秒。请检查是否存在死循环，或为网络请求添加超时设置。
 					</div>
 				)}
 
@@ -270,7 +263,7 @@ const HookMessage = memo(({ message, CommandOutput }: HookMessageProps) => {
 							fontSize: "13px",
 							color: "var(--vscode-descriptionForeground)",
 						}}>
-						Hook returned invalid JSON. See error details below for more information.
+						Hook 返回了无效的 JSON。请查看下方错误详情以获取更多信息。
 					</div>
 				)}
 
