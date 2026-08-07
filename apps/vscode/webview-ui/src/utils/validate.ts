@@ -6,11 +6,11 @@ export function validateApiConfiguration(currentMode: Mode, apiConfiguration?: A
 	if (apiConfiguration) {
 		const { apiProvider, openAiModelId, togetherModelId, ollamaModelId, lmStudioModelId, vsCodeLmModelSelector } =
 			getModeSpecificFields(apiConfiguration, currentMode)
-		const tips = "您必须提供有效的API密钥或选择其他提供者。"
+		const tips = "您必须提供有效的API密钥,或选择其他提供商。"
 		switch (apiProvider) {
 			case "anthropic":
 				if (!apiConfiguration.apiKey) {
-					return "你必须提供有效的 API 密钥，或选择其他提供商。"
+					return tips
 				}
 				break
 			case "bedrock":
@@ -20,7 +20,7 @@ export function validateApiConfiguration(currentMode: Mode, apiConfiguration?: A
 				break
 			case "openrouter":
 				if (!apiConfiguration.openRouterApiKey) {
-					return "你必须提供有效的 API 密钥，或选择其他提供商。"
+					return tips
 				}
 				break
 			case "vertex":
@@ -30,37 +30,37 @@ export function validateApiConfiguration(currentMode: Mode, apiConfiguration?: A
 				break
 			case "gemini":
 				if (!apiConfiguration.geminiApiKey) {
-					return "你必须提供有效的 API 密钥，或选择其他提供商。"
+					return tips
 				}
 				break
 			case "openai-native":
 				if (!apiConfiguration.openAiNativeApiKey) {
-					return "你必须提供有效的 API 密钥，或选择其他提供商。"
+					return tips
 				}
 				break
 			case "deepseek":
 				if (!apiConfiguration.deepSeekApiKey) {
-					return "你必须提供有效的 API 密钥，或选择其他提供商。"
+					return tips
 				}
 				break
 			case "xai":
 				if (!apiConfiguration.xaiApiKey) {
-					return "你必须提供有效的 API 密钥，或选择其他提供商。"
+					return tips
 				}
 				break
 			case "qwen":
 				if (!apiConfiguration.qwenApiKey) {
-					return "你必须提供有效的 API 密钥，或选择其他提供商。"
+					return tips
 				}
 				break
 			case "doubao":
 				if (!apiConfiguration.doubaoApiKey) {
-					return "你必须提供有效的 API 密钥，或选择其他提供商。"
+					return tips
 				}
 				break
 			case "mistral":
 				if (!apiConfiguration.mistralApiKey) {
-					return "你必须提供有效的 API 密钥，或选择其他提供商。"
+					return tips
 				}
 				break
 			case "cline":
@@ -80,17 +80,17 @@ export function validateApiConfiguration(currentMode: Mode, apiConfiguration?: A
 				break
 			case "requesty":
 				if (!apiConfiguration.requestyApiKey) {
-					return "你必须提供有效的 API 密钥，或选择其他提供商。"
+					return tips
 				}
 				break
 			case "fireworks":
 				if (!apiConfiguration.fireworksApiKey) {
-					return "你必须提供有效的 API 密钥，或选择其他提供商。"
+					return tips
 				}
 				break
 			case "together":
 				if (!apiConfiguration.togetherApiKey || !togetherModelId) {
-					return "你必须提供有效的 API 密钥，或选择其他提供商。"
+					return tips
 				}
 				break
 			case "ollama":
@@ -110,22 +110,22 @@ export function validateApiConfiguration(currentMode: Mode, apiConfiguration?: A
 				break
 			case "moonshot":
 				if (!apiConfiguration.moonshotApiKey) {
-					return "你必须提供有效的 API 密钥，或选择其他提供商。"
+					return tips
 				}
 				break
 			case "nebius":
 				if (!apiConfiguration.nebiusApiKey) {
-					return "你必须提供有效的 API 密钥，或选择其他提供商。"
+					return tips
 				}
 				break
 			case "asksage":
 				if (!apiConfiguration.asksageApiKey) {
-					return "你必须提供有效的 API 密钥，或选择其他提供商。"
+					return tips
 				}
 				break
 			case "sambanova":
 				if (!apiConfiguration.sambanovaApiKey) {
-					return "你必须提供有效的 API 密钥，或选择其他提供商。"
+					return tips
 				}
 				break
 			case "sapaicore":
@@ -136,7 +136,7 @@ export function validateApiConfiguration(currentMode: Mode, apiConfiguration?: A
 					return "你必须提供有效的客户端 ID，或选择其他提供商。"
 				}
 				if (!apiConfiguration.sapAiCoreClientSecret) {
-					return "你必须提供有效的客户端密钥，或选择其他提供商。"
+					return tips
 				}
 				if (!apiConfiguration.sapAiCoreTokenUrl) {
 					return "你必须提供有效的认证 URL，或选择其他提供商。"
@@ -144,7 +144,7 @@ export function validateApiConfiguration(currentMode: Mode, apiConfiguration?: A
 				break
 			case "zai":
 				if (!apiConfiguration.zaiApiKey) {
-					return "你必须提供有效的 API 密钥，或选择其他提供商。"
+					return tips
 				}
 				break
 			case "dify":
@@ -152,12 +152,12 @@ export function validateApiConfiguration(currentMode: Mode, apiConfiguration?: A
 					return "你必须提供有效的基础 URL，或选择其他提供商。"
 				}
 				if (!apiConfiguration.difyApiKey) {
-					return "你必须提供有效的 API 密钥，或选择其他提供商。"
+					return tips
 				}
 				break
 			case "minimax":
 				if (!apiConfiguration.minimaxApiKey) {
-					return "你必须提供有效的 API 密钥，或选择其他提供商。"
+					return tips
 				}
 				break
 			case "hicap":
@@ -167,7 +167,7 @@ export function validateApiConfiguration(currentMode: Mode, apiConfiguration?: A
 				break
 			case "wandb":
 				if (!apiConfiguration.wandbApiKey) {
-					return "你必须提供有效的 API 密钥，或选择其他提供商。"
+					return tips
 				}
 				break
 			case "shengsuanyun":

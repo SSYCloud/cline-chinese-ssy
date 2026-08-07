@@ -621,7 +621,7 @@ function writeProviderSettingsFields(providerId: ProviderId, patch: ProviderConf
 }
 
 function getModelIdKey(providerId: ProviderId, mode: Mode): keyof ApiConfiguration & SettingsKey {
-	return getProviderModelIdKey(providerForStorage(providerId) ?? "anthropic", mode) as keyof ApiConfiguration & SettingsKey
+	return getProviderModelIdKey(providerForStorage(providerId) ?? "shengsuanyun", mode) as keyof ApiConfiguration & SettingsKey
 }
 
 function getModelInfoKey(providerId: ProviderId, mode: Mode): (keyof ApiConfiguration & SettingsKey) | undefined {

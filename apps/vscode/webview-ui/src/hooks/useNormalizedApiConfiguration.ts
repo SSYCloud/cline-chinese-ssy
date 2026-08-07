@@ -36,7 +36,7 @@ function getActiveProviderAndModelId(apiConfiguration: ReturnType<typeof useExte
 	// spellings (e.g. `openai-compatible`); fold them back to the legacy
 	// `ApiProvider` spelling so the provider-keyed lookups below resolve.
 	const provider = toLegacyApiProvider(
-		(mode === "plan" ? apiConfiguration?.planModeApiProvider : apiConfiguration?.actModeApiProvider) || "anthropic",
+		(mode === "plan" ? apiConfiguration?.planModeApiProvider : apiConfiguration?.actModeApiProvider) || "shengsuanyun",
 	) as ApiProvider
 	const modeFields = getModeSpecificFields(apiConfiguration, mode)
 

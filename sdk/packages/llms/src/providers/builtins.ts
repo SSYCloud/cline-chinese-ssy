@@ -608,7 +608,7 @@ async function handleClineResponseError(
 const cline = createClineLikeSpec({
 	id: "cline",
 	name: "Cline Usage-Billing",
-	popular: 1,
+	popular: 2,
 	modelsFactory: buildClineModels,
 	defaultModelId: CLINE_DEFAULT_MODEL_ID,
 	defaults: {
@@ -623,7 +623,7 @@ const cline = createClineLikeSpec({
 const clinePass = createClineLikeSpec({
 	id: CLINE_PASS_PROVIDER_ID,
 	name: "ClinePass",
-	popular: 2,
+	popular: 3,
 	description: "Cline API endpoint with ClinePass models",
 	modelsProviderId: CLINE_PASS_PROVIDER_ID,
 	defaultModelId: firstGeneratedModelId(CLINE_PASS_PROVIDER_ID),

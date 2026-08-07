@@ -291,7 +291,7 @@ function convertProtoToOpenAiCompatibleModelInfo(
 // spelling (`openai`) so they never leak into stored state, where every
 // provider-keyed code path expects the legacy id.
 export function convertProtoToApiProvider(provider: string | undefined): ApiProvider {
-	return toLegacyApiProvider(provider || "anthropic")
+	return toLegacyApiProvider(provider || "shengsuanyun")
 }
 
 // Converts application ApiConfiguration to proto ApiConfiguration
