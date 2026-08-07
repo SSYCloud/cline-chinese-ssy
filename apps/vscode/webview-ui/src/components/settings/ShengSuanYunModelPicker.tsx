@@ -9,6 +9,7 @@ import { useDynamicProviderSelection } from "@/hooks/useDynamicProviderSelection
 import { ModelsServiceClient } from "@/services/grpc-client"
 import { useExtensionState } from "../../context/ExtensionStateContext"
 import { ModelInfoView } from "./common/ModelInfoView"
+import FeaturedModelCard from "./FeaturedModelCard"
 import { getModeSpecificFields } from "./utils/providerUtils"
 import { useApiConfigurationHandlers } from "./utils/useApiConfigurationHandlers"
 
@@ -40,37 +41,43 @@ const StarIcon = ({ isFavorite, onClick }: { isFavorite: boolean; onClick: (e: R
 
 export const recommendedModels = [
 	{
-		id: "anthropic/claude-sonnet-5",
-		descriptionKey: "claudeSonnet5", // gitleaks:allow
-		labelKey: "最强",
+		id: "anthropic/claude-opus-5",
+		name: "",
+		description: "opus系列性能飞跃", // gitleaks:allow
+		label: "NEW",
 	},
 	{
-		id: "google/gemini-3-flash",
-		descriptionKey: "gemini3Flash",
-		labelKey: "最新",
+		id: "bigmodel/glm-5.2",
+		name: "",
+		description: "国产编程性价比",
+		label: "NEW",
 	},
 	{
-		id: "anthropic/claude-opus-4.5",
-		descriptionKey: "claudeOpus45",
-		labelKey: "热门",
+		id: "anthropic/claude-fable-5",
+		name: "",
+		description: "Anthropic当下最强模型",
+		label: "NEW",
 	},
 	{
-		id: "openai/gpt-5.2",
-		descriptionKey: "gpt52",
-		labelKey: "最新",
+		id: "openai/gpt-5.6-sol",
+		name: "",
+		description: "编程排行当下第一",
+		label: "NEW",
 	},
 	{
-		id: "google/gemini-3-pro-preview",
-		descriptionKey: "gemini3Pro",
-		labelKey: "1M上下文",
+		id: "moonshotai/kimi-k3",
+		name: "",
+		description: "国产最强开源编码模型",
+		label: "NEW",
 	},
 ]
 
 export const freeModels = [
 	{
 		id: "xiaomi/mimo-v2-flash",
-		descriptionKey: "MiMo V2 Flash (Free)",
-		labelKey: "免费",
+		name: "",
+		description: "MiMo V2 Flash (Free)",
+		label: "免费",
 	},
 ]
 
@@ -84,6 +91,7 @@ const ShengSuanYunModelPicker: React.FC<ShengSuanYunModelPickerProps> = ({ isPop
 	const dropdownRef = useRef<HTMLDivElement>(null)
 	const itemRefs = useRef<(HTMLDivElement | null)[]>([])
 	const dropdownListRef = useRef<HTMLDivElement>(null)
+	const [activeTab, setActiveTab] = useState<"recommended" | "free">("recommended")
 
 	const handleModelChange = (newModelId: string) => {
 		// could be setting invalid model id/undefined info but validation will catch it
@@ -230,6 +238,46 @@ const ShengSuanYunModelPicker: React.FC<ShengSuanYunModelPickerProps> = ({ isPop
 				<label htmlFor="model-search">
 					<span style={{ fontWeight: 500 }}>模型</span>
 				</label>
+				<TabsContainer style={{ marginTop: 4 }}>
+					<Tab active={activeTab === "recommended"} onClick={() => setActiveTab("recommended")}>
+						推荐
+					</Tab>
+					{/* <Tab active={activeTab === "free"} onClick={() => setActiveTab("free")}>
+						免费
+					</Tab> */}
+				</TabsContainer>
+
+				{/* Model Cards */}
+				<div style={{ marginBottom: "6px" }}>
+					{activeTab === "recommended" &&
+						recommendedModels.map((model) => (
+							<FeaturedModelCard
+								description={model.description}
+								displayName={model.name || model.id}
+								isSelected={selectedModelId === model.id}
+								key={model.id}
+								label={model.label}
+								onClick={() => {
+									handleModelChange(model.id)
+									setIsDropdownVisible(false)
+								}}
+							/>
+						))}
+					{activeTab === "free" &&
+						freeModels.map((model) => (
+							<FeaturedModelCard
+								description={model.description}
+								displayName={model.name || model.id}
+								isSelected={selectedModelId === model.id}
+								key={model.id}
+								label={model.label}
+								onClick={() => {
+									handleModelChange(model.id)
+									setIsDropdownVisible(false)
+								}}
+							/>
+						))}
+				</div>
 				<DropdownWrapper ref={dropdownRef}>
 					<VSCodeTextField
 						id="model-search"
@@ -396,5 +444,26 @@ const _StyledMarkdown = styled.div`
 		&:hover {
 			text-decoration: underline;
 		}
+	}
+`
+
+const TabsContainer = styled.div`
+	display: flex;
+	gap: 0;
+	margin-bottom: 12px;
+	border-bottom: 1px solid #333;
+`
+
+const Tab = styled.div<{ active: boolean }>`
+	padding: 8px 16px;
+	cursor: pointer;
+	font-size: 12px;
+	font-weight: 500;
+	color: ${({ active }) => (active ? "var(--vscode-foreground)" : "var(--vscode-descriptionForeground)")};
+	border-bottom: 2px solid ${({ active }) => (active ? "var(--vscode-textLink-foreground)" : "transparent")};
+	transition: all 0.15s ease;
+
+	&:hover {
+		color: var(--vscode-foreground);
 	}
 `

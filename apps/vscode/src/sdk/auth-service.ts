@@ -1137,17 +1137,16 @@ export class AuthService {
 	}
 
 	async handleShengSuanYunCallback(code: string) {
-		// Logger.error("handleShengSuanYunCallback() with code:", code)
 		try {
-			const callbackUrl = `${await HostProvider.get().getCallbackUrl("/ssy")}?from=cline-chinese`
-			const res = await axios.post("https://api.shengsuanyun.com/auth/keys", {
+			const callbackUrl = `${await HostProvider.get().getCallbackUrl("/ssy")}`
+			const res = await axios.post("https://api.shengsuanyun.com/auth/keys?from=cline-chinese", {
 				code: code,
 				callback_url: callbackUrl,
 			})
-			// Logger.error("https://api.shengsuanyun.com/auth/keys :", res.data)
-			if (!res.data || !res.data.data) {
+			// console.log(`handleShengSuanYunCallback(code=${code}):`, res.data)
+			if (!res.data || !res.data.data || res.data.code != 0) {
 				throw new Error("Invalid response from handleShengSuanYunCallback()", {
-					cause: res,
+					cause: res.data.msg,
 				})
 			}
 			if (res.data.data.api_key) {
@@ -1159,7 +1158,7 @@ export class AuthService {
 			this.markWelcomeViewCompleted()
 			await this.sendAuthStatusUpdate()
 		} catch (error) {
-			Logger.error("[SdkAuthService] Error exchanging code for shengsuanyun API key:", error)
+			console.error("[SdkAuthService] Error exchanging code for shengsuanyun API key:", error)
 			throw error
 		}
 	}

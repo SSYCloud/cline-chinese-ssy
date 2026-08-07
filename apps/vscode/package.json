@@ -1,6 +1,6 @@
 {
 	"name": "cline-chinese",
-	"displayName": "Cline 中文版",
+	"displayName": "Cline Chinese",
 	"description": "Cline 的开源社区汉化版本",
 	"version": "4.1.3",
 	"icon": "assets/icons/icon.png",
@@ -16,7 +16,7 @@
 		"type": "git",
 		"url": "https://github.com/SSYCloud/cline-chinese"
 	},
-	"homepage": "https://cline-chinese.bot",
+	"homepage": "https://www.shengsuanyun.com",
 	"categories": [
 		"AI",
 		"Chat",
@@ -111,7 +111,7 @@
 			"activitybar": [
 				{
 					"id": "cline-chinese-ActivityBar",
-					"title": "Cline",
+					"title": "Cline Chinese",
 					"icon": "assets/icons/icon.svg"
 				}
 			]

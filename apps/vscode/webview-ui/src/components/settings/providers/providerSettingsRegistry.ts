@@ -29,6 +29,7 @@ const CUSTOM_PROVIDER_SETTINGS_IDS = new Set([
 	"qwen-code",
 	"requesty",
 	"sapaicore",
+	"shengsuanyun",
 	"vertex",
 	"vscode-lm",
 	"xai",

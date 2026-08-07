@@ -96,12 +96,14 @@ export class SharedUriHandler {
 					return false
 				}
 				case "/ssy":
-				case "shengsuanyun": {
+				case "/shengsuanyun": {
 					const code = query.get("code")
+					// console.log(`SharedUriHandler: ShengSuanYun callback received with code: ${code}`)
 					if (code) {
 						await visibleWebview?.controller.handleShengSuanYunCallback(code)
 						return true
 					}
+					Logger.warn("SharedUriHandler: Missing prompt parameter for task creation")
 					return false
 				}
 				case LG_TASK_URI_PATH: {

@@ -31,7 +31,7 @@ export const STEP_CONFIG = {
 	[NEW_USER_TYPE.FREE]: {
 		title: "绝对免费",
 		buttons: [
-			{ text: "使用 Cline 账号登录并使用此模型", action: "signup", variant: "default" },
+			{ text: "新用户登录并免费获取模力", action: "signin_ssy", variant: "default" },
 			{ text: "返回", action: "back", variant: "secondary" },
 		],
 	},

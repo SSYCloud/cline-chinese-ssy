@@ -672,6 +672,7 @@ const OnboardingViewContent = ({ onboardingModels }: { onboardingModels: Onboard
 					break
 				case "signin_ssy":
 					captureNavigation("signin_ssy_clicked")
+					setStepNumber(stepNumber + 1)
 					await loginToShengSuanYunAndFinishOnboarding()
 					break
 				case "back":

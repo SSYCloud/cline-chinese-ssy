@@ -182,7 +182,9 @@
 				"!!**/*.js",
 				"!!**/scripts/**",
 				"!!**/*.tsx",
-				"!!**/testing-platform/**"
+				"!!**/testing-platform/**",
+				"!!src/services/uri/SharedUriHandler.ts",
+				"!!src/sdk/auth-service.ts"
 			]
 		},
 		{
