@@ -1,5 +1,5 @@
 import { VSCodeButton, VSCodeLink } from "@vscode/webview-ui-toolkit/react"
-import ClineLogoPanda from "@/assets/ClineLogoPanda"
+import ClineLogoShengSuanYun from "@/assets/ClineLogoShengSuanYun"
 import { ClineAuthStatus } from "@/components/account/ClineAuthStatus"
 import { useClineSignIn } from "@/context/ClineAuthContext"
 import { useSignIn as useShengSuanYunSignIn } from "@/context/ShengSuanYunAuthContext"
@@ -10,7 +10,7 @@ export const AccountWelcomeView = () => {
 
 	return (
 		<div className="flex flex-col items-center gap-2.5">
-			<ClineLogoPanda className="size-16 mb-4" />
+			<ClineLogoShengSuanYun className="size-16 mb-4" />
 			<p>注册账户，即可使用最新模型、通过计费仪表板查看使用情况与额度，以及体验更多即将推出的功能。</p>
 
 			<VSCodeButton

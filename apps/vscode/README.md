@@ -8,6 +8,7 @@
 
 [GitHub 仓库](https://github.com/SSYCloud/cline-chinese) · [完整文档](https://hybridtalentcomputing.gitbook.io/cline-chinese-doc/) · [报告问题](https://github.com/SSYCloud/cline-chinese/issues)
 
+> 本项目为[Cline Chinese](https://github.com/SSYCloud/cline-chinese)同源灰度版本，在这里可以提前体验到Cline Chinese的新功能、新特性，Cline Chinese为正式稳定的公开版本。
 
 ---
 

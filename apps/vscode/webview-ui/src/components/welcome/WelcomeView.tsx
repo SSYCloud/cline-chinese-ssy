@@ -1,7 +1,7 @@
 import { BooleanRequest, EmptyRequest } from "@shared/proto/cline/common"
 import { VSCodeButton, VSCodeLink } from "@vscode/webview-ui-toolkit/react"
 import { memo, useEffect, useState } from "react"
-import ClineLogoPanda from "@/assets/ClineLogoPanda"
+import ClineLogoShengSuanYun from "@/assets/ClineLogoShengSuanYun"
 import ApiOptions from "@/components/settings/ApiOptions"
 import { useExtensionState } from "@/context/ExtensionStateContext"
 import { AccountServiceClient, StateServiceClient } from "@/services/grpc-client"
@@ -41,7 +41,7 @@ const WelcomeView = memo(() => {
 			<div className="h-full px-5 overflow-auto flex flex-col gap-2.5">
 				<h2 className="text-lg font-semibold">你好，我是 Cline</h2>
 				<div className="flex justify-center my-5">
-					<ClineLogoPanda className="size-16" />
+					<ClineLogoShengSuanYun className="size-16" />
 				</div>
 				<p>
 					得益于{" "}

@@ -4,7 +4,7 @@ import { EnterpriseBillRequest } from "@shared/proto/cline/account"
 import { EmptyRequest } from "@shared/proto/cline/common"
 import { VSCodeButton, VSCodeDivider, VSCodeLink } from "@vscode/webview-ui-toolkit/react"
 import { useEffect, useState } from "react"
-import ClineLogoPanda from "@/assets/ClineLogoPanda"
+import ClineLogoShengSuanYun from "@/assets/ClineLogoShengSuanYun"
 import { useExtensionState } from "@/context/ExtensionStateContext"
 import { AccountServiceClient } from "@/services/grpc-client"
 import VSCodeButtonLink from "../common/VSCodeButtonLink"
@@ -81,7 +81,7 @@ export const SSYAccountView = ({ mode = "personal" }: SSYAccountViewProps) => {
 	if (!userInfo) {
 		return (
 			<div className="flex flex-col items-center pr-3">
-				<ClineLogoPanda className="size-16 mb-4" />
+				<ClineLogoShengSuanYun className="size-16 mb-4" />
 				<p style={{}}>注册帐户访问最新模型，进群联系客服，获得100万Tokens免费额度，以及更多即将推出的功能。</p>
 				<VSCodeButton
 					className="w-full mb-4"

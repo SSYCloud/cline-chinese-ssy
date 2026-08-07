@@ -1139,7 +1139,7 @@ export class AuthService {
 	async handleShengSuanYunCallback(code: string) {
 		try {
 			const callbackUrl = `${await HostProvider.get().getCallbackUrl("/ssy")}`
-			const res = await axios.post("https://api.shengsuanyun.com/auth/keys?from=cline-chinese", {
+			const res = await axios.post("https://api.shengsuanyun.com/auth/keys?from=cline-shengsuan", {
 				code: code,
 				callback_url: callbackUrl,
 			})

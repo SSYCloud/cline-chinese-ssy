@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import ClineLogoPanda from "@/assets/ClineLogoPanda"
+import ClineLogoShengSuanYun from "@/assets/ClineLogoShengSuanYun"
 import {
 	Select,
 	SelectContent,
@@ -82,12 +82,9 @@ export const Interactive: StoryObj<StoryProps> = {
 		<div className="w-full h-full flex justify-center items-center overflow-hidden">
 			<div className="flex flex-col justify-center items-center h-[60%] w-[50%] overflow-hidden mt-50">
 				<div className="flex justify-center my-5">
-					<ClineLogoPanda className="size-16" />
+					<ClineLogoShengSuanYun className="size-16" />
 				</div>
-				<p>
-					You can customize the select using the controls in the "Controls" panel below to change its placeholder, size,
-					items, and styling options.
-				</p>
+				<p>您可以使用下方“Controls”（控件）面板中的控件来自定义选择框，从而更改其占位符、尺寸、选项及样式设置。</p>
 
 				<div className="mt-4.5">
 					<Select defaultValue={args.defaultValue} disabled={args.disabled}>

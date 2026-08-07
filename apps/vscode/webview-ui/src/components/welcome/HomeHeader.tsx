@@ -1,7 +1,4 @@
 import { EmptyRequest } from "@shared/proto/cline/common"
-import ClineLogoPanda from "@/assets/ClineLogoPanda"
-import ClineLogoSanta from "@/assets/ClineLogoSanta"
-import { useExtensionState } from "@/context/ExtensionStateContext"
 import { UiServiceClient } from "@/services/grpc-client"
 
 interface HomeHeaderProps {
@@ -9,8 +6,6 @@ interface HomeHeaderProps {
 }
 
 const HomeHeader = ({ shouldShowQuickWins = false }: HomeHeaderProps) => {
-	const { environment } = useExtensionState()
-
 	const handleTakeATour = async () => {
 		try {
 			await UiServiceClient.openWalkthrough(EmptyRequest.create())
@@ -18,16 +13,10 @@ const HomeHeader = ({ shouldShowQuickWins = false }: HomeHeaderProps) => {
 			console.error("Error opening walkthrough:", error)
 		}
 	}
-
-	const isDecember = new Date().getMonth() === 11 // 11 = December (0-indexed)
-	const LogoComponent = isDecember ? ClineLogoSanta : ClineLogoPanda
 	const headingText = "What can I do for you?"
 
 	return (
 		<div className="flex flex-col items-center mb-5">
-			<div className="my-7">
-				<LogoComponent className="size-20" environment={environment} />
-			</div>
 			<div className="text-center flex items-center justify-center px-4">
 				<h1 className="m-0 font-bold">{headingText}</h1>
 			</div>

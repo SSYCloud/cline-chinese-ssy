@@ -1,6 +1,6 @@
 {
-	"name": "cline-chinese",
-	"displayName": "Cline Chinese",
+	"name": "cline-shengsuan",
+	"displayName": "Cline 中文版",
 	"description": "Cline 的开源社区汉化版本",
 	"version": "4.1.3",
 	"icon": "assets/icons/icon.png",
@@ -8,13 +8,13 @@
 		"vscode": "^1.101.0"
 	},
 	"author": {
-		"name": "HybridTalentComputing"
+		"name": "shengsuan-cloud"
 	},
 	"license": "Apache-2.0",
-	"publisher": "HybridTalentComputing",
+	"publisher": "shengsuan-cloud",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/SSYCloud/cline-chinese"
+		"url": "https://github.com/SSYCloud/cline-shengsuan-ssy"
 	},
 	"homepage": "https://www.shengsuanyun.com",
 	"categories": [
@@ -26,7 +26,85 @@
 		"Testing"
 	],
 	"keywords": [
-		"cline",
+		"OpenAI",
+		"GPT",
+		"ChatGPT",
+		"GPT-5",
+		"GPT-4O",
+		"Anthropic",
+		"Claude",
+		"Claude 3.7 Sonnet",
+		"Claude Sonnet 4",
+		"Claude Opus 4",
+		"Claude Opus 4.1",
+		"Google DeepMind",
+		"Google",
+		"Gemini",
+		"Gemini 2.5pro",
+		"Meta AI",
+		"LLaMA",
+		"Mistral",
+		"Mixtral",
+		"Cohere",
+		"Command R",
+		"克劳德",
+		"xAI",
+		"Grok",
+		"百度",
+		"阿里巴巴",
+		"通义千问",
+		"Qwen",
+		"Qwen3",
+		"Doubao",
+		"baidu",
+		"智谱",
+		"GLM",
+		"Meta.AI",
+		"minimax",
+		"字节跳动",
+		"byteDance",
+		"bigmodel",
+		"GLM-4.5",
+		"Kimi",
+		"deepseek-R1",
+		"deepseek-v3",
+		"上下文",
+		"Vibe Coding",
+		"JetBrains",
+		"OpenRouter",
+		"通义灵码",
+		"IDE",
+		"Lingma",
+		"Copilot",
+		"Cursor",
+		"AI",
+		"Java",
+		"Python",
+		"代码聊天",
+		"代码助手",
+		"补全",
+		"amazon",
+		"Github",
+		"C",
+		"代码调试",
+		"代码补全",
+		"代码生成",
+		"Vibe Coding",
+		"Debug",
+		"Claude Coder",
+		"HuggingFace",
+		"MCP",
+		"API",
+		"key",
+		"trae",
+		"CodeBuddy",
+		"文心快码",
+		"LLM",
+		"AI编程",
+		"大模型",
+		"代码自动化",
+		"开发",
+		"prompt",
 		"claude",
 		"dev",
 		"mcp",
@@ -37,7 +115,9 @@
 		"chatgpt",
 		"sonnet",
 		"ai",
-		"llama"
+		"llama",
+		"shengsuanyun",
+		"shengsuanyun-router"
 	],
 	"activationEvents": [
 		"onLanguage",
@@ -110,17 +190,17 @@
 		"viewsContainers": {
 			"activitybar": [
 				{
-					"id": "cline-chinese-ActivityBar",
-					"title": "Cline Chinese",
+					"id": "cline-shengsuan-ActivityBar",
+					"title": "Cline 中文版",
 					"icon": "assets/icons/icon.svg"
 				}
 			]
 		},
 		"views": {
-			"cline-chinese-ActivityBar": [
+			"cline-shengsuan-ActivityBar": [
 				{
 					"type": "webview",
-					"id": "cline-chinese.SidebarProvider",
+					"id": "cline-shengsuan.SidebarProvider",
 					"name": "",
 					"icon": "assets/icons/icon.svg"
 				}
@@ -128,111 +208,111 @@
 		},
 		"commands": [
 			{
-				"command": "cline-chinese.plusButtonClicked",
+				"command": "cline-shengsuan.plusButtonClicked",
 				"title": "新建任务",
 				"icon": "$(add)"
 			},
 			{
-				"command": "cline-chinese.mcpButtonClicked",
+				"command": "cline-shengsuan.mcpButtonClicked",
 				"title": "MCP 服务器",
 				"icon": "$(server)"
 			},
 			{
-				"command": "cline-chinese.marketplaceButtonClicked",
+				"command": "cline-shengsuan.marketplaceButtonClicked",
 				"title": "自定义",
 				"icon": "$(wrench)"
 			},
 			{
-				"command": "cline-chinese.historyButtonClicked",
+				"command": "cline-shengsuan.historyButtonClicked",
 				"title": "历史记录",
 				"icon": "$(history)"
 			},
 			{
-				"command": "cline-chinese.accountButtonClicked",
+				"command": "cline-shengsuan.accountButtonClicked",
 				"title": "账户",
 				"icon": "$(account)"
 			},
 			{
-				"command": "cline-chinese.settingsButtonClicked",
+				"command": "cline-shengsuan.settingsButtonClicked",
 				"title": "设置",
 				"icon": "$(settings-gear)"
 			},
 			{
-				"command": "cline-chinese.dev.createTestTasks",
+				"command": "cline-shengsuan.dev.createTestTasks",
 				"title": "创建测试任务",
 				"category": "Cline",
-				"when": "cline-chinese.isDevMode"
+				"when": "cline-shengsuan.isDevMode"
 			},
 			{
-				"command": "cline-chinese.dev.expireMcpOAuthTokens",
+				"command": "cline-shengsuan.dev.expireMcpOAuthTokens",
 				"title": "过期 MCP OAuth 令牌（用于测试）",
 				"category": "Cline",
-				"when": "cline-chinese.isDevMode"
+				"when": "cline-shengsuan.isDevMode"
 			},
 			{
-				"command": "cline-chinese.addToChat",
+				"command": "cline-shengsuan.addToChat",
 				"title": "添加到 Cline",
 				"category": "Cline"
 			},
 			{
-				"command": "cline-chinese.addTerminalOutputToChat",
+				"command": "cline-shengsuan.addTerminalOutputToChat",
 				"title": "添加到 Cline",
 				"category": "Cline"
 			},
 			{
-				"command": "cline-chinese.focusChatInput",
+				"command": "cline-shengsuan.focusChatInput",
 				"title": "跳转到聊天输入",
 				"category": "Cline"
 			},
 			{
-				"command": "cline-chinese.generateGitCommitMessage",
+				"command": "cline-shengsuan.generateGitCommitMessage",
 				"title": "使用 Cline 生成提交信息",
 				"category": "Cline",
 				"icon": "$(cline-icon)"
 			},
 			{
-				"command": "cline-chinese.abortGitCommitMessage",
+				"command": "cline-shengsuan.abortGitCommitMessage",
 				"title": "使用 Cline 生成提交信息 - 停止",
 				"category": "Cline",
 				"icon": "$(debug-stop)"
 			},
 			{
-				"command": "cline-chinese.explainCode",
+				"command": "cline-shengsuan.explainCode",
 				"title": "使用 Cline 解释代码",
 				"category": "Cline"
 			},
 			{
-				"command": "cline-chinese.improveCode",
+				"command": "cline-shengsuan.improveCode",
 				"title": "使用 Cline 改进代码",
 				"category": "Cline"
 			},
 			{
-				"command": "cline-chinese.jupyterGenerateCell",
+				"command": "cline-shengsuan.jupyterGenerateCell",
 				"title": "使用 Cline 生成 Jupyter 单元格",
 				"category": "Cline",
 				"icon": "$(sparkle)"
 			},
 			{
-				"command": "cline-chinese.jupyterExplainCell",
+				"command": "cline-shengsuan.jupyterExplainCell",
 				"title": "使用 Cline 解释 Jupyter 单元格",
 				"category": "Cline",
 				"icon": "$(question)"
 			},
 			{
-				"command": "cline-chinese.jupyterImproveCell",
+				"command": "cline-shengsuan.jupyterImproveCell",
 				"title": "使用 Cline 改进 Jupyter 单元格",
 				"category": "Cline",
 				"icon": "$(lightbulb)"
 			},
 			{
-				"command": "cline-chinese.openWalkthrough",
+				"command": "cline-shengsuan.openWalkthrough",
 				"title": "打开入门教程",
 				"category": "Cline"
 			}
 		],
 		"keybindings": [
 			{
-				"command": "cline-chinese.addToChat",
+				"command": "cline-shengsuan.addToChat",
 				"key": "cmd+'",
 				"mac": "cmd+'",
 				"win": "ctrl+'",
@@ -240,11 +320,11 @@
 				"when": "editorHasSelection"
 			},
 			{
-				"command": "cline-chinese.generateGitCommitMessage",
+				"command": "cline-shengsuan.generateGitCommitMessage",
 				"when": "config.git.enabled && scmProvider == git"
 			},
 			{
-				"command": "cline-chinese.focusChatInput",
+				"command": "cline-shengsuan.focusChatInput",
 				"key": "cmd+'",
 				"mac": "cmd+'",
 				"win": "ctrl+'",
@@ -255,83 +335,83 @@
 		"menus": {
 			"view/title": [
 				{
-					"command": "cline-chinese.plusButtonClicked",
+					"command": "cline-shengsuan.plusButtonClicked",
 					"group": "navigation@1",
-					"when": "view == cline-chinese.SidebarProvider"
+					"when": "view == cline-shengsuan.SidebarProvider"
 				},
 				{
-					"command": "cline-chinese.marketplaceButtonClicked",
+					"command": "cline-shengsuan.marketplaceButtonClicked",
 					"group": "navigation@2",
-					"when": "view == cline-chinese.SidebarProvider"
+					"when": "view == cline-shengsuan.SidebarProvider"
 				},
 				{
-					"command": "cline-chinese.historyButtonClicked",
+					"command": "cline-shengsuan.historyButtonClicked",
 					"group": "navigation@3",
-					"when": "view == cline-chinese.SidebarProvider"
+					"when": "view == cline-shengsuan.SidebarProvider"
 				},
 				{
-					"command": "cline-chinese.accountButtonClicked",
+					"command": "cline-shengsuan.accountButtonClicked",
 					"group": "navigation@5",
-					"when": "view == cline-chinese.SidebarProvider"
+					"when": "view == cline-shengsuan.SidebarProvider"
 				},
 				{
-					"command": "cline-chinese.settingsButtonClicked",
+					"command": "cline-shengsuan.settingsButtonClicked",
 					"group": "navigation@6",
-					"when": "view == cline-chinese.SidebarProvider"
+					"when": "view == cline-shengsuan.SidebarProvider"
 				}
 			],
 			"editor/context": [
 				{
-					"command": "cline-chinese.addToChat",
+					"command": "cline-shengsuan.addToChat",
 					"group": "navigation",
 					"when": "editorHasSelection"
 				}
 			],
 			"terminal/context": [
 				{
-					"command": "cline-chinese.addTerminalOutputToChat",
+					"command": "cline-shengsuan.addTerminalOutputToChat",
 					"group": "navigation"
 				}
 			],
 			"scm/title": [
 				{
-					"command": "cline-chinese.generateGitCommitMessage",
+					"command": "cline-shengsuan.generateGitCommitMessage",
 					"group": "navigation",
-					"when": "config.git.enabled && scmProvider == git && !cline-chinese.isGeneratingCommit"
+					"when": "config.git.enabled && scmProvider == git && !cline-shengsuan.isGeneratingCommit"
 				},
 				{
-					"command": "cline-chinese.abortGitCommitMessage",
+					"command": "cline-shengsuan.abortGitCommitMessage",
 					"group": "navigation",
-					"when": "config.git.enabled && scmProvider == git && cline-chinese.isGeneratingCommit"
+					"when": "config.git.enabled && scmProvider == git && cline-shengsuan.isGeneratingCommit"
 				}
 			],
 			"notebook/toolbar": [
 				{
-					"command": "cline-chinese.jupyterGenerateCell",
+					"command": "cline-shengsuan.jupyterGenerateCell",
 					"group": "navigation/add@1",
 					"when": "notebookType == 'jupyter-notebook'"
 				}
 			],
 			"notebook/cell/title": [
 				{
-					"command": "cline-chinese.jupyterExplainCell",
+					"command": "cline-shengsuan.jupyterExplainCell",
 					"group": "inline@1",
 					"when": "notebookType == 'jupyter-notebook'"
 				},
 				{
-					"command": "cline-chinese.jupyterImproveCell",
+					"command": "cline-shengsuan.jupyterImproveCell",
 					"group": "inline@2",
 					"when": "notebookType == 'jupyter-notebook'"
 				}
 			],
 			"commandPalette": [
 				{
-					"command": "cline-chinese.generateGitCommitMessage",
-					"when": "config.git.enabled && !cline-chinese.isGeneratingCommit"
+					"command": "cline-shengsuan.generateGitCommitMessage",
+					"when": "config.git.enabled && !cline-shengsuan.isGeneratingCommit"
 				},
 				{
-					"command": "cline-chinese.abortGitCommitMessage",
-					"when": "config.git.enabled && cline-chinese.isGeneratingCommit"
+					"command": "cline-shengsuan.abortGitCommitMessage",
+					"when": "config.git.enabled && cline-shengsuan.isGeneratingCommit"
 				}
 			]
 		},
