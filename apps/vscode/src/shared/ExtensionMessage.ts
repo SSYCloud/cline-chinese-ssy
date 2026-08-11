@@ -9,6 +9,7 @@ import { BrowserSettings } from "./BrowserSettings"
 import { ClineFeatureSetting } from "./ClineFeatureSetting"
 import { BannerCardData } from "./cline/banner"
 import { ClineRulesToggles } from "./cline-rules"
+import { FocusChainSettings } from "./FocusChainSettings"
 import { HistoryItem } from "./HistoryItem"
 import { McpDisplayMode } from "./McpDisplayMode"
 import { ClineMessageModelInfo } from "./messages"
@@ -120,6 +121,7 @@ export interface ExtensionState {
 	compactionStrategy?: string
 	subagentsEnabled?: boolean
 	worktreesEnabled?: ClineFeatureSetting
+	focusChainSettings?: FocusChainSettings
 	favoritedModelIds: string[]
 	// NEW: Add workspace information
 	workspaceRoots: WorkspaceRoot[]

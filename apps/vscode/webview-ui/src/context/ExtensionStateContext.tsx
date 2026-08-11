@@ -302,6 +302,7 @@ export const ExtensionStateContextProvider: React.FC<{
 		useAutoCondense: true,
 		compactionStrategy: "basic",
 		subagentsEnabled: false,
+		focusChainSettings: { enabled: true, remindClineInterval: 6 },
 		worktreesEnabled: { user: true, featureFlag: false },
 		favoritedModelIds: [],
 		lastDismissedInfoBannerVersion: 0,

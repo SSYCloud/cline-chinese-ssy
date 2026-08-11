@@ -155,6 +155,14 @@ export async function updateSettings(controller: Controller, request: UpdateSett
 			}
 		}
 
+		// Update focus chain settings
+		if (request.focusChainSettings !== undefined) {
+			controller.stateManager.setGlobalState("focusChainSettings", {
+				enabled: request.focusChainSettings.enabled,
+				remindClineInterval: request.focusChainSettings.remindClineInterval,
+			})
+		}
+
 		// Update auto-condense setting
 		if (request.useAutoCondense !== undefined) {
 			if (controller.task) {

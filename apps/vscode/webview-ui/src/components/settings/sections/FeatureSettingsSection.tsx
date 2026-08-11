@@ -1,11 +1,12 @@
 import { UpdateSettingsRequest } from "@shared/proto/cline/state"
-import { memo, type ReactNode } from "react"
+import { memo, type ReactNode, useCallback } from "react"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { useExtensionState } from "@/context/ExtensionStateContext"
 import Section from "../Section"
+import SettingsSlider from "../SettingsSlider"
 import { updateSetting } from "../utils/settingsHandlers"
 
 // Reusable checkbox component for feature settings
@@ -30,6 +31,13 @@ interface FeatureToggle {
 }
 
 const agentFeatures: FeatureToggle[] = [
+	{
+		id: "enable-subagent",
+		label: "子代理",
+		description: "让 Cline 并行运行专注型的子代理，为您探索代码库。",
+		stateKey: "subagentsEnabled",
+		settingKey: "subagentsEnabled",
+	},
 	{
 		id: "auto-compact",
 		label: "自动压缩",
@@ -147,7 +155,22 @@ const FeatureSettingsSection = ({ renderSectionHeader }: FeatureSettingsSectionP
 		worktreesEnabled,
 		backgroundEditEnabled,
 		showFeatureTips,
+		focusChainSettings,
 	} = useExtensionState()
+
+	const handleFocusChainEnabledChange = useCallback(
+		(checked: boolean) => {
+			updateSetting("focusChainSettings", { ...focusChainSettings, enabled: checked })
+		},
+		[focusChainSettings],
+	)
+
+	const handleFocusChainIntervalChange = useCallback(
+		(value: number) => {
+			updateSetting("focusChainSettings", { ...focusChainSettings, remindClineInterval: value })
+		},
+		[focusChainSettings],
+	)
 
 	// State lookup for mapped features
 	const featureState: Record<string, boolean | undefined> = {
@@ -201,6 +224,25 @@ const FeatureSettingsSection = ({ renderSectionHeader }: FeatureSettingsSectionP
 										<SelectItem value="agentic">智能体</SelectItem>
 									</SelectContent>
 								</Select>
+							</div>
+							<div className="space-y-2 py-3">
+								<FeatureRow
+									checked={focusChainSettings?.enabled}
+									description="让 Cline 在长任务中定期回顾待办清单，保持专注。"
+									label="任务焦点提醒"
+									onChange={handleFocusChainEnabledChange}
+								/>
+								{focusChainSettings?.enabled && (
+									<SettingsSlider
+										label="提醒间隔（1-10）"
+										max={10}
+										min={1}
+										onChange={handleFocusChainIntervalChange}
+										step={1}
+										value={focusChainSettings?.remindClineInterval || 6}
+										valueWidth="w-6"
+									/>
+								)}
 							</div>
 						</div>
 					</div>
