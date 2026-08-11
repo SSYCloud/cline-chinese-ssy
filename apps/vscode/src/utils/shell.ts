@@ -100,7 +100,7 @@ function isWindows(): boolean {
 }
 
 /** The path module matching the host platform's separators and semantics. */
-function hostPath(): nodePath.PlatformPath {
+function hostPath(): typeof nodePath {
 	return isWindows() ? nodePath.win32 : nodePath.posix
 }
 

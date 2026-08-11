@@ -2,7 +2,7 @@
 	"name": "cline-shengsuan",
 	"displayName": "Cline 中文版",
 	"description": "Cline 的开源社区汉化版本",
-	"version": "4.1.3",
+	"version": "4.1.7",
 	"icon": "assets/icons/icon.png",
 	"engines": {
 		"vscode": "^1.101.0"

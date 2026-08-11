@@ -15,7 +15,7 @@
     "scripts": {
         "prepare": "husky",
         "build": "bun run clean && bun install && bun run build:sdk && bun -F @cline/cli build",
-        "package": "bun run build && bun -F cline-chinese vsix",
+        "package": "bun run build && bun -F cline-shengsuan vsix",
         "build:sdk": "bun --production -F './sdk/packages/*' build",
         "build:apps": "bun -F './apps/**' --production build",
         "build:models": "bun -F @cline/llms generate:models && bun format --write",

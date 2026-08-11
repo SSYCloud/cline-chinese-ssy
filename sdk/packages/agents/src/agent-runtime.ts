@@ -1142,6 +1142,28 @@ export class AgentRuntime {
 					}
 					break;
 				}
+				case "file": {
+					// Model-generated file output. Preserved into the assistant
+					// message so a file-only turn is not treated as empty:
+					// images become image parts (the shape providers accept on
+					// resend); other media becomes a file part carrying the
+					// base64 payload.
+					sequence.push({
+						type: "part",
+						part: event.mediaType.startsWith("image/")
+							? {
+									type: "image",
+									image: event.data,
+									mediaType: event.mediaType,
+								}
+							: {
+									type: "file",
+									path: `model-generated-file-${sequence.length + 1}`,
+									content: event.data,
+								},
+					});
+					break;
+				}
 				case "usage": {
 					await this.updateUsage(event.usage);
 					break;
@@ -1827,7 +1849,11 @@ export class AgentRuntime {
 						error: event.error,
 						severity: "error",
 						handled: false,
-						context: metadata as TelemetryProperties,
+						context: {
+							...(metadata as TelemetryProperties),
+							providerId: this.getTelemetryProviderId(),
+							modelId: this.getTelemetryModelId(),
+						},
 					});
 				}
 				break;

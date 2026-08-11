@@ -1,6 +1,6 @@
 import { metrics } from "@opentelemetry/api"
 import { logs } from "@opentelemetry/api-logs"
-import { Resource } from "@opentelemetry/resources"
+import { type Resource, resourceFromAttributes } from "@opentelemetry/resources"
 import { BatchLogRecordProcessor, LoggerProvider } from "@opentelemetry/sdk-logs"
 import { MeterProvider } from "@opentelemetry/sdk-metrics"
 import { ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION } from "@opentelemetry/semantic-conventions"
@@ -56,8 +56,8 @@ export class OpenTelemetryClientProvider {
 		}
 
 		// Create resource with service information
-		const resource = new Resource({
-			[ATTR_SERVICE_NAME]: "cline",
+		const resource = resourceFromAttributes({
+			[ATTR_SERVICE_NAME]: "cline-shengsuan",
 			[ATTR_SERVICE_VERSION]: ExtensionRegistryInfo.version,
 		})
 
@@ -134,7 +134,7 @@ export class OpenTelemetryClientProvider {
 
 	private createLoggerProvider(resource: Resource): LoggerProvider {
 		const exporters = this.config!.logsExporter!.split(",").map((type) => type.trim())
-		const loggerProvider = new LoggerProvider({ resource })
+		const processors: BatchLogRecordProcessor[] = []
 
 		Logger.log(`[OTEL] Creating LoggerProvider with exporters: ${exporters.join(", ")}`)
 
@@ -174,7 +174,7 @@ export class OpenTelemetryClientProvider {
 						scheduledDelayMillis: this.config!.logBatchTimeout || 5000,
 					}
 
-					loggerProvider.addLogRecordProcessor(new BatchLogRecordProcessor(exporter, batchConfig))
+					processors.push(new BatchLogRecordProcessor(exporter, batchConfig))
 
 					Logger.log(
 						`[OTEL] Log batch processor configured: maxQueue=${batchConfig.maxQueueSize}, batchSize=${batchConfig.maxExportBatchSize}, timeout=${batchConfig.scheduledDelayMillis}ms`,
@@ -184,6 +184,8 @@ export class OpenTelemetryClientProvider {
 				Logger.error(`[OTEL] Failed to create logs exporter '${exporterType}':`, error)
 			}
 		}
+
+		const loggerProvider = new LoggerProvider({ resource, processors })
 
 		// Set as global logger provider
 		logs.setGlobalLoggerProvider(loggerProvider)

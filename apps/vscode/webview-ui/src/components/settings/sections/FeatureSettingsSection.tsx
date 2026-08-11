@@ -70,16 +70,6 @@ const editorFeatures: FeatureToggle[] = [
 	},
 ]
 
-const experimentalFeatures: FeatureToggle[] = [
-	{
-		id: "yolo",
-		label: "Yolo 模式",
-		description: "无需用户确认即可执行任务。会自动从 Plan 切换到 Act 模式，并禁用提问工具。请极度谨慎使用。",
-		stateKey: "yoloModeToggled",
-		settingKey: "yoloModeToggled",
-	},
-]
-
 const advancedFeatures: FeatureToggle[] = [
 	{
 		id: "hooks",
@@ -151,17 +141,13 @@ const FeatureSettingsSection = ({ renderSectionHeader }: FeatureSettingsSectionP
 		enableCheckpointsSetting,
 		hooksEnabled,
 		mcpDisplayMode,
-		yoloModeToggled,
 		useAutoCondense,
 		compactionStrategy,
 		subagentsEnabled,
 		worktreesEnabled,
-		remoteConfigSettings,
 		backgroundEditEnabled,
 		showFeatureTips,
 	} = useExtensionState()
-
-	const isYoloRemoteLocked = remoteConfigSettings?.yoloModeToggled !== undefined
 
 	// State lookup for mapped features
 	const featureState: Record<string, boolean | undefined> = {
@@ -172,7 +158,6 @@ const FeatureSettingsSection = ({ renderSectionHeader }: FeatureSettingsSectionP
 		subagentsEnabled,
 		worktreesEnabled: worktreesEnabled?.user,
 		backgroundEditEnabled,
-		yoloModeToggled: isYoloRemoteLocked ? remoteConfigSettings?.yoloModeToggled : yoloModeToggled,
 	}
 
 	// Visibility lookup for features with feature flags
@@ -234,28 +219,6 @@ const FeatureSettingsSection = ({ renderSectionHeader }: FeatureSettingsSectionP
 									key={feature.id}
 									label={feature.label}
 									onChange={(checked) => updateSetting(feature.settingKey, checked)}
-								/>
-							))}
-						</div>
-					</div>
-
-					{/* Experimental features */}
-					<div>
-						<div className="text-xs font-medium uppercase tracking-wider mb-3 text-warning/80">实验性</div>
-						<div
-							className="relative p-3 pt-0 my-3 rounded-md border border-editor-widget-border/50 w-full"
-							id="experimental-features">
-							{experimentalFeatures.map((feature) => (
-								<FeatureRow
-									checked={featureState[feature.stateKey]}
-									description={feature.description}
-									disabled={feature.id === "yolo" && isYoloRemoteLocked}
-									isRemoteLocked={feature.id === "yolo" && isYoloRemoteLocked}
-									isVisible={featureVisibility[feature.stateKey] ?? true}
-									key={feature.id}
-									label={feature.label}
-									onChange={(checked) => updateSetting(feature.settingKey, checked)}
-									remoteTooltip="此设置由你所在组织的远程配置管理"
 								/>
 							))}
 						</div>

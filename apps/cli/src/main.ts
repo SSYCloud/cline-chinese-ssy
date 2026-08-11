@@ -505,6 +505,24 @@ export async function runCli(): Promise<void> {
 				io,
 			});
 		});
+	const mcpUninstallCmd = mcpCmd
+		.command("uninstall")
+		.alias("remove")
+		.alias("rm")
+		.description("Uninstall an MCP server by name")
+		.argument("<name>", "MCP server name")
+		.option("--json", "Output as JSON")
+		.action(async (name: string) => {
+			const opts = mcpUninstallCmd.opts<{
+				json?: boolean;
+			}>();
+			const { runMcpUninstallCommand } = await import("./commands/mcp");
+			ctx.exitCode = await runMcpUninstallCommand({
+				name,
+				json: opts.json === true || program.opts().json === true,
+				io,
+			});
+		});
 
 	const createDoctorRuntimeCommand = async () => {
 		const { createDoctorCommand } = await import("./commands/doctor");
@@ -798,7 +816,10 @@ export async function runCli(): Promise<void> {
 	// Enters the Agent Client Protocol stdio transport and never falls through.
 	if (args.acpMode) {
 		const { runAcpMode } = await import("./acp/index");
-		await runAcpMode();
+		// Only an explicit `--auto-approve true` (or `--yolo`) enables
+		// auto-approval in ACP mode; We do not respect the default to
+		// avoid accidental auto-approval in ACP mode.
+		await runAcpMode({ autoApproveTools: args.autoApproveOverride === true });
 		return;
 	}
 

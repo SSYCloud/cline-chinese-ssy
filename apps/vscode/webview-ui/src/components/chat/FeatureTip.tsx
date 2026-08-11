@@ -8,10 +8,7 @@ interface FeatureTipItem {
 
 const FEATURE_TIPS: FeatureTipItem[] = [
 	{
-		text: "在设置中启用“双重检查完成”，让 Cline 在完成任务前验证其工作。",
-	},
-	{
-		text: "在项目根目录添加 .clinerules 文件，为 Cline 提供项目特定的指令。",
+		text: "在项目根目录下添加一个 `.clinerules` 文件，以便向 Cline 提供针对该项目的指令。",
 	},
 	{
 		text: "切换到计划模式，在 Cline 采取行动之前讨论并规划方案。",

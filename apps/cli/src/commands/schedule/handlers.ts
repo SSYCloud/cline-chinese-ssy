@@ -1,4 +1,3 @@
-import { CLINE_DEFAULT_MODEL_ID } from "@cline/shared";
 import type { Command } from "commander";
 import { ensureSchedulerHub } from "./client";
 import {
@@ -19,6 +18,7 @@ import {
 	registerScheduleImportCommand,
 	registerScheduleUpdateCommand,
 } from "./import-export";
+import { resolveScheduleModelSelection } from "./model-selection";
 import type { CommandIo, ScheduleActionWrapper } from "./types";
 
 export function registerScheduleCommands(
@@ -66,11 +66,11 @@ export function registerScheduleCommands(
 		.option("--max-parallel <n>", "最大并行执行数", "1")
 		.option("--metadata-json <json>", "元数据（JSON 对象）")
 		.option("--mode <act|plan|yolo>", "执行模式", "yolo")
-		.option("--model <model>", "使用的模型", CLINE_DEFAULT_MODEL_ID)
-		.option("--provider <id>", "提供方 ID", "cline")
-		.option("--system-prompt <text>", "系统提示覆盖")
+		.option("--model <model>", "使用的模型")
+		.option("--provider <id>", "提供方 ID")
+		.option("--system-prompt <text>", "系统提示词覆盖")
 		.option("--tags <list>", "逗号分隔的标签")
-		.option("--timeout <seconds>", "超时秒数");
+		.option("--timeout <seconds>", "超时时间（秒）");
 	addDeliveryOptions(createCmd);
 	addAutonomousOptions(createCmd);
 	addSharedOptions(createCmd);
@@ -92,12 +92,16 @@ export function registerScheduleCommands(
 					parseJsonObjectFlag(opts.metadataJson),
 					opts,
 				);
+				const modelSelection = resolveScheduleModelSelection({
+					provider: opts.provider,
+					model: opts.model,
+				});
 				const created = await client.createSchedule({
 					name,
 					cronPattern: opts.cron,
 					prompt: opts.prompt,
-					provider: opts.provider,
-					model: opts.model,
+					provider: modelSelection.provider,
+					model: modelSelection.model,
 					mode: parseMode(opts.mode) ?? "yolo",
 					workspaceRoot: opts.workspace,
 					cwd: opts.cwd,
