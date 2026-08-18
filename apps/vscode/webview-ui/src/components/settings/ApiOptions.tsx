@@ -140,7 +140,15 @@ const ApiOptions = ({
 		if (remoteProviders.length > 0) {
 			providers = providers.filter((option) => remoteProviders.includes(option.value))
 		}
-
+		providers.sort((a, b) => {
+			if (a.value === "shengsuanyun") {
+				return -1
+			}
+			if (b.value === "shengsuanyun") {
+				return 1
+			}
+			return 0
+		})
 		return providers
 	}, [catalogProviderListings, remoteConfigSettings])
 

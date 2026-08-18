@@ -58,6 +58,10 @@ const GENERIC_PROVIDER_PRESENTATION_OVERRIDES: Record<string, GenericProviderPre
 	},
 	gemini: {
 		signupUrl: "https://aistudio.google.com/apikey",
+		baseUrlField: {
+			label: "Use custom base URL",
+			placeholder: "Default: https://generativelanguage.googleapis.com",
+		},
 	},
 	huggingface: {
 		signupUrl: "https://huggingface.co/settings/tokens",

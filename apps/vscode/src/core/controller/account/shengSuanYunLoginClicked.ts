@@ -7,7 +7,7 @@ import { Controller } from ".."
 export async function shengSuanYunLoginClicked(_controller: Controller, _: EmptyRequest): Promise<String> {
 	const baseUrl = await HostProvider.get().getCallbackUrl("/ssy")
 	const callbackUrl = `${baseUrl}`
-	const authUrl = new URL("https://router.shengsuanyun.com/auth?from=cline-chinese")
+	const authUrl = new URL("https://router.shengsuanyun.com/auth?from=cline-shengsuan")
 	authUrl.searchParams.set("callback_url", decodeURIComponent(callbackUrl))
 	const authUrlString = authUrl.toString()
 	Logger.error("ShengSuanYun login clicked, opening auth URL:", authUrlString)

@@ -1,8 +1,8 @@
 {
 	"name": "cline-shengsuan",
 	"displayName": "Cline 中文版",
-	"description": "Cline 的开源社区汉化版本",
-	"version": "4.1.7",
+	"description": "集成在您的 IDE 中的自主编码代理，Cline 中文增强版。",
+	"version": "4.1.10",
 	"icon": "assets/icons/icon.png",
 	"engines": {
 		"vscode": "^1.101.0"
