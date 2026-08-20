@@ -12,63 +12,54 @@ export async function refreshShengSuanYunModels(
 	controller: Controller,
 	_request: EmptyRequest,
 ): Promise<ShengSuanYunCompatibleModelInfo> {
-	const shengSuanYunModelsFilePath = path.join(await ensureCacheDirectoryExists(controller), GlobalFileNames.shengSuanYunModels)
-	let models: Record<string, Partial<ShengSuanYunModelInfo>> = {}
+	let typedModels: Record<string, ShengSuanYunModelInfo> = {}
+
 	try {
-		const response = await axios.get("https://router.shengsuanyun.com/api/v1/models/")
-		if (response.data?.data && Array.isArray(response.data?.data)) {
-			const rawModels = response.data.data
-			const parsePrice = (price: any) => {
-				if (price) {
-					return Number.parseInt(price, 10) / 10000
-				}
-				return undefined
-			}
-			for (const model of rawModels) {
-				if (!Array.isArray(model.support_apis) || !model.support_apis.includes("/v1/messages")) {
-					continue
-				}
-				const modelInfo: Partial<ShengSuanYunModelInfo> = {
-					maxTokens: model.max_tokens || undefined,
-					contextWindow: model.context_window,
-					supportsImages: model.architecture?.input?.toLowerCase().includes("image"),
-					supportsPromptCache: model.supports_prompt_cache,
-					inputPrice: parsePrice(model.pricing?.prompt),
-					outputPrice: parsePrice(model.pricing?.completion),
-					description: model.description,
-					cacheWritesPrice: 0,
-					cacheReadsPrice: parsePrice(model.pricing?.cache),
-					endPoints: model.support_apis || [],
-				}
-				models[model.api_name] = modelInfo
-			}
-		} else {
-			Logger.error("Invalid response from ShengSuanYun API")
+		const baseUrl = "https://router.shengsuanyun.com/api/v1"
+		const [res, rate] = await Promise.all([
+			axios.get(`${baseUrl}/models/`, { timeout: 30000 }),
+			axios.get(`${baseUrl}/base/rate`, { timeout: 30000 }),
+		])
+		const rawModels = res.data?.data
+		const usdRate = rate.data?.data
+
+		if (!Array.isArray(rawModels) || typeof usdRate !== "number" || usdRate <= 0) {
+			throw new Error("Invalid response format or invalid rate from ShengSuanYun API")
 		}
-		await fs.writeFile(shengSuanYunModelsFilePath, JSON.stringify(models))
-		Logger.log("ShengSuanYun models fetched and saved", models)
+
+		for (const model of rawModels) {
+			if (!Array.isArray(model.support_apis) || !model.support_apis.includes("/v1/messages")) {
+				continue
+			}
+			const inputArch = model.architecture?.input
+			const supportsImages = typeof inputArch === "string" ? inputArch.toLowerCase().includes("image") : false
+			const parsePrice = (price: unknown) => (Number(price) || 0) * usdRate
+			typedModels[model.api_name] = {
+				maxTokens: model.max_tokens ?? 0,
+				contextWindow: model.context_window ?? 0,
+				supportsImages,
+				supportsPromptCache: Boolean(model.supports_prompt_cache),
+				inputPrice: parsePrice(model.pricing?.prompt),
+				outputPrice: parsePrice(model.pricing?.completion),
+				cacheWritesPrice: 0,
+				cacheReadsPrice: parsePrice(model.pricing?.cache),
+				description: model.description ?? "",
+				endPoints: model.support_apis || [],
+			}
+		}
+		const shengSuanYunModelsFilePath = path.join(
+			await ensureCacheDirectoryExists(controller),
+			GlobalFileNames.shengSuanYunModels,
+		)
+		await fs.writeFile(shengSuanYunModelsFilePath, JSON.stringify(typedModels, null, 2))
+		Logger.log("ShengSuanYun models fetched and saved", typedModels)
 	} catch (error) {
-		Logger.error("Error fetching ShengSuanYun models:", error)
-		// If we failed to fetch models, try to read cached models
+		Logger.error("Error fetching ShengSuanYun models, attempting to fallback to cache:", error)
 		const cachedModels = await readShengSuanYunModels(controller)
 		if (cachedModels) {
-			models = cachedModels
-		}
-	}
-
-	const typedModels: Record<string, ShengSuanYunModelInfo> = {}
-	for (const [key, model] of Object.entries(models)) {
-		typedModels[key] = {
-			maxTokens: model.maxTokens ?? 0,
-			contextWindow: model.contextWindow ?? 0,
-			supportsImages: model.supportsImages ?? false,
-			supportsPromptCache: model.supportsPromptCache ?? false,
-			inputPrice: model.inputPrice ?? 0,
-			outputPrice: model.outputPrice ?? 0,
-			cacheWritesPrice: model.cacheWritesPrice ?? 0,
-			cacheReadsPrice: model.cacheReadsPrice ?? 0,
-			description: model.description ?? "",
-			endPoints: model.endPoints ?? [],
+			typedModels = cachedModels as Record<string, ShengSuanYunModelInfo>
+		} else {
+			Logger.error("Failed to recover from cache, returning empty model list.")
 		}
 	}
 	return ShengSuanYunCompatibleModelInfo.create({ models: typedModels })
